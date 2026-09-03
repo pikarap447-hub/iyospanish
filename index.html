@@ -3721,6 +3721,40 @@ body.theme-midnight .recent-item-hero{ background:linear-gradient(155deg, var(--
 @media(max-width:600px){.community-p2-actions{margin-left:0}.community-p2-profile{align-items:flex-start;flex-wrap:wrap}}
 
 </style>
+<style id="spanish-european-clean-theme">
+  /* Spanish (European) study-room finish */
+  :root{
+    --tile-white:#FFF8E8;
+    --tile-blue-deep:#9B1C31;
+    --tile-blue:#C43D4E;
+    --tile-blue-mid:#D6A928;
+    --tile-blue-pale:#E8C9A0;
+    --tile-blue-paler:#FFF1D2;
+    --ink:#172A46;
+    --ink-soft:#5D6675;
+    --gold:#D6A928;
+    --green:#315C4A;
+    --green-bg:#E4F0E8;
+    --bg:#FFF8E8;
+    --surface:#FFFCF5;
+    --surface-elevated:#FFFFFF;
+    --primary:#9B1C31;
+    --primary-soft:#FFF1D2;
+    --accent:#D6A928;
+    --border:#E8C9A0;
+    --shadow:0 12px 34px rgba(23,42,70,.12);
+    --shadow-sm:0 3px 12px rgba(23,42,70,.09);
+  }
+  body{background:linear-gradient(135deg,#FFF8E8 0%,#FFF1D2 55%,#F7E6D4 100%);}
+  .header-mark{font-size:26px;filter:saturate(1.15)}
+  .tile-border{background:linear-gradient(90deg,#9B1C31 0 33%,#D6A928 33% 66%,#172A46 66%);height:5px;border-radius:999px}
+  .sidebar-nav .stats-toggle{color:var(--ink)}
+  .sidebar-nav .stats-toggle:hover,.sidebar-nav .stats-toggle.active{color:var(--primary);background:var(--primary-soft)}
+  /* Removed product areas: the app is now focused on Spanish learning. */
+  #studyPetOverlay,#floatingPet,#petView,#petToggleBtn,#calendarView,#calendarToggleBtn,
+  #communityView,#communityToggleBtn,#caseGame,.case-game-launch,[data-act="publish"],
+  #petOnScreenToggle,.pet-related,.community-related{display:none!important}
+</style>
 
 <style id="pet-final-fix">
 /* FINAL PET PAGE FIX — prevent the room from swallowing the controls */
@@ -6581,8 +6615,8 @@ async function initAppDataStorage(){
    storage above. Nothing in this block is ever required for the app to
    work — if it's never signed in, or the network is down, or Supabase is
    unreachable, every read/write above still behaves exactly as before. */
-const SUPABASE_URL = 'https://dnlpjfcupxrnbwqbckkk.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_8N72Fw5ttmZdRep-Y5Ik5Q_aEI0Hwyb';
+const SUPABASE_URL = 'https://humhcvxdfwskurayhgoz.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_NzviD2T7iCw3rYCJ7Gsjvg_wuGxyZ67';
 let _supabase = null;
 function getSupabase(){
   if(_supabase) return _supabase;
@@ -19144,5 +19178,80 @@ jump('TODAY','auto');
   <img id="lightboxImage" alt="">
 </div>
 
+<style id="final-spanish-cleanup">
+  #tabAlgoBtn,#algoInputWrap,#profSearchToggleBtn{display:none!important}
+  #setup .input-tabs{grid-template-columns:1fr!important}
+
+  /* Dark mode is available from the floating toolbar and uses a dedicated
+     Spanish-night palette rather than the light reskin's fixed colours. */
+  #darkModeToggle{display:inline-flex!important}
+  body.mode-dark,
+  body.mode-dark .app-shell{background:#101827!important;color:#F6F1E7!important}
+  body.mode-dark .header-title h1{color:#F6F1E7!important}
+  body.mode-dark .header-title .eyebrow,
+  body.mode-dark .field-label,
+  body.mode-dark .continue-heading label{color:#F0C95A!important}
+  body.mode-dark .sidebar-nav{background:#182235!important;border-color:#34435B!important;box-shadow:0 8px 24px rgba(0,0,0,.28)!important}
+  body.mode-dark .sidebar-nav .stats-toggle{color:#D7DFEA!important}
+  body.mode-dark .sidebar-nav .stats-toggle:hover,
+  body.mode-dark .sidebar-nav .stats-toggle.active{background:#3A1D2A!important;color:#F28A8A!important}
+  body.mode-dark .card{background:#182235!important;border-color:#34435B!important;box-shadow:0 18px 55px rgba(0,0,0,.32)!important}
+  body.mode-dark .folder-tile,
+  body.mode-dark .set-item,
+  body.mode-dark .stat-tile,
+  body.mode-dark .settings-nav-row,
+  body.mode-dark .opt,
+  body.mode-dark .search-wrap,
+  body.mode-dark input,
+  body.mode-dark select,
+  body.mode-dark textarea{background:#202C40!important;color:#F6F1E7!important;border-color:#465773!important}
+  body.mode-dark input::placeholder,body.mode-dark textarea::placeholder{color:#AAB7C9!important}
+  body.mode-dark .landing-intro,body.mode-dark .hint,body.mode-dark .text-muted{color:#B5C0CF!important}
+  body.mode-dark .btn-ghost{color:#E7EDF5!important;border-color:#465773!important}
+  body.mode-dark .btn-ghost:hover{background:#29374E!important;border-color:#F0C95A!important}
+  body.mode-dark .btn-primary{background:#B52C45!important;border-color:#D95768!important;color:#fff!important}
+  body.mode-dark .tile-border{background:linear-gradient(90deg,#D95768,#F0C95A,#D95768)!important}
+  body.mode-dark .zoom-controls{background:#182235!important;border-color:#465773!important}
+  body.mode-dark .zoom-controls button{background:#202C40!important;color:#F6F1E7!important}
+  body.mode-dark .zoom-controls button:hover{background:#3A1D2A!important;color:#F0C95A!important}
+</style>
+<script>
+  // Final UI pass: keep the study flow centred on European Spanish.
+  document.addEventListener('DOMContentLoaded', () => {
+    const swaps = new Map([
+      ['Home','Inicio'],['Stats','Progreso'],['Settings','Ajustes'],['Find Qs','Buscar'],
+      ['Search sets, subjects, topics…','Buscar mazos, temas y contenidos…'],
+      ['+ New set','+ Nuevo mazo'],['Load sample deck','Cargar mazo de muestra'],
+      ['Save current set','Guardar mazo actual'],['Cards','Tarjetas'],['End quiz','Terminar sesión'],
+      ['Next card →','Siguiente tarjeta →'],['Main navigation','Navegación principal'],
+      ['Appearance','Apariencia'],['Background & Display','Fondo y pantalla'],
+      ['Related Images','Imágenes relacionadas'],['Controller','Controlador'],['Keyboard','Teclado'],
+      ['Study & Learning','Estudio y aprendizaje'],['Settings','Ajustes'],['Back','Volver'],
+      ['Name this set (e.g. Peds Week 3)','Pon nombre al mazo (p. ej., Viajes y cultura)'],
+      ['Area…','Área…'],['Level…','Nivel…'],['Fuente (opcional)','Fuente (opcional)'],
+      ['Your decks','Tus mazos'],['Continue studying','Continúa estudiando'],
+      ['Order: recent','Ordenar: recientes'],['Order: A–Z','Ordenar: A–Z'],
+      ['Cards and exercises','Tarjetas y ejercicios'],['All sets','Todos los mazos']
+    ]);
+    const walk = node => {
+      if(node.nodeType===Node.TEXT_NODE){
+        let v=node.nodeValue;
+        swaps.forEach((to,from)=>{v=v.split(from).join(to)});
+        node.nodeValue=v;
+      } else if(node.nodeType===Node.ELEMENT_NODE && !['SCRIPT','STYLE'].includes(node.tagName)){
+        [...node.childNodes].forEach(walk);
+        ['placeholder','title','aria-label'].forEach(attr=>{
+          if(node.hasAttribute(attr)) swaps.forEach((to,from)=>node.setAttribute(attr,node.getAttribute(attr).split(from).join(to)));
+        });
+      }
+    };
+    walk(document.body);
+    const header = document.querySelector('.header-mark');
+    if(header) header.textContent='🇪🇸';
+    const h1 = document.querySelector('.header h1');
+    if(h1) h1.textContent='Español B2 · España';
+    document.querySelectorAll('[data-act="publish"],#petView,#calendarView,#communityView,#caseGame,#studyPetOverlay,#floatingPet').forEach(el=>el.setAttribute('aria-hidden','true'));
+  });
+</script>
 </body>
 </html>
