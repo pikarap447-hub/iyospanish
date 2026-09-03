@@ -643,12 +643,10 @@ transition:background var(--transition-normal), color var(--transition-normal), 
   .frame{width:100%; max-width:680px;}
   .frame.wide{max-width:1020px; min-width:0; justify-self:center; width:100%;}
   /* Folder browsing (LE/Topic-Cards/Samplex sub-folder tiles, the set list)
-     and the Calendar (a horizontally-scrolling exam timeline) both benefit
-     from more room than the standard 1020px frame — more sub-folder tiles
-     per row, and more days visible before the calendar needs horizontal
-     scrolling. Toggled on/off .frame.wide via the folderView/calendarView
-     visibility observer below, so every other screen keeps the narrower,
-     more readable width. */
+     benefits from more room than the standard 1020px frame — more
+     sub-folder tiles per row. Toggled on/off .frame.wide via the
+     folderView visibility observer below, so every other screen keeps
+     the narrower, more readable width. */
   .frame.wide.frame-xl{max-width:1320px;}
 
   /* ===== CSS-05 APP SHELL / HEADER ===== */
@@ -1518,6 +1516,34 @@ transition:background var(--transition-normal), color var(--transition-normal), 
   .case-end-badge{
     font-family:var(--font); font-weight:700; font-size:15px; letter-spacing:.02em;
   }
+
+  /* ===== Sentence Builder (SENTENCE_FORMAT v1.0 word-order game) ===== */
+  .sentence-slots{
+    display:flex; flex-wrap:wrap; gap:8px; min-height:46px;
+    padding:12px; margin:4px 0 14px; border-radius:14px;
+    background:var(--tile-blue-paler); border:1.5px dashed var(--tile-blue-pale);
+  }
+  .sentence-slot{
+    font-family:var(--font); font-weight:600; font-size:14.5px;
+    min-width:40px; height:38px; padding:0 12px; border-radius:10px;
+    background:var(--surface); border:1.5px solid var(--tile-blue-pale); color:var(--ink);
+    cursor:default;
+  }
+  .sentence-slot.filled{ cursor:pointer; border-style:solid; }
+  .sentence-slot.filled:hover{ background:var(--red-bg); border-color:var(--red); }
+  .sentence-slot.correct{ background:var(--green-bg); border-color:var(--green); color:var(--correct-text,#284D38); cursor:default; }
+  .sentence-slot.wrong{ background:var(--red-bg); border-color:var(--red); color:var(--red); cursor:default; }
+  .sentence-bank-row{
+    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;
+  }
+  .sentence-tile{
+    font-family:var(--font); font-weight:600; font-size:14.5px;
+    padding:9px 14px; border-radius:10px; cursor:pointer;
+    background:var(--surface); border:1.5px solid var(--tile-blue-deep); color:var(--tile-blue-deep);
+    box-shadow:var(--shadow-sm);
+  }
+  .sentence-tile:hover{ background:var(--tile-blue-paler); }
+  .sentence-tile:disabled{ opacity:.5; cursor:default; }
 
   /* ===== CSS-08 QUIZ UI: results screen ===== */
   /* --- Results --- */
@@ -3752,7 +3778,7 @@ body.theme-midnight .recent-item-hero{ background:linear-gradient(155deg, var(--
   .sidebar-nav .stats-toggle{color:var(--ink)}
   .sidebar-nav .stats-toggle:hover,.sidebar-nav .stats-toggle.active{color:var(--primary);background:var(--primary-soft)}
   /* Removed product areas: the app is now focused on Spanish learning. */
-  #studyPetOverlay,#floatingPet,#petView,#petToggleBtn,#calendarView,#calendarToggleBtn,
+  #studyPetOverlay,#floatingPet,#petView,#petToggleBtn,
   #communityView,#communityToggleBtn,#caseGame,.case-game-launch,[data-act="publish"],
   #petOnScreenToggle,.pet-related,.community-related{display:none!important}
 </style>
@@ -4498,7 +4524,6 @@ body.theme-midnight .recent-item-hero{ background:linear-gradient(155deg, var(--
    top of the Back button instead of framing the content. It's purely
    decorative, so simplest correct fix is to not render it while the
    calendar view is open. */
-.card:has(#calendarView:not(.hidden)) > .card-inner > .vine-frame{display:none}
 .card:has(#communityView:not(.hidden)) > .card-inner > .vine-frame{display:none}
 
 /* ===== Community panel ===== */
@@ -4714,9 +4739,8 @@ body:before{
       <button class="btn-ghost stats-toggle" id="statsToggleBtn" title="Stats" aria-label="Stats">📊 <span>Stats</span></button>
       <button class="btn-ghost stats-toggle" id="settingsToggleBtn" title="Settings" aria-label="Settings">⚙️ <span>Settings</span></button>
       <button class="btn-ghost stats-toggle" id="petToggleBtn" title="Pet" aria-label="Pet">🐶 <span>Pet</span></button>
-      <button class="btn-ghost stats-toggle" id="calendarToggleBtn" title="Calendar" aria-label="Calendar">🗓️ <span>Calendar</span></button>
       <button class="btn-ghost stats-toggle" id="communityToggleBtn" title="Community" aria-label="Community">🌐 <span>Community</span><span class="nav-new-dot" id="communityNewDot"></span></button>
-      <button class="btn-ghost stats-toggle" id="profSearchToggleBtn" title="Find questions by Professor/Topic" aria-label="Find questions">🧑‍🏫 <span>Find Qs</span></button>
+      <button class="btn-ghost stats-toggle" id="profSearchToggleBtn" title="Buscar tarjetas por tema" aria-label="Buscar por tema">🔎 <span>Temas</span></button>
     </nav>
   </div>
 
@@ -4792,13 +4816,13 @@ body:before{
         <div class="landing-toolbar">
           <div class="search-wrap">
             <span class="search-icon">🔍</span>
-            <input type="text" id="deckSearchInput" class="search-input" placeholder="Search sets, subjects, topics…">
+            <input type="text" id="deckSearchInput" class="search-input" placeholder="Buscar mazos, áreas, temas…">
             <span class="search-kbd-hint" id="searchKbdHint" aria-hidden="true">⌘K</span>
             <button type="button" class="search-clear hidden" id="searchClearBtn" title="Clear search">✕</button>
           </div>
           <div class="landing-actions">
             <button class="btn-primary" id="newSetBtn">+ New set</button>
-            <button class="btn-ghost" id="trySampleBtn">Load sample deck</button>
+            <button class="btn-ghost" id="trySampleBtn">Cargar mazo de ejemplo</button>
           </div>
         </div>
         <div id="searchResults" class="hidden"></div>
@@ -4853,7 +4877,7 @@ body:before{
         <label class="field-label">Detalles del mazo</label>
         <div class="sets-bar">
           <div class="row">
-            <input type="text" id="setNameInput" placeholder="Name this set (e.g. Peds Week 3)">
+            <input type="text" id="setNameInput" placeholder="Nombre del mazo (p. ej., Semana 3)">
             <select id="setSubjectSelect">
               <option value="">Área…</option>
               <option value="GRAM">Gramática</option>
@@ -4888,6 +4912,7 @@ body:before{
         <div class="input-tabs" id="inputTabs">
           <button type="button" class="input-tab active" id="tabManualBtn">✍️ Cards</button>
           <button type="button" class="input-tab" id="tabAlgoBtn">🧬 Pegar ejercicio</button>
+          <button type="button" class="input-tab" id="tabSentenceBtn">🧩 Sentence builder</button>
         </div>
 
         <div id="algoInputWrap" class="hidden">
@@ -4953,6 +4978,26 @@ OUTCOME: NEG
           </div>
         </div>
 
+        <div id="sentenceInputWrap" class="hidden">
+          <div class="hint" style="margin-top:0;">
+            Paste a <strong>SENTENCE_FORMAT</strong> set below to play a word-order builder: each sentence gives the learner a cue and a scrambled set of tiles (words, fixed multi-word chunks, or punctuation) to tap back into the right order. Progress and score sync across your devices just like the rest of your sets.
+          </div>
+          <textarea id="sentenceTextInput" placeholder="Paste a SENTENCE_FORMAT set here…"></textarea>
+          <div class="row" style="justify-content:space-between; margin-top:10px; flex-wrap:wrap; gap:8px;">
+            <button class="btn-primary" id="parseSentenceBtn">🧩 Start sentence builder</button>
+            <span id="sentenceParseStatus" style="font-size:12.5px; font-weight:600;"></span>
+          </div>
+
+          <label class="field-label" style="margin-top:22px;">Don't have a sentence set handy?</label>
+          <div class="hint" style="margin-top:0;">
+            Copy a ready-made prompt to paste into ChatGPT, Claude, or any LLM, along with the grammar point or source material you want practiced — it explains the SENTENCE_FORMAT v1.0 spec so the set it writes back can be pasted straight into the box above.
+          </div>
+          <input type="text" class="text-field" id="sentencePromptTopic" placeholder="Describe the grammar point/topic here, and how many sentences you want">
+          <div class="row" style="justify-content:flex-start; margin-top:10px;">
+            <button class="btn-ghost" id="copySentencePromptBtn">📋 Copy prompt for an LLM</button>
+          </div>
+        </div>
+
         <div id="manualCardsWrap">
           <div class="row" style="justify-content:space-between; margin-bottom:10px;">
             <label class="switch-row" for="modeToggle">
@@ -4991,10 +5036,10 @@ OUTCOME: NEG
           <div class="sheet-actions">
             <div class="row">
               <button class="btn-ghost" id="addRowBtn">+ Add row</button>
-              <button class="btn-ghost" id="clearTableBtn">Clear table</button>
+              <button class="btn-ghost" id="clearTableBtn">Vaciar tabla</button>
               <button class="btn-ghost" id="tableBoldBtn" title="Bold selected text in an exam-tip cell (click a tip cell, select text, then click B — or Ctrl/Cmd+B)" style="font-weight:700;">B</button>
             </div>
-            <button class="btn-sample" id="loadSample">Reload original 100-card set</button>
+            <button class="btn-sample" id="loadSample">Recargar mazo original de 100 tarjetas</button>
           </div>
           <div class="sheet-wrap">
             <table class="sheet" id="cardTable">
@@ -5046,7 +5091,7 @@ OUTCOME: NEG
             <span style="font-size:12.5px; color:var(--ink-soft);">Both can run together — a finished focus block hands off into a brain break.</span>
           </div>
           <div class="row" style="gap:10px; flex-wrap:wrap;">
-            <button class="btn-primary" id="startBtn">Start quiz</button>
+            <button class="btn-primary" id="startBtn">Comenzar</button>
             <button class="btn-ghost" id="editModeBtn" type="button" title="Step through every card to edit — no answering required">✎ Edit mode</button>
           </div>
         </div>
@@ -5075,15 +5120,15 @@ OUTCOME: NEG
         <div class="edit-mode-bar" id="editModeBar">
           <button type="button" class="btn-ghost sm" id="editModePrevBtn">‹ Prev</button>
           <span class="edit-mode-counter" id="editModeCounter">Card 1 / 1</span>
-          <button type="button" class="btn-primary sm" id="editModeNextBtn">Next ›</button>
-          <button type="button" class="btn-ghost sm" id="editModeExitBtn">Exit edit mode</button>
+          <button type="button" class="btn-primary sm" id="editModeNextBtn">Siguiente ›</button>
+          <button type="button" class="btn-ghost sm" id="editModeExitBtn">Salir del modo edición</button>
         </div>
         <div class="question" id="questionText"></div>
         <div class="question-image-wrap hidden" id="questionImageWrap" title="Tap to enlarge">
           <img id="questionImage" alt="Reference image" referrerpolicy="no-referrer">
           <div class="question-image-fallback" id="questionImageFallback">
             <span id="questionImageFallbackText">📵 Image not available<br>(no connection, or the link is down)</span>
-            <button type="button" class="btn-ghost sm question-image-fix-btn" id="questionImageFixBtn">Fix link</button>
+            <button type="button" class="btn-ghost sm question-image-fix-btn" id="questionImageFixBtn">Corregir enlace</button>
           </div>
           <span class="question-image-hint">Tap to enlarge</span>
         </div>
@@ -5100,7 +5145,7 @@ OUTCOME: NEG
           <label class="field-label" style="margin-top:10px;">Image URL <span style="font-weight:400; color:var(--ink-soft);">(optional — paste a link to a derm/patho photo; it's hotlinked, not stored, so it only shows when there's a connection)</span></label>
           <div class="row" style="gap:8px; align-items:center;">
             <input type="url" id="editImg" class="modal-input" placeholder="https://..." style="flex:1;">
-            <button type="button" class="btn-ghost" id="clearEditImgBtn" style="font-size:12px; padding:8px 12px; white-space:nowrap;">Remove</button>
+            <button type="button" class="btn-ghost" id="clearEditImgBtn" style="font-size:12px; padding:8px 12px; white-space:nowrap;">Quitar</button>
           </div>
           <div class="tip-image-wrap hidden" id="editImgPreviewWrap" style="max-height:140px;">
             <img id="editImgPreview" alt="" referrerpolicy="no-referrer" style="max-height:140px;">
@@ -5115,14 +5160,14 @@ OUTCOME: NEG
           <textarea id="editTip" class="edit-textarea" rows="3"></textarea>
           <label class="field-label" style="margin-top:10px;">Optional tags <span style="font-weight:400; color:var(--ink-soft);">(used for topic/type breakdowns in Stats — leave blank to skip)</span></label>
           <div class="row" style="gap:8px; flex-wrap:wrap;">
-            <input type="text" id="editTopic" class="modal-input" placeholder="Topic (e.g. Cardiovascular)" style="flex:1; min-width:140px;">
-            <input type="text" id="editSubtopic" class="modal-input" placeholder="Subtopic" style="flex:1; min-width:140px;">
+            <input type="text" id="editTopic" class="modal-input" placeholder="Tema (p. ej., Subjuntivo)" style="flex:1; min-width:140px;">
+            <input type="text" id="editSubtopic" class="modal-input" placeholder="Subtema" style="flex:1; min-width:140px;">
           </div>
           <div class="row" style="gap:8px; flex-wrap:wrap; margin-top:8px; align-items:center;">
-            <input type="text" id="editProfessor" class="modal-input" list="knownProfessorsList" placeholder="Professor (Last Name, F.)" style="flex:1; min-width:160px;">
+            <input type="text" id="editProfessor" class="modal-input" list="knownProfessorsList" placeholder="Fuente (opcional)" style="flex:1; min-width:160px;">
             <datalist id="knownProfessorsList"></datalist>
-            <input type="text" id="editYear" class="modal-input" placeholder="Year (e.g. 2023)" inputmode="numeric" style="max-width:110px;">
-            <button type="button" class="btn-ghost" id="applyProfYearToSetBtn" title="Tag every card in this set with this Professor/Year" style="font-size:11.5px; padding:6px 10px; white-space:nowrap;">Apply to whole set</button>
+            <input type="text" id="editYear" class="modal-input" placeholder="Año (p. ej., 2023)" inputmode="numeric" style="max-width:110px;">
+            <button type="button" class="btn-ghost" id="applyProfYearToSetBtn" title="Etiquetar todas las tarjetas de este mazo con esta Fuente/Año" style="font-size:11.5px; padding:6px 10px; white-space:nowrap;">Aplicar a todo el mazo</button>
           </div>
           <div class="hint" id="applyProfYearHint" style="margin-top:4px; min-height:14px;"></div>
           <label class="switch-row" for="editSameLecAsPrevYear" style="margin:10px 0 0;">
@@ -5162,8 +5207,8 @@ OUTCOME: NEG
             <span class="switch-label">High-yield <span style="font-weight:400; color:var(--ink-soft);">(prioritized in Cram mode)</span></span>
           </label>
           <div class="footer-row" style="margin-top:14px;">
-            <button class="btn-ghost" id="cancelCardEditBtn">Cancel</button>
-            <button class="btn-primary" id="saveCardEditBtn">Save changes</button>
+            <button class="btn-ghost" id="cancelCardEditBtn">Cancelar</button>
+            <button class="btn-primary" id="saveCardEditBtn">Guardar cambios</button>
           </div>
         </div>
 
@@ -5187,12 +5232,12 @@ OUTCOME: NEG
              actually tap through. -->
         <div class="tip-box hidden" id="breakReadyBanner" style="align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; border-color:var(--gold); margin-top:8px;">
           <span>🍅 Focus time's up — ready for your break?</span>
-          <button type="button" class="btn-primary" id="breakReadyBtn" style="padding:6px 14px; font-size:13px; white-space:nowrap;">Take a break →</button>
+          <button type="button" class="btn-primary" id="breakReadyBtn" style="padding:6px 14px; font-size:13px; white-space:nowrap;">Tomar un descanso →</button>
         </div>
 
         <div class="footer-row">
-          <button class="btn-ghost" id="quitBtn">End quiz</button>
-          <button class="btn-primary hidden" id="nextBtn">Next card →</button>
+          <button class="btn-ghost" id="quitBtn">Terminar</button>
+          <button class="btn-primary hidden" id="nextBtn">Siguiente tarjeta →</button>
         </div>
       </div>
 
@@ -5209,7 +5254,31 @@ OUTCOME: NEG
           <div class="case-end" id="caseEndMsg"></div>
           <div class="footer-row" style="margin-top:16px; justify-content:flex-start; gap:10px;">
             <button class="btn-primary" id="caseRestartBtn">↻ Restart case</button>
-            <button class="btn-ghost" id="caseExitBtn">Back to sets</button>
+            <button class="btn-ghost" id="caseExitBtn">Volver a los mazos</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SENTENCE BUILDER (SENTENCE_FORMAT v1.0 word-order game) -->
+      <div id="sentenceGame" class="hidden">
+        <button class="back-link" id="sentenceGameBackBtn">← End set</button>
+        <div class="index-no-row">
+          <div class="index-no" id="sentenceGameTitle">SENTENCE BUILDER</div>
+          <span class="score-tag" id="sentenceScoreTag">0 correct · 0 missed</span>
+        </div>
+        <div class="hint" id="sentenceIndexTag" style="margin-top:-6px;"></div>
+        <div id="sentencePlayWrap">
+          <div class="case-prompt hidden" id="sentencePrompt"></div>
+          <div class="sentence-slots" id="sentenceSlots"></div>
+          <div class="sentence-bank-row" id="sentenceBankRow"></div>
+          <div class="case-pill-row" id="sentenceHintRow"></div>
+          <div class="footer-row" style="justify-content:flex-start;" id="sentenceActionsRow"></div>
+        </div>
+        <div id="sentenceEndWrap" class="hidden">
+          <div class="case-end" id="sentenceEndMsg"></div>
+          <div class="footer-row" style="margin-top:16px; justify-content:flex-start; gap:10px;">
+            <button class="btn-primary" id="sentenceRestartBtn">↻ Restart set</button>
+            <button class="btn-ghost" id="sentenceExitBtn">Volver a los mazos</button>
           </div>
         </div>
       </div>
@@ -5224,8 +5293,8 @@ OUTCOME: NEG
           <span id="brainBreakMessage"></span>
         </div>
         <div class="footer-row" style="margin-top:22px;">
-          <button class="btn-ghost" id="quitFromBreakBtn">End quiz</button>
-          <button class="btn-primary" id="breakContinueBtn">Back to it →</button>
+          <button class="btn-ghost" id="quitFromBreakBtn">Terminar</button>
+          <button class="btn-primary" id="breakContinueBtn">Continuar →</button>
         </div>
       </div>
 
@@ -5270,10 +5339,10 @@ OUTCOME: NEG
         </div>
         <div id="missedList"></div>
         <div class="row" style="margin-top:20px;">
-          <button class="btn-primary" id="retryAllBtn">Retry all cards</button>
-          <button class="btn-ghost" id="retryMissedBtn">Retry missed only</button>
-          <button class="btn-ghost hidden" id="retryFlaggedBtn">Retry flagged only</button>
-          <button class="btn-ghost" id="editBtn">Edit cards</button>
+          <button class="btn-primary" id="retryAllBtn">Repetir todas</button>
+          <button class="btn-ghost" id="retryMissedBtn">Repetir falladas</button>
+          <button class="btn-ghost hidden" id="retryFlaggedBtn">Repetir marcadas</button>
+          <button class="btn-ghost" id="editBtn">Editar tarjetas</button>
         </div>
         <div class="row hidden" id="cramContinueRow" style="margin-top:10px;">
           <button class="btn-primary" id="cramContinueBtn">⏰ Continue cramming — next sprint →</button>
@@ -5293,7 +5362,7 @@ OUTCOME: NEG
             </div>
             <div class="hint" style="margin:2px 0 0;">Study buddy prototype — feed, play, clean, and sleep.</div>
           </div>
-          <button class="btn-ghost" id="petResetBtn" type="button">Reset pet</button>
+          <button class="btn-ghost" id="petResetBtn" type="button">Reiniciar mascota</button>
         </div>
 
         <div id="petCustomizer" class="hidden" aria-hidden="true"><div id="petImportStatus"></div><input id="petSpriteUpload" type="file" accept="image/png" hidden></div>
@@ -5352,8 +5421,8 @@ OUTCOME: NEG
     <button type="button" class="pet-intro-breed" data-intro-breed="papillon"><img class="pet-picker-icon" data-pet-icon="papillon" alt=""><span>Papillon</span></button>
   </div>
   <label class="field-label" for="petIntroName" style="margin-top:10px">What should we call your new companion?</label>
-  <input id="petIntroName" class="pet-name-input" maxlength="18" placeholder="Choose a name" aria-label="Choose your dog's name">
-  <button type="button" class="btn-primary" id="petIntroBtn">Welcome home</button>
+  <input id="petIntroName" class="pet-name-input" maxlength="18" placeholder="Elige un nombre" aria-label="Choose your dog's name">
+  <button type="button" class="btn-primary" id="petIntroBtn">Bienvenida a casa</button>
 </div>
         </div>
 
@@ -5437,13 +5506,13 @@ OUTCOME: NEG
           </div>
           <div class="row" style="gap:8px; align-items:center; margin-bottom:10px;">
             <span style="font-size:13px; color:var(--ink-soft);">or custom:</span>
-            <input type="number" id="cramCustomMinutes" class="num-input" min="5" max="600" placeholder="minutes">
+            <input type="number" id="cramCustomMinutes" class="num-input" min="5" max="600" placeholder="minutos">
           </div>
           <label class="field-label">Exam date/time <span style="font-weight:400; color:var(--ink-soft);">(optional — enables night-before / morning-of mode)</span></label>
           <input type="datetime-local" id="cramExamDateTime" class="modal-input" style="margin-bottom:10px;">
           <div id="cramModeHint" class="hint" style="margin-top:0;"></div>
           <div class="row" style="margin-top:10px;">
-            <button class="btn-primary sm" id="cramStartBtn">Start cram session</button>
+            <button class="btn-primary sm" id="cramStartBtn">Comenzar repaso intensivo</button>
           </div>
         </div>
         <label class="field-label">Tu progreso</label>
@@ -5706,7 +5775,7 @@ OUTCOME: NEG
           <label class="field-label" style="margin-top:12px;">Search engine ID (cx)</label>
           <input type="text" id="imgCxInput" class="modal-input" placeholder="Programmable Search Engine ID">
           <div class="row" style="margin-top:16px;">
-            <button class="btn-primary" id="imgSettingsSave">Save</button>
+            <button class="btn-primary" id="imgSettingsSave">Guardar</button>
             <span id="imgSettingsSavedNote" class="hidden" style="font-size:12.5px; color:var(--green); font-weight:600;">Saved ✓</span>
           </div>
         </div>
@@ -5841,15 +5910,15 @@ OUTCOME: NEG
           <label class="field-label">Sign in</label>
           <div class="hint" style="margin-top:0;">Optional. Your sets, stats, and progress already save locally and work fully offline without an account. Signing in adds cloud backup and lets your data sync across devices.</div>
           <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px; max-width:320px;">
-            <input type="email" id="acctEmailInput" class="modal-input" placeholder="Email" autocomplete="email">
-            <input type="password" id="acctPasswordInput" class="modal-input" placeholder="Password" autocomplete="current-password">
+            <input type="email" id="acctEmailInput" class="modal-input" placeholder="Correo electrónico" autocomplete="email">
+            <input type="password" id="acctPasswordInput" class="modal-input" placeholder="Contraseña" autocomplete="current-password">
           </div>
           <div class="row" style="margin-top:10px;">
-            <button class="btn-ghost" id="acctSignInBtn">Sign in</button>
-            <button class="btn-ghost" id="acctSignUpBtn">Create account</button>
+            <button class="btn-ghost" id="acctSignInBtn">Iniciar sesión</button>
+            <button class="btn-ghost" id="acctSignUpBtn">Crear cuenta</button>
           </div>
           <div class="row" style="margin-top:6px;">
-            <button class="btn-ghost" id="acctForgotBtn" style="font-size:12px;">Forgot password?</button>
+            <button class="btn-ghost" id="acctForgotBtn" style="font-size:12px;">¿Olvidaste tu contraseña?</button>
           </div>
           <div id="acctAuthStatus" class="hint" style="margin-top:8px; min-height:16px;"></div>
         </div>
@@ -5858,7 +5927,7 @@ OUTCOME: NEG
           <label class="field-label">Account</label>
           <div class="hint" style="margin-top:0;">Signed in as <strong id="acctEmailLabel"></strong></div>
           <div class="row" style="margin-top:10px;">
-            <button class="btn-ghost" id="acctSignOutBtn">Sign out</button>
+            <button class="btn-ghost" id="acctSignOutBtn">Cerrar sesión</button>
           </div>
         </div>
 
@@ -5879,94 +5948,6 @@ OUTCOME: NEG
 
     </div>
   </div>
-
-      <!-- ===== HTML-07 CALENDAR ===== -->
-      <div id="calendarView" class="hidden">
-        <div class="row" style="margin-bottom:14px;">
-          <button class="btn-ghost back-on-photo" id="backFromCalendarBtn">← Back</button>
-        </div>
-<div class="index-calendar" id="uermExamCalendar">
-<header>
-  <div class="title">
-    <div><h1>UERM 3rd Year · Exam Timeline</h1><div class="sub">SY 2026–2027 · Long Exams, Finals & individual subject schedules</div></div>
-    <div class="countdown" id="nextLECountdown">
-          <span class="countdown-label">NEXT LE</span>
-          <span class="countdown-value" id="nextLEValue">—</span>
-          <span class="countdown-sub" id="nextLESub">—</span>
-        </div>
-        <div class="badge" id="count">9 subject exams</div>
-  </div>
-  <div class="toolbar">
-    <div class="tool-group primary-tools">
-      <button class="primary add-exam" id="addBtn">＋ Add exam</button>
-      <label class="import">Import ICS<input id="ics" type="file" accept=".ics,text/calendar" hidden></label>
-    </div>
-
-    <div class="tool-divider"></div>
-
-    <div class="tool-group exam-nav">
-      <span class="tool-label">EXAMS</span>
-      <button data-jump="2026-08-05">LE 1</button>
-      <button data-jump="2026-09-23">LE 2</button>
-      <button data-jump="2026-11-03">LE 3</button>
-      <button data-jump="2027-01-18">LE 4</button>
-      <button data-jump="2027-03-01">LE 5</button>
-      <button data-jump="2027-04-14">LE 6</button>
-      <button data-jump="2027-04-23">Finals</button>
-    </div>
-
-    <div class="tool-divider"></div>
-
-    <div class="tool-group utility-tools">
-      <button class="today-btn" data-jump="TODAY"><span class="today-dot-ui"></span>Today</button>
-      <button id="holidayToggle" class="active">Holidays on</button>
-      <span class="tool-label">VIEW</span>
-      <button class="zoom active" data-level="2">Day</button>
-      <button class="zoom" data-level="1">Week</button>
-      <button class="zoom" data-level="0">Month</button>
-      <button id="clearBtn" class="clear-btn">Clear added</button>
-    </div>
-  </div>
-</header>
-
-<main class="wrap">
-  <div class="scroller" id="scroller">
-    <div class="timeline" id="timeline">
-      <div class="months" id="months"></div>
-      <div class="days" id="days"></div>
-      <div class="holiday-row" id="holidayRow"></div>
-      <div class="school" id="school"></div>
-      <div class="grid" id="grid"></div>
-    </div>
-  </div>
-  <div class="legend"><span>■ School-wide LE / Finals period</span><span>Subject exams use their assigned subject color</span></div>
-  <section class="subject-panel">
-    <div class="subject-head"><div><h2>3rd Year Subjects</h2><p>Colors are reserved for individual subject exam schedules.</p></div><div class="badge">MANUAL + ICS</div></div>
-    <div class="subjects" id="subjects"></div><div style="font-size:8px;color:#9aa0aa;margin-top:8px">
-Holiday data based on the Philippines iCalendar maintained by Office Holidays.
-</div>
-  </section>
-</main>
-
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <button id="closeBtn" style="float:right">×</button>
-    <h2 id="modalTitle">Add Subject Exam</h2>
-    <p id="modalSub">Enter an exact date and time. Dates are saved in local calendar time.</p>
-    <div class="form">
-      <label>Subject<select id="subject"></select></label>
-      <label>Exam<select id="exam"><option>LE 1</option><option>LE 2</option><option>LE 3</option><option>LE 4</option><option>LE 5</option><option>LE 6</option><option>FINAL</option><option>OTHER</option></select></label>
-      <label>Date<input id="date" type="date"></label>
-      <label>Start<input id="start" type="time"></label>
-      <label>End<input id="end" type="time"></label>
-      <label class="full">Notes<input id="notes" type="text" placeholder="Optional"></label>
-    </div>
-    <div class="actions"><button id="deleteBtn" class="clear-btn" style="display:none;margin-right:auto">Delete Event</button><button id="cancelBtn">Cancel</button><button class="primary" id="saveBtn">Add Exam</button></div>
-  </div>
-</div>
-</div>
-
-      </div>
 
       <!-- ===== HTML-08 COMMUNITY ===== -->
       <div id="communityView" class="hidden">
@@ -6006,8 +5987,8 @@ Holiday data based on the Philippines iCalendar maintained by Office Holidays.
               <div class="community-section-title">Pick a username</div>
               <div class="community-section-sub">This is what other people will see on sets you publish.</div>
               <div style="display:flex; gap:8px; margin-top:12px; max-width:320px;">
-                <input type="text" id="communityUsernameInput" class="modal-input" placeholder="Username" maxlength="24">
-                <button class="btn-primary sm" id="communityUsernameSaveBtn">Save</button>
+                <input type="text" id="communityUsernameInput" class="modal-input" placeholder="Nombre de usuario" maxlength="24">
+                <button class="btn-primary sm" id="communityUsernameSaveBtn">Guardar</button>
               </div>
               <div id="communityUsernameStatus" class="hint" style="margin-top:8px; min-height:16px;"></div>
             </div>
@@ -6019,7 +6000,7 @@ Holiday data based on the Philippines iCalendar maintained by Office Holidays.
 
             <div class="community-search-wrap">
               <span class="community-search-icon">🔎</span>
-              <input type="text" id="communitySearchInput" class="modal-input" placeholder="Search decks, topics, creators…" style="width:100%; max-width:100%;">
+              <input type="text" id="communitySearchInput" class="modal-input" placeholder="Buscar mazos, temas, autores…" style="width:100%; max-width:100%;">
             </div>
 
             <div class="community-tabs" id="communityBrowseTabs">
@@ -6065,13 +6046,13 @@ Holiday data based on the Philippines iCalendar maintained by Office Holidays.
                 <div class="community-preview-comments" style="margin-top:18px; border-top:1px solid var(--border); padding-top:14px;">
                   <div style="font-weight:800; font-size:14px; color:var(--text); margin-bottom:8px;">Comments</div>
                   <div id="communityPreviewCommentForm" style="display:flex; gap:8px; margin-bottom:12px;">
-                    <input type="text" id="communityCommentInput" maxlength="500" placeholder="Add a comment…" style="flex:1; min-width:0; padding:9px 11px; border:1px solid var(--border); border-radius:10px; font-size:13px; background:var(--bg); color:var(--text);">
-                    <button type="button" class="btn-primary sm" id="communityCommentPostBtn">Post</button>
+                    <input type="text" id="communityCommentInput" maxlength="500" placeholder="Añadir un comentario…" style="flex:1; min-width:0; padding:9px 11px; border:1px solid var(--border); border-radius:10px; font-size:13px; background:var(--bg); color:var(--text);">
+                    <button type="button" class="btn-primary sm" id="communityCommentPostBtn">Publicar</button>
                   </div>
                   <div id="communityPreviewCommentsList" class="community-comments-list"></div>
                 </div>
                 <div class="community-preview-footer">
-                  <button type="button" class="btn-ghost" id="communityPreviewCloseBtn2">Close</button>
+                  <button type="button" class="btn-ghost" id="communityPreviewCloseBtn2">Cerrar</button>
                   <button type="button" class="btn-primary" id="communityPreviewImportBtn">＋ Add to My Sets</button>
                 </div>
               </div>
@@ -6082,7 +6063,7 @@ Holiday data based on the Philippines iCalendar maintained by Office Holidays.
                 <div class="community-preview-title" id="communityEditTitle">Edit listing</div>
                 <div class="community-preview-sub" id="communityEditSub"></div>
                 <label for="communityEditDescInput">Description</label>
-                <textarea id="communityEditDescInput" maxlength="600" placeholder="Tell people what this deck covers…"></textarea>
+                <textarea id="communityEditDescInput" maxlength="600" placeholder="Cuenta de qué trata este mazo…"></textarea>
                 <div class="row" style="margin-top:10px; flex-wrap:wrap; gap:8px;">
                   <select id="communityEditSubjectSelect" style="min-width:110px;">
                     <option value="">Subject…</option>
@@ -6108,13 +6089,13 @@ Holiday data based on the Philippines iCalendar maintained by Office Holidays.
                     <option value="5">LE 5</option>
                     <option value="6">LE 6</option>
                   </select>
-                  <input type="text" id="communityEditTopicInput" placeholder="Topic #" style="max-width:100px;">
-                  <input type="text" id="communityEditProfessorInput" placeholder="Professor (optional)" style="max-width:180px;">
+                  <input type="text" id="communityEditTopicInput" placeholder="Tema" style="max-width:100px;">
+                  <input type="text" id="communityEditProfessorInput" placeholder="Fuente (opcional)" style="max-width:180px;">
                 </div>
                 <div class="hint" style="margin-top:6px;">Description updates the Community listing only. Subject/LE/Topic/Professor also update your local set's tags (if it's still linked on this device), same as editing them in Set details.</div>
                 <div class="community-edit-footer">
-                  <button type="button" class="btn-ghost" id="communityEditCancelBtn">Cancel</button>
-                  <button type="button" class="btn-primary" id="communityEditSaveBtn">Save</button>
+                  <button type="button" class="btn-ghost" id="communityEditCancelBtn">Cancelar</button>
+                  <button type="button" class="btn-primary" id="communityEditSaveBtn">Guardar</button>
                 </div>
               </div>
             </div>
@@ -6122,52 +6103,38 @@ Holiday data based on the Philippines iCalendar maintained by Office Holidays.
         </div>
       </div>
 
-      <!-- ===== Find Questions (search cards by Professor / Topic) ===== -->
+      <!-- ===== Topic Finder (search cards by Topic) ===== -->
       <div id="profSearchView" class="hidden">
         <div class="row" style="margin-bottom:14px;">
-          <button class="btn-ghost back-on-photo" id="backFromProfSearchBtn">← Back</button>
+          <button class="btn-ghost back-on-photo" id="backFromProfSearchBtn">← Volver</button>
         </div>
         <div class="community-panel">
           <div class="community-hero">
-            <div class="community-hero-title">🧑‍🏫 Find Questions</div>
-            <div class="community-hero-sub">Search every tagged Samplex question across all your sets by Professor or Topic — spot patterns in test style, then practice just those questions.</div>
+            <div class="community-hero-title">🔎 Buscar por tema</div>
+            <div class="community-hero-sub">Busca cualquier tarjeta etiquetada por tema en todos tus mazos — encuentra rápidamente todo lo relacionado con un tema y practícalo junto.</div>
           </div>
 
           <div class="community-search-wrap">
             <span class="community-search-icon">🔎</span>
-            <input type="text" id="profSearchInput" class="modal-input" placeholder="Search professor, topic, or question text…" style="width:100%; max-width:100%;">
+            <input type="text" id="profSearchInput" class="modal-input" placeholder="Buscar tema o texto de la pregunta…" style="width:100%; max-width:100%;">
           </div>
 
           <div class="row" style="gap:8px; margin-top:10px; flex-wrap:wrap; align-items:center;">
-            <select id="profSearchYearSelect" class="modal-input" style="max-width:160px;">
-              <option value="">Any year</option>
-            </select>
-            <button type="button" class="btn-ghost" id="profSearchRepeatToggle" title="Manually-flagged repeats, plus any card whose professor+topic also shows up in a different year" style="font-size:12px;">🔁 Repeats across years</button>
-            <button type="button" class="btn-ghost" id="profSearchClearBtn" style="font-size:12px;">Clear filters</button>
+            <button type="button" class="btn-ghost" id="profSearchClearBtn" style="font-size:12px;">Borrar filtros</button>
           </div>
 
           <div class="community-section" style="margin-top:16px; padding-top:16px;">
-            <div class="community-section-title" style="margin-bottom:6px;">👤 Professors</div>
-            <div class="community-filters" id="profSearchProfChips"></div>
-          </div>
-
-          <div class="community-section">
-            <div class="community-section-title" style="margin-bottom:6px;">🏷️ Topics</div>
+            <div class="community-section-title" style="margin-bottom:6px;">🏷️ Temas</div>
             <div class="community-filters" id="profSearchTopicChips"></div>
-          </div>
-
-          <div class="community-section" id="profSearchInsights" style="display:none;">
-            <div class="community-section-title" id="profSearchInsightsTitle">Pattern summary</div>
-            <div class="community-section-sub" id="profSearchInsightsBody" style="margin-top:6px; line-height:1.6;"></div>
           </div>
 
           <div class="community-section" style="margin-top:18px; padding-top:18px;">
             <div class="community-section-head">
               <div>
-                <div class="community-section-title" id="profSearchResultsHeading">All tagged questions</div>
+                <div class="community-section-title" id="profSearchResultsHeading">Todas las tarjetas etiquetadas</div>
                 <div class="community-section-sub" id="profSearchResultsStatus"></div>
               </div>
-              <button type="button" class="btn-primary sm" id="profSearchPracticeAllBtn">▶ Practice these</button>
+              <button type="button" class="btn-primary sm" id="profSearchPracticeAllBtn">▶ Practicar estas</button>
             </div>
             <div id="profSearchResultsList" class="community-list"></div>
           </div>
@@ -6381,6 +6348,7 @@ const LOCAL_SYNC_KEYS = [GLOBAL_KEY, 'esp2ReviewVirtualPet_v2', 'esp2ReviewExams
 let suppressLocalSync = false;
 let activeSetId = null;
 let pendingAlgorithm = false; // true when the table's current cards were generated from the "Paste an algorithm" tab
+let pendingSentenceSet = false; // true when the current set was generated from the "Sentence builder" tab
 const BG_KEY = 'esp2Review_bg_v1';
 const BG_TYPE_KEY = 'esp2Review_bgType_v1';
 const PALETTE_KEY = 'esp2Review_palette_v1';
@@ -6392,6 +6360,7 @@ function applyCardOpacity(pct){
 }
 const SESSIONS_KEY = 'esp2Review_sessions_v1';
 const CASE_PROGRESS_KEY = 'esp2Review_caseProgress_v1';
+const SENTENCE_PROGRESS_KEY = 'esp2Review_sentenceProgress_v1';
 const POMODORO_KEY = 'esp2Review_pomodoro_v1';
 // Learning-engine data: a bounded per-attempt event log, plus the derived
 // per-card record computed from it (mastery, review scheduling, etc).
@@ -6400,7 +6369,7 @@ const POMODORO_KEY = 'esp2Review_pomodoro_v1';
 const ATTEMPTS_KEY = 'esp2Review_attempts_v1';
 const LEARNING_KEY = 'esp2Review_learning_v1';
 const INTERVENTIONS_KEY = 'esp2Review_interventions_v1'; // pre/post/delayed targeted-practice tracking
-const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY];
+const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY];
 // Cloud sync Milestone 2 scope: everything in APP_DATA_KEYS (stats,
 // sessions, case progress, pomodoro, attempts, learning/mastery,
 // interventions) plus LOCAL_SYNC_KEYS (streak, virtual pet, calendar/exams)
@@ -6853,6 +6822,7 @@ const mergeStrategies = {
   [SETS_KEY]: (local, cloud) => mergeKeyedById(local, cloud, 'id'),
   [SESSIONS_KEY]: (local, cloud) => mergeKeyedById(local, cloud, 'id'),
   [CASE_PROGRESS_KEY]: (local, cloud) => mergeKeyedById(local, cloud, 'id'),
+  [SENTENCE_PROGRESS_KEY]: (local, cloud) => mergeKeyedById(local, cloud, 'id'),
   [ATTEMPTS_KEY]: (local, cloud) => mergeArrayById(local, cloud, 'attemptId').slice(-2000),
   [INTERVENTIONS_KEY]: (local, cloud) => mergeArrayById(local, cloud, 'id').slice(-40),
   [STATS_KEY]: (local, cloud) => {
@@ -7579,7 +7549,7 @@ async function renderCommunityMine(forceRefresh){
             <option value="">Link to a local set…</option>
             ${otherSets.map(([id2, s2]) => `<option value="${id2}">${escapeHtml(s2.name || 'Untitled set')}</option>`).join('')}
           </select>
-          <button class="btn-ghost sm" data-act="relink" data-id="${row.id}" data-created="${row.created_at||''}">Link</button>
+          <button class="btn-ghost sm" data-act="relink" data-id="${row.id}" data-created="${row.created_at||''}">Vincular</button>
         </div>` : ''}
       </div>
       <div class="community-set-actions">
@@ -7816,7 +7786,7 @@ async function p2RenderProfile(forceRefresh){
     <div style="min-width:0;flex:1"><div class="community-p2-name">${p2Esc(p.display_name||p.username)}</div>
     <div class="community-p2-handle">@${p2Esc(p.username)}</div><div class="community-p2-bio">${p2Esc(p.bio||'')}</div>
     <div class="community-p2-stats"><span><b>${followers||0}</b> followers</span><span><b>${following||0}</b> following</span><span><b>${decks||0}</b> decks</span></div></div>
-    <div class="community-p2-actions"><button class="btn-ghost sm" id="p2MyProfile">View profile</button><button class="btn-ghost sm" id="p2EditProfileBtn">Edit profile</button></div>`;
+    <div class="community-p2-actions"><button class="btn-ghost sm" id="p2MyProfile">Ver perfil</button><button class="btn-ghost sm" id="p2EditProfileBtn">Editar perfil</button></div>`;
   $('p2MyProfile').onclick=()=>p2OpenProfile(currentUser.id);
   $('p2EditProfileBtn').onclick=()=>p2OpenEditProfile(p);
 }
@@ -7834,7 +7804,7 @@ function p2OpenEditProfile(p){
         <input type="text" id="p2EditDisplayName" maxlength="60" value="${p2Esc(p.display_name||'')}" placeholder="${p2Esc(p.username)}" style="padding:9px 11px; border:1px solid var(--border); border-radius:10px; font-size:14px; background:var(--bg); color:var(--text);">
       </label>
       <label style="display:flex; flex-direction:column; gap:5px; font-size:13px; font-weight:700; color:var(--text-muted);">Bio
-        <textarea id="p2EditBio" maxlength="200" rows="3" placeholder="Tell other users a bit about yourself…" style="padding:9px 11px; border:1px solid var(--border); border-radius:10px; font-size:14px; resize:vertical; background:var(--bg); color:var(--text);">${p2Esc(p.bio||'')}</textarea>
+        <textarea id="p2EditBio" maxlength="200" rows="3" placeholder="Cuéntales algo sobre ti a otros usuarios…" style="padding:9px 11px; border:1px solid var(--border); border-radius:10px; font-size:14px; resize:vertical; background:var(--bg); color:var(--text);">${p2Esc(p.bio||'')}</textarea>
       </label>
       <div>
         <div style="font-size:13px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">Avatar</div>
@@ -7844,8 +7814,8 @@ function p2OpenEditProfile(p){
       </div>
       <div id="p2EditProfileError" style="color:var(--danger,#c0392b); font-size:13px;"></div>
       <div style="display:flex; justify-content:flex-end; gap:8px;">
-        <button class="btn-ghost sm" id="p2EditProfileCancel">Cancel</button>
-        <button class="btn-primary sm" id="p2EditProfileSave">Save</button>
+        <button class="btn-ghost sm" id="p2EditProfileCancel">Cancelar</button>
+        <button class="btn-primary sm" id="p2EditProfileSave">Guardar</button>
       </div>
     </div>`);
   let chosenEmoji = p.avatar_emoji || '🩺';
@@ -7928,7 +7898,7 @@ async function p2OpenProfile(uid){
     ${uid!==currentUser.id?`<button class="btn-ghost sm ${communityP2Following.has(uid)?'active':''}" id="p2FollowBtn">${communityP2Following.has(uid)?'Following':'Follow'}</button>`:''}
     </div>
     <h3 style="margin:18px 0 6px">Public decks</h3>
-    ${(decks||[]).map(d=>`<div class="community-p2-row"><div><b>${p2Esc(d.title)}</b><div class="community-p2-meta">${d.card_count||0} cards · ${p2Esc(d.subject||'')}</div></div><button class="btn-ghost sm" data-p2preview="${d.id}">Preview</button></div>`).join('')||'<div class="community-p2-empty">No public decks yet.</div>'}`);
+    ${(decks||[]).map(d=>`<div class="community-p2-row"><div><b>${p2Esc(d.title)}</b><div class="community-p2-meta">${d.card_count||0} cards · ${p2Esc(d.subject||'')}</div></div><button class="btn-ghost sm" data-p2preview="${d.id}">Vista previa</button></div>`).join('')||'<div class="community-p2-empty">No public decks yet.</div>'}`);
   $('p2FollowBtn')?.addEventListener('click',e=>p2ToggleFollow(uid,e.currentTarget));
   document.querySelectorAll('[data-p2preview]').forEach(b=>b.onclick=()=>openCommunityPreview(b.dataset.p2preview));
 }
@@ -7983,7 +7953,7 @@ function p2PeopleSearch(){
   const el=$('communityPhase2Area'); if(!el)return;
   el.innerHTML=`<div class="community-search-wrap" style="margin-bottom:12px">
     <span class="community-search-icon">🔎</span>
-    <input type="text" id="p2PeopleInput" class="modal-input" placeholder="Search by username or name…" style="width:100%;max-width:100%">
+    <input type="text" id="p2PeopleInput" class="modal-input" placeholder="Buscar por nombre de usuario…" style="width:100%;max-width:100%">
   </div>
   <div id="p2PeopleResults"></div>`;
   const input=$('p2PeopleInput');
@@ -8049,7 +8019,7 @@ async function p2OpenCollection(id){
   const {data:items}=await sb.from('community_collection_items').select('community_set_id,position').eq('collection_id',id).order('position');
   const ids=(items||[]).map(x=>x.community_set_id);let decks=[];
   if(ids.length){const {data}=await sb.from('community_sets').select('id,title,subject,card_count,owner_id,username').in('id',ids);const order=new Map(ids.map((x,i)=>[x,i]));decks=(data||[]).sort((a,b)=>order.get(a.id)-order.get(b.id));}
-  p2Modal(c?.name||'Collection','',`<div class="community-p2-meta">${p2Esc(c?.description||'')}</div>${decks.map(d=>`<div class="community-p2-row"><div><b>${p2Esc(d.title)}</b><div class="community-p2-meta">@${p2Esc(d.username||'')} · ${d.card_count||0} cards</div></div><button class="btn-ghost sm" data-p2preview="${d.id}">Preview</button></div>`).join('')||'<div class="community-p2-empty">Empty collection.</div>'}`);
+  p2Modal(c?.name||'Collection','',`<div class="community-p2-meta">${p2Esc(c?.description||'')}</div>${decks.map(d=>`<div class="community-p2-row"><div><b>${p2Esc(d.title)}</b><div class="community-p2-meta">@${p2Esc(d.username||'')} · ${d.card_count||0} cards</div></div><button class="btn-ghost sm" data-p2preview="${d.id}">Vista previa</button></div>`).join('')||'<div class="community-p2-empty">Empty collection.</div>'}`);
   document.querySelectorAll('[data-p2preview]').forEach(b=>b.onclick=()=>openCommunityPreview(b.dataset.p2preview));
 }
 async function p2AddCollection(setId){
@@ -8163,7 +8133,7 @@ function renderCommunityCard(r){
       </div>
     </div>
     <div class="community-set-actions">
-      <button class="community-icon-btn" data-act="preview">Preview</button>
+      <button class="community-icon-btn" data-act="preview">Vista previa</button>
       <button class="community-icon-btn${liked?' active':''}" data-act="like" title="Like this set">${liked?'♥':'♡'} ${Number(r.like_count||0)}</button>
       <button class="community-icon-btn${saved?' active':''}" data-act="save" title="Save for later">${saved?'🔖':'🏷️'} ${Number(r.save_count||0)}</button>
       <button class="btn-primary sm" data-act="import">＋ Add</button>
@@ -8430,7 +8400,7 @@ function renderCommunityCommentsList(comments){
         <span class="community-comment-time">${fmtCommentTime(c.created_at)}</span>
       </div>
       <div class="community-comment-body">${escapeHtml(c.body)}</div>
-      ${currentUser && c.user_id === currentUser.id ? `<button type="button" class="community-comment-del" data-del-comment="${c.id}">Delete</button>` : ''}
+      ${currentUser && c.user_id === currentUser.id ? `<button type="button" class="community-comment-del" data-del-comment="${c.id}">Eliminar</button>` : ''}
     </div>`).join('');
   listEl.querySelectorAll('[data-del-comment]').forEach(btn => {
     btn.addEventListener('click', () => deleteCommunityComment(btn.dataset.delComment));
@@ -8610,9 +8580,7 @@ function renderCommunityView(){
 // Filters are stored NORMALIZED (trimmed + lowercased), since that's what
 // they're compared against — see normTag() below. Chips display whatever
 // casing was actually typed on the first card that used that tag.
-let profSearchFilterProf = '';
 let profSearchFilterTopic = '';
-let profSearchRepeatOnly = false;
 
 // Professor/Topic/Lecturer are free-typed text, so the same person/topic
 // can end up saved under slightly different casing on different cards
@@ -8700,19 +8668,12 @@ function getAllTaggedCardsForSearch(){
 
 function profSearchMatches(){
   const q = ($('profSearchInput').value || '').trim().toLowerCase();
-  const yr = $('profSearchYearSelect').value;
   return getAllTaggedCardsForSearch().filter(c => {
     // untagged noise stays out of the browse-everything view
-    if(!c._effProfessor && !c.topic && !q) return false;
-    if(profSearchFilterProf && normTag(c._effProfessor) !== profSearchFilterProf) return false;
+    if(!c.topic && !q) return false;
     if(profSearchFilterTopic && normTag(c.topic) !== profSearchFilterTopic) return false;
-    if(profSearchRepeatOnly && c.sameLecAsPrevYear !== true && !c._autoRepeatYear) return false;
-    if(yr && (c.year || '') !== yr) return false;
     if(q){
-      // Case-insensitive on both sides (q is already lowercased above).
-      // _effProfessor (not the raw per-card field) so a professor tagged
-      // at the set level is searchable by typed name too.
-      const hay = [c._effProfessor, c.topic, c.subtopic, c.front].filter(Boolean).join(' ').toLowerCase();
+      const hay = [c.topic, c.subtopic, c.front].filter(Boolean).join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
@@ -8752,54 +8713,24 @@ function renderChipBox(box, counts, activeKey, emptyMsg, onPick){
 
 function renderProfSearchChips(){
   const all = getAllTaggedCardsForSearch();
-  renderChipBox($('profSearchProfChips'), buildChipCounts(all, '_effProfessor'), profSearchFilterProf,
-    'No questions tagged with a Professor yet — open a question during a quiz, tap ✏️, and fill in the Professor field.',
-    key => { profSearchFilterProf = (profSearchFilterProf === key) ? '' : key; renderProfSearchView(); });
   renderChipBox($('profSearchTopicChips'), buildChipCounts(all, 'topic'), profSearchFilterTopic,
-    'No questions tagged with a Topic yet.',
+    'Ninguna tarjeta está etiquetada con un tema todavía.',
     key => { profSearchFilterTopic = (profSearchFilterTopic === key) ? '' : key; renderProfSearchView(); });
-  // Year dropdown, rebuilt from whatever years are actually in use.
-  const yearSel = $('profSearchYearSelect');
-  const curYear = yearSel.value;
-  const years = Array.from(new Set(all.map(c => c.year).filter(Boolean))).sort().reverse();
-  yearSel.innerHTML = '<option value="">Any year</option>' + years.map(y => `<option value="${escapeHtml(y)}">${escapeHtml(y)}</option>`).join('');
-  yearSel.value = years.includes(curYear) ? curYear : '';
-  $('profSearchRepeatToggle').classList.toggle('active', profSearchRepeatOnly);
-}
-
-function renderProfSearchInsights(matches){
-  const box = $('profSearchInsights');
-  if(!profSearchFilterProf){ box.style.display = 'none'; return; }
-  box.style.display = '';
-  // profSearchFilterProf is the normalized (lowercased) key — pull the
-  // actual typed casing back from a matching card for display.
-  const displayName = (matches.find(c => c._effProfessor)?._effProfessor) || profSearchFilterProf;
-  $('profSearchInsightsTitle').textContent = `📊 ${escapeHtml(displayName)}'s pattern`;
-  const topicCounts = new Map(), yearSet = new Set();
-  matches.forEach(c => {
-    if(c.topic) topicCounts.set(c.topic, (topicCounts.get(c.topic) || 0) + 1);
-    if(c.year) yearSet.add(c.year);
-  });
-  const topTopics = Array.from(topicCounts.entries()).sort((a,b) => b[1]-a[1]).slice(0,5)
-    .map(([t,n]) => `${escapeHtml(t)} (${n})`).join(', ') || '—';
-  const yearsStr = Array.from(yearSet).sort().join(', ') || '—';
-  $('profSearchInsightsBody').innerHTML =
-    `<strong>${matches.length}</strong> question${matches.length===1?'':'s'} tagged so far · Years seen: ${escapeHtml(yearsStr)}<br>Most-tested topics: ${topTopics}`;
 }
 
 function renderProfSearchResults(matches){
   const list = $('profSearchResultsList');
   list.innerHTML = '';
   $('profSearchResultsStatus').textContent = matches.length
-    ? `${matches.length} matching question${matches.length===1?'':'s'}`
-    : 'No matching questions.';
-  $('profSearchResultsHeading').textContent = (profSearchFilterProf || profSearchFilterTopic || profSearchRepeatOnly || $('profSearchInput').value.trim())
-    ? 'Matching questions' : 'All tagged questions';
+    ? `${matches.length} tarjeta${matches.length===1?'':'s'} encontrada${matches.length===1?'':'s'}`
+    : 'Ninguna tarjeta coincide.';
+  $('profSearchResultsHeading').textContent = (profSearchFilterTopic || $('profSearchInput').value.trim())
+    ? 'Tarjetas encontradas' : 'Todas las tarjetas etiquetadas';
   $('profSearchPracticeAllBtn').disabled = matches.length === 0;
   if(matches.length === 0){
     const empty = document.createElement('div');
     empty.className = 'community-empty';
-    empty.innerHTML = `<div class="community-empty-icon">🔎</div>No questions match yet. Tag a few more via the ✏️ editor during a quiz, or adjust filters.`;
+    empty.innerHTML = `<div class="community-empty-icon">🔎</div>Ninguna tarjeta coincide todavía. Etiqueta más tarjetas con un tema desde el editor ✏️, o ajusta los filtros.`;
     list.appendChild(empty);
     return;
   }
@@ -8808,16 +8739,8 @@ function renderProfSearchResults(matches){
     row.className = 'community-set-card';
     const subjColor = c._srcSubject ? subjectColor(c._srcSubject) : null;
     if(subjColor) row.style.setProperty('--subject-accent', subjColor);
-    // Skip the per-row professor tag when the results are already filtered
-    // to that exact professor (chip active, or "<name>'s pattern" panel
-    // showing above) — repeating the same name on every single row below
-    // it is redundant clutter once you already know what you're browsing.
-    const profTagRedundant = profSearchFilterProf && normTag(c._effProfessor) === profSearchFilterProf;
     const tags = [
-      (c._effProfessor && !profTagRedundant) ? `<span class="community-set-tag">👤 ${escapeHtml(c._effProfessor)}${!c.professor ? ' (set)' : ''}</span>` : '',
-      c.year ? `<span class="community-set-tag">📅 ${escapeHtml(c.year)}</span>` : '',
       c.topic ? `<span class="community-set-tag">🏷️ ${escapeHtml(c.topic)}</span>` : '',
-      c.sameLecAsPrevYear ? `<span class="community-set-tag">🔁 Same lecture as last year</span>` : (c._autoRepeatYear ? `<span class="community-set-tag" title="Same professor + topic also tagged in ${escapeHtml(c._autoRepeatYear)}">🔁 Possible repeat (auto)</span>` : ''),
       c._srcSetName ? `<span class="community-set-tag">${escapeHtml(c._srcSetName)}</span>` : ''
     ].join('');
     row.innerHTML = `
@@ -8826,7 +8749,7 @@ function renderProfSearchResults(matches){
         <div class="community-set-meta">${tags}</div>
       </div>
       <div class="community-set-actions">
-        <button type="button" class="community-icon-btn" title="Practice just this question">▶</button>
+        <button type="button" class="community-icon-btn" title="Practicar solo esta tarjeta">▶</button>
       </div>`;
     row.querySelector('.community-icon-btn').onclick = () => launchQuiz([c], PRACTICE_ID);
     list.appendChild(row);
@@ -8836,14 +8759,13 @@ function renderProfSearchResults(matches){
 function renderProfSearchView(){
   renderProfSearchChips();
   const matches = profSearchMatches();
-  renderProfSearchInsights(matches);
   renderProfSearchResults(matches);
 }
 
 function initProfSearchUI(){
   $('profSearchToggleBtn').onclick = () => {
     saveBeforeNavigation(); hideAllScreens(); $('profSearchView').classList.remove('hidden');
-    profSearchFilterProf = ''; profSearchFilterTopic = ''; profSearchRepeatOnly = false;
+    profSearchFilterTopic = '';
     $('profSearchInput').value = '';
     renderProfSearchView();
   };
@@ -8853,12 +8775,9 @@ function initProfSearchUI(){
     clearTimeout(profSearchDebounce);
     profSearchDebounce = setTimeout(renderProfSearchView, 150);
   });
-  $('profSearchYearSelect').addEventListener('change', renderProfSearchView);
-  $('profSearchRepeatToggle').onclick = () => { profSearchRepeatOnly = !profSearchRepeatOnly; renderProfSearchView(); };
   $('profSearchClearBtn').onclick = () => {
-    profSearchFilterProf = ''; profSearchFilterTopic = ''; profSearchRepeatOnly = false;
+    profSearchFilterTopic = '';
     $('profSearchInput').value = '';
-    $('profSearchYearSelect').value = '';
     renderProfSearchView();
   };
   $('profSearchPracticeAllBtn').onclick = () => {
@@ -9056,7 +8975,7 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', saveBeforeNavigation);
 
 function hideAllScreens(){
-  ['landing','folderView','setup','quiz','caseGame','brainBreak','results','statsView','settingsView','petView','calendarView','communityView','profSearchView'].forEach(id => {
+  ['landing','folderView','setup','quiz','caseGame','sentenceGame','brainBreak','results','statsView','settingsView','petView','communityView','profSearchView'].forEach(id => {
     const el = $(id);
     if(el) el.classList.add('hidden');
   });
@@ -9156,6 +9075,31 @@ function persistCaseProgress(){
     updatedAt: Date.now()
   };
   saveCaseProgressAll(all);
+}
+
+/* ---- Sentence Builder progress: same idea as case-game progress above —
+   one saved checkpoint per set (which sentence you're on + running score),
+   keyed by set id, cleared automatically on finishing the set or on an
+   explicit restart. ---- */
+function loadSentenceProgressAll(){ try{ return JSON.parse(appDataCache[SENTENCE_PROGRESS_KEY] || 'null') || {}; }catch(e){ return {}; } }
+function saveSentenceProgressAll(obj){ appDataSet(SENTENCE_PROGRESS_KEY, JSON.stringify(obj)); }
+function getSentenceProgress(setId){ if(!setId) return null; return loadSentenceProgressAll()[setId] || null; }
+function clearSentenceProgress(setId){
+  if(!setId) return;
+  const all = loadSentenceProgressAll();
+  if(all[setId]){ delete all[setId]; saveSentenceProgressAll(all); }
+}
+function persistSentenceProgress(){
+  if(!sentenceProgressSetId || !sentenceData) return;
+  const all = loadSentenceProgressAll();
+  all[sentenceProgressSetId] = {
+    index: sentenceIndex,
+    totalSentences: sentenceData.sentences.length,
+    score: sentenceScore,
+    mistakes: sentenceMistakes,
+    updatedAt: Date.now()
+  };
+  saveSentenceProgressAll(all);
 }
 
 function saveSession(extra){
@@ -9467,10 +9411,11 @@ function renderLanding(){
   }
 
   const allCaseProgress = loadCaseProgressAll();
+  const allSentenceProgress = loadSentenceProgressAll();
   const folderKeys = new Set();
   Object.values(sets).forEach(s => { const k = keyFn(s); if(k !== UNFILED) folderKeys.add(k); });
   function folderLastPlayed(id){
-    return setsInFolder(id, groupMode).reduce((max, [sid, s]) => Math.max(max, trueLastPlayedAt(sid, s, allSessions, allCaseProgress)), 0);
+    return setsInFolder(id, groupMode).reduce((max, [sid, s]) => Math.max(max, trueLastPlayedAt(sid, s, allSessions, allCaseProgress, allSentenceProgress)), 0);
   }
   const folderSortMode = lsGet(FOLDER_SORT_KEY) || 'recent';
   const sortCompare = (a, b) => {
@@ -9592,8 +9537,10 @@ function buildSetRow(sid, s, opts){
   const session = allSessions[sid];
   const inProgress = session && session.current && Array.isArray(session.cards) && session.cards.length;
   const isCase = s.kind === 'algorithm';
+  const isSentence = s.kind === 'sentence';
   let metaStr = `${s.cards.length} cards${accStr}`;
   let caseSaved = null;
+  let sentenceSaved = null;
   if(isCase){
     const parsedCase = parseCaseFile(s.algoSource || '');
     metaStr = parsedCase.ok ? `${parsedCase.data.nodes.size} nodes` : 'has errors — open to fix';
@@ -9601,24 +9548,34 @@ function buildSetRow(sid, s, opts){
       const saved = getCaseProgress(sid);
       if(saved && saved.startNode === parsedCase.data.startNode && parsedCase.data.nodes.has(saved.currentId)) caseSaved = saved;
     }
+  } else if(isSentence){
+    const parsedSentence = parseSentenceFile(s.sentenceSource || '');
+    metaStr = parsedSentence.ok ? `${parsedSentence.data.sentences.length} sentences` : 'has errors — open to fix';
+    if(parsedSentence.ok){
+      const saved = getSentenceProgress(sid);
+      if(saved && saved.totalSentences === parsedSentence.data.sentences.length && saved.index < parsedSentence.data.sentences.length) sentenceSaved = saved;
+    }
   }
-  const progressBadge = (inProgress && !isCase)
+  const isSpecial = isCase || isSentence;
+  const progressBadge = (inProgress && !isSpecial)
     ? `<div class="set-item-progress">Paused · card ${(Array.isArray(session.seenCards) ? session.seenCards.length : session.askedCount) || 1} · mastered ${session.masteredCount || 0}/${session.totalCards || session.cards.length}</div>`
     : (caseSaved ? `<div class="set-item-progress">Paused · score ${caseSaved.score || 0}</div>`
-    : ((!isCase && s.completed) ? `<div class="set-item-progress done">✓ Done · ${fmtDate(s.completedAt)}</div>` : ''));
+    : (sentenceSaved ? `<div class="set-item-progress">Paused · sentence ${sentenceSaved.index + 1}/${sentenceSaved.totalSentences} · ${sentenceSaved.score || 0} correct</div>`
+    : ((!isSpecial && s.completed) ? `<div class="set-item-progress done">✓ Done · ${fmtDate(s.completedAt)}</div>` : '')));
   row.innerHTML = `
     <div class="set-item-main">
-      <div class="set-item-name">${isCase ? '🩺 ' : ''}${escapeHtml(s.name)}</div>
+      <div class="set-item-name">${isCase ? '🩺 ' : ''}${isSentence ? '🧩 ' : ''}${escapeHtml(s.name)}</div>
       <div class="set-item-meta">${metaStr}</div>
       ${tags.length ? `<div class="set-item-tags">${tags.join('')}</div>` : ''}
       ${progressBadge}
     </div>
     <div class="set-item-actions">
       ${isCase ? `<button class="btn-primary sm" data-act="play" data-id="${sid}">${caseSaved ? '▶ Continue case' : '▶ Play case'}</button>` : ''}
-      ${(inProgress && !isCase) ? `<button class="btn-primary sm" data-act="continue" data-id="${sid}">Continuar →</button>` : ''}
-      ${(!inProgress && !isCase && s.completed) ? `<button class="btn-primary sm" data-act="review" data-id="${sid}">▶ Practicar de nuevo</button>` : ''}
-      ${(!isCase && !inProgress && !s.completed) ? `<button class="btn-primary sm" data-act="start" data-id="${sid}">▶ Empezar</button>` : ''}
-      ${(!isCase && weakCardCount >= 2) ? `<button class="btn-ghost sm icon-only" data-act="weak" data-id="${sid}" title="Practice weakest cards in this set">🎯</button>` : ''}
+      ${isSentence ? `<button class="btn-primary sm" data-act="playSentence" data-id="${sid}">${sentenceSaved ? '▶ Continue set' : '▶ Play set'}</button>` : ''}
+      ${(inProgress && !isSpecial) ? `<button class="btn-primary sm" data-act="continue" data-id="${sid}">Continuar →</button>` : ''}
+      ${(!inProgress && !isSpecial && s.completed) ? `<button class="btn-primary sm" data-act="review" data-id="${sid}">▶ Practicar de nuevo</button>` : ''}
+      ${(!isSpecial && !inProgress && !s.completed) ? `<button class="btn-primary sm" data-act="start" data-id="${sid}">▶ Empezar</button>` : ''}
+      ${(!isSpecial && weakCardCount >= 2) ? `<button class="btn-ghost sm icon-only" data-act="weak" data-id="${sid}" title="Practice weakest cards in this set">🎯</button>` : ''}
       <button class="btn-ghost sm" data-act="load" data-id="${sid}">Editar</button>
       <div class="set-item-menu-wrap">
         <button class="btn-ghost sm icon-only" data-act="menu" data-id="${sid}" title="More options" aria-haspopup="true" aria-expanded="false">⋯</button>
@@ -9627,13 +9584,17 @@ function buildSetRow(sid, s, opts){
           <button type="button" class="set-item-menu-item" data-act="dup" data-id="${sid}">⧉ Copy</button>
           <button type="button" class="set-item-menu-item" data-act="share" data-id="${sid}" title="Share this set (cards only — no stats or progress)">📤 Send</button>
           <button type="button" class="set-item-menu-item" data-act="publish" data-id="${sid}" title="Publish this set to the community (cards only — no stats or progress)">🌐 ${s.communityId ? 'Update on Community' : 'Publish to Community'}</button>
-          ${(inProgress || caseSaved) ? `<button type="button" class="set-item-menu-item" data-act="restart" data-id="${sid}" title="Clear this set's saved progress and start over from the beginning">↺ Restart set</button>` : ''}
+          ${(inProgress || caseSaved || sentenceSaved) ? `<button type="button" class="set-item-menu-item" data-act="restart" data-id="${sid}" title="Clear this set's saved progress and start over from the beginning">↺ Restart set</button>` : ''}
         </div>
       </div>
       <button class="btn-ghost sm" data-act="del" data-id="${sid}">Eliminar</button>
     </div>`;
   row.querySelector('[data-act="play"]')?.addEventListener('click', () => {
     const result = startCaseGame(s.algoSource || '', sid, s.name, resolveReturnTarget(opts.returnTo));
+    if(!result.ok) alert(result.message);
+  });
+  row.querySelector('[data-act="playSentence"]')?.addEventListener('click', () => {
+    const result = startSentenceGame(s.sentenceSource || '', sid, s.name, resolveReturnTarget(opts.returnTo));
     if(!result.ok) alert(result.message);
   });
   row.querySelector('[data-act="continue"]')?.addEventListener('click', () => { setupReturnTo = resolveReturnTarget(opts.returnTo); resumeSession(sid); });
@@ -9696,16 +9657,20 @@ document.addEventListener('click', (e) => {
 // renaming, duplicating, or just creating the set (none of which is "play").
 // Shared by getRecentActivity, the folder-sort "Last played" option, and the
 // within-folder set-sort "Last played" option, so all three agree.
-function trueLastPlayedAt(sid, s, allSessions, allCaseProgress){
+function trueLastPlayedAt(sid, s, allSessions, allCaseProgress, allSentenceProgress){
   const isCase = s.kind === 'algorithm';
+  const isSentence = s.kind === 'sentence';
   if(isCase){
     const cp = allCaseProgress[sid];
     if(cp && cp.updatedAt) return cp.updatedAt;
+  } else if(isSentence){
+    const sp = (allSentenceProgress || {})[sid];
+    if(sp && sp.updatedAt) return sp.updatedAt;
   } else {
     const sess = allSessions[sid];
     if(sess && sess.current && Array.isArray(sess.cards) && sess.cards.length && sess.updatedAt) return sess.updatedAt;
   }
-  if(!isCase && s.completed && s.completedAt) return s.completedAt;
+  if(!isCase && !isSentence && s.completed && s.completedAt) return s.completedAt;
   return 0;
 }
 
@@ -9717,14 +9682,19 @@ function getRecentActivity(limit){
   const sets = loadSets();
   const allSessions = loadAllSessions();
   const allCaseProgress = loadCaseProgressAll();
+  const allSentenceProgress = loadSentenceProgressAll();
   const items = [];
   Object.entries(sets).forEach(([sid, s]) => {
     const isCase = s.kind === 'algorithm';
-    const updatedAt = trueLastPlayedAt(sid, s, allSessions, allCaseProgress);
+    const isSentence = s.kind === 'sentence';
+    const updatedAt = trueLastPlayedAt(sid, s, allSessions, allCaseProgress, allSentenceProgress);
     let status = null;
     if(updatedAt){
       if(isCase){
         status = {type:'case', score: (allCaseProgress[sid] && allCaseProgress[sid].score) || 0};
+      } else if(isSentence){
+        const sp = allSentenceProgress[sid];
+        status = {type:'sentence', index: (sp && sp.index) || 0, total: (sp && sp.totalSentences) || s.cards.length, score: (sp && sp.score) || 0};
       } else if(s.completed && s.completedAt === updatedAt){
         status = {type:'completed'};
       } else {
@@ -9732,7 +9702,7 @@ function getRecentActivity(limit){
         status = {type:'quiz', asked: (Array.isArray(sess.seenCards) ? sess.seenCards.length : sess.askedCount) || 1, total: sess.totalCards || sess.cards.length, mastered: sess.masteredCount || 0};
       }
     }
-    if(updatedAt) items.push({sid, s, isCase, updatedAt, status});
+    if(updatedAt) items.push({sid, s, isCase, isSentence, updatedAt, status});
   });
 
   // An in-progress quiz that was never saved as a named set used to get
@@ -9769,7 +9739,7 @@ function renderRecentActivity(){
   wrap.classList.remove('hidden');
   if(cols) cols.classList.remove('no-recent');
   items.forEach((item, idx) => {
-    const {s, isCase, status, isScratch} = item;
+    const {s, isCase, isSentence, status, isScratch} = item;
     const isHero = idx === 0;
     const subjectPrefix = s.subject ? `${escapeHtml(s.subject)} · ` : '';
     let metaStr = `${s.cards.length} cards`;
@@ -9779,6 +9749,10 @@ function renderRecentActivity(){
       if(status.total > 0) pct = Math.round(Math.min(100, (status.asked / status.total) * 100));
     }
     else if(status.type === 'case') metaStr = `Score ${status.score}`;
+    else if(status.type === 'sentence'){
+      metaStr = `Sentence ${status.index + 1} of ${status.total} · ${status.score} correct`;
+      if(status.total > 0) pct = Math.round(Math.min(100, (status.index / status.total) * 100));
+    }
     else if(status.type === 'completed'){ metaStr = `Completed · ${fmtDate(s.completedAt)}`; pct = 100; }
     const row = document.createElement('div');
     row.className = isHero ? 'recent-item recent-item-hero' : 'recent-item';
@@ -9789,7 +9763,7 @@ function renderRecentActivity(){
     row.innerHTML = isHero ? `
       <button type="button" class="recent-item-btn">
         <span class="recent-item-top">
-          <span class="recent-item-icon">${isCase ? '🩺' : '📘'}</span>
+          <span class="recent-item-icon">${isCase ? '🩺' : (isSentence ? '🧩' : '📘')}</span>
           <span class="recent-item-main">
             <span class="recent-item-name">${escapeHtml(s.name)}</span>
             <span class="recent-item-meta">${subjectPrefix}${metaStr}</span>
@@ -9809,7 +9783,7 @@ function renderRecentActivity(){
         </span>
       </button>` : `
       <button type="button" class="recent-item-btn">
-        <span class="recent-item-icon">${isCase ? '🩺' : '📘'}</span>
+        <span class="recent-item-icon">${isCase ? '🩺' : (isSentence ? '🧩' : '📘')}</span>
         <span class="recent-item-main">
           <span class="recent-item-name">${escapeHtml(s.name)}</span>
           <span class="recent-item-meta">${subjectPrefix}${metaStr}</span>
@@ -9834,10 +9808,13 @@ function discardRecentItem(item){
 }
 
 function continueRecentItem(item){
-  const {sid, s, isCase, status} = item;
+  const {sid, s, isCase, isSentence, status} = item;
   setupReturnTo = null; // "← Back" from setup should land back on the landing page
   if(isCase){
     const result = startCaseGame(s.algoSource || '', sid, s.name, {screen:'landing'});
+    if(!result.ok) alert(result.message);
+  } else if(isSentence){
+    const result = startSentenceGame(s.sentenceSource || '', sid, s.name, {screen:'landing'});
     if(!result.ok) alert(result.message);
   } else if(status.type === 'quiz'){
     resumeSession(sid);
@@ -9860,6 +9837,7 @@ function restartSetById(id){
   if(!confirm(`Restart "${s.name}"? This clears your saved progress on this set (which card/node you were on) and starts it over from the beginning. Your stats and mastery history for this set are kept.`)) return;
   clearSession(id);
   clearCaseProgress(id);
+  clearSentenceProgress(id);
   if(!$('folderView').classList.contains('hidden')) renderFolderView();
   else if(!$('landing').classList.contains('hidden')){ renderLanding(); renderRecentActivity(); }
 }
@@ -10267,9 +10245,12 @@ function loadSetById(id){
   $('setTypeSelect').value = cardTypeOf(s);
   $('setupError').textContent = '';
   pendingAlgorithm = s.kind === 'algorithm';
+  pendingSentenceSet = s.kind === 'sentence';
   $('algoTextInput').value = s.algoSource || '';
   $('algoParseStatus').textContent = '';
-  setActiveInputTab(pendingAlgorithm ? 'algo' : 'manual');
+  $('sentenceTextInput').value = s.sentenceSource || '';
+  $('sentenceParseStatus').textContent = '';
+  setActiveInputTab(pendingAlgorithm ? 'algo' : (pendingSentenceSet ? 'sentence' : 'manual'));
   showSetupScreen();
 }
 
@@ -10330,7 +10311,7 @@ function showUndoToast(message, onUndo){
     toast.className = 'undo-toast';
     document.body.appendChild(toast);
   }
-  toast.innerHTML = `<span></span><button type="button" class="undo-toast-btn">Undo</button>`;
+  toast.innerHTML = `<span></span><button type="button" class="undo-toast-btn">Deshacer</button>`;
   toast.querySelector('span').textContent = message;
   toast.querySelector('.undo-toast-btn').onclick = () => onUndo();
   toast.classList.add('show');
@@ -11866,36 +11847,21 @@ $('imgSettingsSave').onclick = () => {
   note._hideTimer = setTimeout(() => note.classList.add('hidden'), 2000);
 };
 
-// The empty "pill" above the calendar's Back button is the .card box
-// itself — #calendarView actually lives as a SIBLING of .card (both
-// inside .frame.wide), not nested inside .card-inner as the markup
-// indentation suggests. So when the calendar opens and every view inside
+// The empty "pill" above a full-bleed view's Back button is the .card box
+// itself — some views (like #communityView) live as a SIBLING of .card
+// (both inside .frame.wide), not nested inside .card-inner as the markup
+// indentation suggests. So when such a view opens and every view inside
 // .card-inner gets hidden, .card still renders as an empty white rounded
-// box (background/border/shadow intact) sitting right above the calendar.
-// Hiding vine-frame alone (the original, wrong theory) does nothing for
-// this. Watch #calendarView's class directly and hide/show the whole
-// .card element to match, independent of any nav code path.
-(function syncCardWithCalendar(){
-  const calendarViewEl = document.getElementById('calendarView');
-  const cardEl = document.querySelector('.card');
-  if(!calendarViewEl || !cardEl) return;
-  function sync(){
-    const calendarOpen = !calendarViewEl.classList.contains('hidden');
-    cardEl.style.display = calendarOpen ? 'none' : '';
-  }
-  new MutationObserver(sync).observe(calendarViewEl, { attributes: true, attributeFilter: ['class'] });
-  sync();
-})();
-
-// Same empty-pill issue as the calendar above, for #communityView.
+// box (background/border/shadow intact) sitting right above it. Watch
+// #communityView's class directly and hide/show the whole .card element
+// to match, independent of any nav code path.
 (function syncCardWithCommunity(){
   const communityViewEl = document.getElementById('communityView');
   const cardEl = document.querySelector('.card');
   if(!communityViewEl || !cardEl) return;
   function sync(){
     const communityOpen = !communityViewEl.classList.contains('hidden');
-    if(communityOpen) cardEl.style.display = 'none';
-    else if(document.getElementById('calendarView')?.classList.contains('hidden')) cardEl.style.display = '';
+    cardEl.style.display = communityOpen ? 'none' : '';
   }
   new MutationObserver(sync).observe(communityViewEl, { attributes: true, attributeFilter: ['class'] });
   sync();
@@ -12580,6 +12546,342 @@ $('copyAlgoPromptBtn').onclick = async () => {
   }
 };
 
+/* =====================================================================
+   SENTENCE BUILDER (SENTENCE_FORMAT v1.0 word-order game)
+   A much simpler cousin of the case game above: no branching, no graph —
+   just a flat list of sentences, each with a learner-facing PROMPT and a
+   correctly-ordered list of TILES (a tile can be a single word, a fixed
+   multi-word chunk, or a lone punctuation mark). The engine shuffles the
+   tiles for display and the learner taps them back into the original
+   TILES order; that original order (rather than re-parsing any Spanish
+   text) IS the answer key, so authoring stays simple and unambiguous.
+   ===================================================================== */
+
+/* ---- Parser -----------------------------------------------------------
+   TITLE: <optional set title>
+   ----------------------------------------
+   SENTENCE: <unique id>
+   PROMPT: <cue shown to the learner, e.g. an English translation>
+   TILES: <tile 1> | <tile 2> | <tile 3> | ...   (CORRECT order)
+   HINT: <optional, revealed on tap>
+   ----------------------------------------
+   SENTENCE: <next id>
+   ...
+   Returns {ok, errors:[...], warnings:[...], data}; data is
+   {title, sentences:[{id, prompt, tiles:[...], hint, line}]} or null on
+   hard errors. See SENTENCE_LLM_PROMPT_TEMPLATE below for the full spec
+   sent to content-generating LLMs. ---- */
+function parseSentenceFile(raw){
+  const errors = [];
+  const warnings = [];
+  const lines = (raw || '').replace(/\r\n/g, '\n').split('\n');
+  const header = {};
+  let i = 0;
+  while(i < lines.length && !/^-{3,}\s*$/.test(lines[i]) && !/^SENTENCE:\s*/.test(lines[i])){
+    const m = lines[i].match(/^([A-Z_]+):\s*(.*)$/);
+    if(m) header[m[1]] = m[2].trim();
+    i++;
+  }
+  const sentences = [];
+  const ids = new Set();
+  let cur = null;
+  function pushCur(){
+    if(cur){
+      if(!cur.tiles.length) errors.push(`SENTENCE "${cur.id}" (line ${cur.line}) has no TILES line.`);
+      else if(cur.tiles.length < 2) errors.push(`SENTENCE "${cur.id}" (line ${cur.line}) needs at least 2 TILES.`);
+      if(ids.has(cur.id)) errors.push(`Duplicate SENTENCE ID "${cur.id}" (line ${cur.line}).`);
+      else ids.add(cur.id);
+      sentences.push(cur);
+    }
+    cur = null;
+  }
+  for(; i < lines.length; i++){
+    const line = lines[i];
+    if(/^-{3,}\s*$/.test(line)) continue;
+    if(line.trim() === '') continue;
+    const m = line.match(/^([A-Z_]+):\s*(.*)$/);
+    if(!m){ warnings.push(`Ignored unrecognized line ${i + 1}: "${line.trim().slice(0, 60)}"`); continue; }
+    const [, key, val] = m;
+    if(key === 'SENTENCE'){
+      pushCur();
+      cur = {id: val.trim() || `S${sentences.length + 1}`, prompt: '', tiles: [], hint: '', line: i + 1};
+      continue;
+    }
+    if(key === 'TITLE') continue; // stray TITLE mid-file — ignore, header already captured it
+    if(!cur){ warnings.push(`Line ${i + 1} ("${key}") appears before any SENTENCE: header — ignored.`); continue; }
+    if(key === 'PROMPT') cur.prompt = val.trim();
+    else if(key === 'TILES') cur.tiles = val.split('|').map(t => t.trim()).filter(Boolean);
+    else if(key === 'HINT') cur.hint = val.trim();
+    else warnings.push(`Unknown field "${key}" on line ${i + 1} — ignored.`);
+  }
+  pushCur();
+  if(!sentences.length) errors.push('No SENTENCE blocks found.');
+  if(errors.length) return {ok: false, errors, warnings, data: null};
+  return {ok: true, errors, warnings, data: {title: header.TITLE || '', sentences}};
+}
+
+// Joins tiles back into a readable sentence for the "correct order" reveal
+// — punctuation tiles (., !, ?, etc.) attach directly to the previous word
+// instead of getting their own leading space.
+function joinSentenceTiles(tiles){
+  let out = '';
+  tiles.forEach(t => {
+    out += (out === '' || /^[.,!?;:]+$/.test(t)) ? t : ' ' + t;
+  });
+  return out;
+}
+
+let sentenceData = null;          // {title, sentences:[{id, prompt, tiles, hint}]}
+let sentenceSetName = '';
+let sentenceReturnTo = null;      // {screen:'setup'} | {screen:'folder', id} | {screen:'landing'}
+let sentenceProgressSetId = null; // set id used as the save-progress key, or null for unsaved previews
+let sentenceIndex = 0;
+let sentenceScore = 0;
+let sentenceMistakes = 0;
+let sentenceBank = [];            // shuffled tile indices (into the current sentence's tiles[]) still in the bank
+let sentencePlaced = [];          // tile indices placed into slots so far, in slot order
+let sentenceChecked = false;      // true once "Check" is pressed for the current sentence (locks tiles)
+let sentenceHintShown = false;
+
+function startSentenceGame(raw, setId, name, returnTo){
+  const parsed = parseSentenceFile(raw);
+  if(!parsed.ok){
+    const shown = parsed.errors.slice(0, 6);
+    const more = parsed.errors.length > shown.length ? ` (+${parsed.errors.length - shown.length} more)` : '';
+    return {ok: false, message: shown.join(' • ') + more};
+  }
+  sentenceData = parsed.data;
+  activeSetId = setId || null;
+  sentenceProgressSetId = setId || null;
+  sentenceSetName = name || sentenceData.title || 'Sentence set';
+  sentenceReturnTo = returnTo || {screen: 'landing'};
+  $('sentenceGameTitle').textContent = sentenceSetName;
+  hideAllScreens();
+  $('sentenceGame').classList.remove('hidden');
+  $('sentencePlayWrap').classList.remove('hidden');
+  $('sentenceEndWrap').classList.add('hidden');
+
+  const saved = getSentenceProgress(sentenceProgressSetId);
+  if(saved && saved.totalSentences === sentenceData.sentences.length && saved.index < sentenceData.sentences.length){
+    sentenceScore = saved.score || 0;
+    sentenceMistakes = saved.mistakes || 0;
+    enterSentence(saved.index);
+  } else {
+    sentenceScore = 0;
+    sentenceMistakes = 0;
+    enterSentence(0);
+  }
+  return {ok: true, warnings: parsed.warnings};
+}
+
+function updateSentenceScoreTag(){
+  const tag = $('sentenceScoreTag');
+  if(tag) tag.textContent = `${sentenceScore} correct · ${sentenceMistakes} missed`;
+}
+
+function enterSentence(idx){
+  sentenceIndex = idx;
+  const s = sentenceData.sentences[idx];
+  const order = s.tiles.map((_, i) => i);
+  // Fisher-Yates shuffle, re-rolled if it happens to land back on the
+  // original (correct) order — otherwise a 2-tile sentence has a 50%
+  // chance of "shuffling" into a free win.
+  do {
+    for(let i = order.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+  } while(order.length > 1 && order.every((v, i) => v === i));
+  sentenceBank = order;
+  sentencePlaced = [];
+  sentenceChecked = false;
+  sentenceHintShown = false;
+  $('sentenceIndexTag').textContent = `Sentence ${idx + 1} of ${sentenceData.sentences.length}`;
+  updateSentenceScoreTag();
+  renderSentenceGame();
+  persistSentenceProgress();
+}
+
+function renderSentenceGame(){
+  const s = sentenceData.sentences[sentenceIndex];
+
+  const promptEl = $('sentencePrompt');
+  promptEl.textContent = s.prompt || '';
+  promptEl.classList.toggle('hidden', !s.prompt);
+
+  const slotsWrap = $('sentenceSlots');
+  slotsWrap.innerHTML = '';
+  s.tiles.forEach((_, slotIdx) => {
+    const filled = sentencePlaced[slotIdx] != null;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'sentence-slot' + (filled ? ' filled' : '');
+    if(sentenceChecked && filled) btn.classList.add(sentencePlaced[slotIdx] === slotIdx ? 'correct' : 'wrong');
+    btn.textContent = filled ? s.tiles[sentencePlaced[slotIdx]] : '';
+    btn.disabled = sentenceChecked || !filled;
+    btn.title = filled && !sentenceChecked ? 'Tap to remove' : '';
+    btn.onclick = () => {
+      if(sentenceChecked || !filled) return;
+      sentencePlaced.splice(slotIdx, 1);
+      renderSentenceGame();
+    };
+    slotsWrap.appendChild(btn);
+  });
+
+  const bankWrap = $('sentenceBankRow');
+  bankWrap.innerHTML = '';
+  sentenceBank.forEach(tileIdx => {
+    if(sentencePlaced.includes(tileIdx)) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'sentence-tile';
+    btn.textContent = s.tiles[tileIdx];
+    btn.disabled = sentenceChecked;
+    btn.onclick = () => {
+      if(sentenceChecked || sentencePlaced.length >= s.tiles.length) return;
+      sentencePlaced.push(tileIdx);
+      renderSentenceGame();
+      persistSentenceProgress();
+    };
+    bankWrap.appendChild(btn);
+  });
+
+  const hintWrap = $('sentenceHintRow');
+  hintWrap.innerHTML = '';
+  if(s.hint && !sentenceHintShown){
+    const hbtn = document.createElement('button');
+    hbtn.type = 'button';
+    hbtn.className = 'case-pill hint-pill';
+    hbtn.textContent = '💡 Need a hint?';
+    hbtn.onclick = () => { sentenceHintShown = true; renderSentenceGame(); };
+    hintWrap.appendChild(hbtn);
+  } else if(s.hint && sentenceHintShown){
+    const p = document.createElement('div');
+    p.className = 'hint';
+    p.textContent = s.hint;
+    hintWrap.appendChild(p);
+  }
+
+  const actionsWrap = $('sentenceActionsRow');
+  actionsWrap.innerHTML = '';
+  const allFilled = sentencePlaced.length === s.tiles.length;
+  if(!sentenceChecked){
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-primary';
+    btn.textContent = 'Check';
+    btn.disabled = !allFilled;
+    btn.onclick = () => checkSentence();
+    actionsWrap.appendChild(btn);
+  } else {
+    const allCorrect = sentencePlaced.every((v, i) => v === i);
+    const msg = document.createElement('div');
+    msg.className = 'hint';
+    msg.style.margin = '0 0 12px';
+    msg.innerHTML = allCorrect
+      ? `<strong style="color:var(--green);">✅ Correct!</strong>`
+      : `<strong style="color:var(--red);">Not quite.</strong> Correct order: ${escapeHtml(joinSentenceTiles(s.tiles))}`;
+    actionsWrap.appendChild(msg);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-primary';
+    btn.textContent = sentenceIndex + 1 < sentenceData.sentences.length ? 'Next sentence →' : 'Finish';
+    btn.onclick = () => {
+      if(sentenceIndex + 1 < sentenceData.sentences.length) enterSentence(sentenceIndex + 1);
+      else endSentenceGame();
+    };
+    actionsWrap.appendChild(btn);
+  }
+}
+
+function checkSentence(){
+  sentenceChecked = true;
+  const allCorrect = sentencePlaced.every((v, i) => v === i);
+  if(allCorrect) sentenceScore++; else sentenceMistakes++;
+  updateSentenceScoreTag();
+  renderSentenceGame();
+  persistSentenceProgress();
+}
+
+function endSentenceGame(){
+  $('sentencePlayWrap').classList.add('hidden');
+  $('sentenceEndWrap').classList.remove('hidden');
+  const total = sentenceData.sentences.length;
+  const badge = sentenceScore === total ? '✅ Perfect run' : (sentenceMistakes === 0 ? '✅ Set complete' : '🟡 Set complete');
+  $('sentenceEndMsg').innerHTML = `<div class="case-end-badge">${badge}</div><div style="margin:12px 0;">You got <strong>${sentenceScore} / ${total}</strong> right on the first try.</div>`;
+  clearSentenceProgress(sentenceProgressSetId);
+}
+
+function exitSentenceGame(){
+  sentenceData = null;
+  if(sentenceReturnTo && sentenceReturnTo.screen === 'setup') showSetupScreen();
+  else if(sentenceReturnTo && sentenceReturnTo.screen === 'folder') showFolder(sentenceReturnTo.id, sentenceReturnTo.mode, sentenceReturnTo.cardType, sentenceReturnTo.le);
+  else showLanding();
+}
+
+$('sentenceRestartBtn').onclick = () => {
+  clearSentenceProgress(sentenceProgressSetId);
+  sentenceScore = 0;
+  sentenceMistakes = 0;
+  $('sentenceEndWrap').classList.add('hidden');
+  $('sentencePlayWrap').classList.remove('hidden');
+  enterSentence(0);
+};
+$('sentenceExitBtn').onclick = () => exitSentenceGame();
+$('sentenceGameBackBtn').onclick = () => {
+  const untouched = sentenceIndex === 0 && sentenceScore === 0 && sentenceMistakes === 0 && !sentenceChecked;
+  if(untouched || confirm('End this set and go back?')) exitSentenceGame();
+};
+
+/* ---- Master prompt users can paste into any LLM to generate a
+   SENTENCE_FORMAT v1.0 set this game parses. ---- */
+const SENTENCE_LLM_PROMPT_TEMPLATE = `You are creating a set of "sentence builder" (word-order) exercises in SENTENCE_FORMAT v1.0 for a language-learning app. Follow the spec exactly — the output is parsed by a strict, non-forgiving parser.
+
+FORMAT SPEC:
+
+TITLE: <a short title for this set>
+----------------------------------------
+SENTENCE: <unique id, e.g. S01>
+PROMPT: <a natural-language cue in the LEARNER'S OWN language — usually the English translation of the target sentence — so they know what to build>
+TILES: <tile 1> | <tile 2> | <tile 3> | ...
+HINT: <optional — a short grammar tip, revealed on tap if the learner is stuck>
+----------------------------------------
+SENTENCE: <next id>
+...
+
+RULES YOU MUST FOLLOW:
+1. TILES must be listed in the CORRECT (target-language) order, separated by " | ". The app shuffles them for the learner and checks their taps against this order.
+2. A tile can be a single word, OR a fixed multi-word chunk that should move as one piece (e.g. "gato negro", "se levanta", "por la mañana") — group words into one tile whenever splitting them further would make more than one valid ordering possible, or whenever they're an idiom/fixed expression that shouldn't be reordered internally.
+3. Punctuation that ends the sentence (., !, ?) should be its own separate tile at the end, so the learner has to place it too. Don't attach it to the last word's tile.
+4. Every sentence needs 4-8 tiles — fewer than 4 is too trivial, more than 8 gets unwieldy to tap through. If a sentence naturally has more pieces, group some into multi-word chunks (per rule 2) to bring the count down.
+5. PROMPT is required on every sentence — it's the only clue the learner gets before shuffling, so make sure it's an unambiguous translation that maps to exactly one correct tile order (no sentences where two different word orders would both be valid translations of the same PROMPT).
+6. HINT is optional — use it for a genuinely useful grammar note (e.g. "Reflexive pronouns like 'se' go before a conjugated verb"), not a restatement of the answer.
+7. Vary the grammar point being tested across the set where possible (word order rules, adjective placement, verb conjugation position, negation, question formation, etc.) rather than repeating the same pattern in every sentence.
+8. Only one TITLE line, at the very top, before the first SENTENCE block.
+
+RULES RECAP FOR VALIDITY:
+- Every SENTENCE ID is unique.
+- Every SENTENCE has at least 2 TILES (aim for 4-8).
+- TILES are pipe-separated and already in the correct order.
+
+===== NUMBER OF SENTENCES + TOPIC/SOURCE MATERIAL =====
+
+{TOPIC}`;
+
+$('copySentencePromptBtn').onclick = async () => {
+  const topicEl = $('sentencePromptTopic');
+  const topic = (topicEl && topicEl.value.trim()) || '[describe the grammar point, topic, or paste source material here, and how many sentences you want]';
+  const text = SENTENCE_LLM_PROMPT_TEMPLATE.replace('{TOPIC}', topic);
+  const statusEl = $('sentenceParseStatus');
+  try{
+    await navigator.clipboard.writeText(text);
+    statusEl.textContent = '✓ Prompt copied — paste it into ChatGPT, Claude, or any LLM, then paste its reply above.';
+    statusEl.style.color = 'var(--green)';
+  }catch(e){
+    window.prompt('Copy this prompt:', text);
+  }
+};
+
 /* ---- Master prompt users can paste into any LLM to generate a Samplex
    table — columns match COLS_SAMPLEX below. Rather than asking for a
    markdown table (which then has to be staged in Excel by hand before it's
@@ -13038,6 +13340,7 @@ $('clearTableBtn').onclick = () => {
   $('setupError').textContent = '';
   activeSetId = null;
   pendingAlgorithm = false;
+  pendingSentenceSet = false;
   $('setNameInput').value = '';
   $('setSubjectSelect').value = '';
   $('setLESelect').value = '';
@@ -13051,6 +13354,7 @@ $('loadSample').onclick = () => {
   loadCardsIntoTable(sampleCards);
   activeSetId = null;
   pendingAlgorithm = false;
+  pendingSentenceSet = false;
   $('setNameInput').value = '';
   $('setSubjectSelect').value = '';
   $('setLESelect').value = '';
@@ -13063,23 +13367,40 @@ const sampleCards = parsePipeSample(sample);
 setInputMode('classic');
 loadCardsIntoTable(sampleCards);
 
-/* ---- "Paste an algorithm" tab: parse -> populate the normal card table ---- */
-let activeInputTab = 'manual'; // 'manual' | 'algo'
+/* ---- "Paste an algorithm" / "Sentence builder" tabs: parse -> either
+   populate the normal card table (algorithm) or hand straight to the
+   sentence-builder engine. ---- */
+let activeInputTab = 'manual'; // 'manual' | 'algo' | 'sentence'
 function setActiveInputTab(tab){
   activeInputTab = tab;
   $('tabManualBtn').classList.toggle('active', tab === 'manual');
   $('tabAlgoBtn').classList.toggle('active', tab === 'algo');
+  $('tabSentenceBtn').classList.toggle('active', tab === 'sentence');
   $('manualCardsWrap').classList.toggle('hidden', tab !== 'manual');
   $('algoInputWrap').classList.toggle('hidden', tab !== 'algo');
+  $('sentenceInputWrap').classList.toggle('hidden', tab !== 'sentence');
   $('quizOnlySetupControls').classList.toggle('hidden', tab !== 'manual');
 }
 $('tabManualBtn').onclick = () => setActiveInputTab('manual');
 $('tabAlgoBtn').onclick = () => setActiveInputTab('algo');
+$('tabSentenceBtn').onclick = () => setActiveInputTab('sentence');
 
 $('parseAlgoBtn').onclick = () => {
   const statusEl = $('algoParseStatus');
   const name = $('setNameInput').value.trim() || 'Untitled case';
   const result = startCaseGame($('algoTextInput').value, activeSetId, name, {screen: 'setup'});
+  if(!result.ok){
+    statusEl.textContent = result.message;
+    statusEl.style.color = 'var(--red)';
+    return;
+  }
+  statusEl.textContent = '';
+};
+
+$('parseSentenceBtn').onclick = () => {
+  const statusEl = $('sentenceParseStatus');
+  const name = $('setNameInput').value.trim() || 'Untitled sentence set';
+  const result = startSentenceGame($('sentenceTextInput').value, activeSetId, name, {screen: 'setup'});
   if(!result.ok){
     statusEl.textContent = result.message;
     statusEl.style.color = 'var(--red)';
@@ -13096,12 +13417,21 @@ $('saveSetBtn').onclick = () => {
     return;
   }
   const isCase = activeInputTab === 'algo';
+  const isSentence = activeInputTab === 'sentence';
   let parsed = [];
   if(isCase){
     const caseParsed = parseCaseFile($('algoTextInput').value);
     if(!caseParsed.ok){
       const shown = caseParsed.errors.slice(0, 4);
       const more = caseParsed.errors.length > shown.length ? ` (+${caseParsed.errors.length - shown.length} more)` : '';
+      $('setupError').textContent = 'Fix before saving: ' + shown.join(' • ') + more;
+      return;
+    }
+  } else if(isSentence){
+    const sentenceParsed = parseSentenceFile($('sentenceTextInput').value);
+    if(!sentenceParsed.ok){
+      const shown = sentenceParsed.errors.slice(0, 4);
+      const more = sentenceParsed.errors.length > shown.length ? ` (+${sentenceParsed.errors.length - shown.length} more)` : '';
       $('setupError').textContent = 'Fix before saving: ' + shown.join(' • ') + more;
       return;
     }
@@ -13134,14 +13464,16 @@ $('saveSetBtn').onclick = () => {
     cardType,
     cards: parsed,
     mode: inputMode,
-    kind: isCase ? 'algorithm' : 'flashcards',
+    kind: isCase ? 'algorithm' : (isSentence ? 'sentence' : 'flashcards'),
     algoSource: isCase ? $('algoTextInput').value : (sets[id] && sets[id].algoSource) || undefined,
+    sentenceSource: isSentence ? $('sentenceTextInput').value : (sets[id] && sets[id].sentenceSource) || undefined,
     createdAt: (sets[id] && sets[id].createdAt) || now,
     updatedAt: now
   };
   saveSetsData(sets);
   activeSetId = id;
   pendingAlgorithm = isCase;
+  pendingSentenceSet = isSentence;
   setupReturnTo = {screen:'folder', id: subject ? subject : UNFILED, mode:'subject', cardType, le: le ? le : UNFILED};
   $('setupError').textContent = '';
 };
@@ -13150,6 +13482,7 @@ $('saveSetBtn').onclick = () => {
 $('newSetBtn').onclick = () => {
   activeSetId = null;
   pendingAlgorithm = false;
+  pendingSentenceSet = false;
   setupReturnTo = null;
   setInputMode('classic');
   tableBody.innerHTML = '';
@@ -13163,12 +13496,15 @@ $('newSetBtn').onclick = () => {
   $('setupError').textContent = '';
   $('algoTextInput').value = '';
   $('algoParseStatus').textContent = '';
+  $('sentenceTextInput').value = '';
+  $('sentenceParseStatus').textContent = '';
   setActiveInputTab('manual');
   showSetupScreen();
 };
 $('trySampleBtn').onclick = () => {
   activeSetId = null;
   pendingAlgorithm = false;
+  pendingSentenceSet = false;
   setupReturnTo = null;
   setInputMode('classic');
   loadCardsIntoTable(sampleCards);
@@ -13181,6 +13517,8 @@ $('trySampleBtn').onclick = () => {
   $('setupError').textContent = '';
   $('algoTextInput').value = '';
   $('algoParseStatus').textContent = '';
+  $('sentenceTextInput').value = '';
+  $('sentenceParseStatus').textContent = '';
   setActiveInputTab('manual');
   showSetupScreen();
 };
@@ -13208,6 +13546,7 @@ $('folderBackBtn').onclick = () => {
 $('newSetInFolderBtn').onclick = () => {
   activeSetId = null;
   pendingAlgorithm = false;
+  pendingSentenceSet = false;
   setupReturnTo = currentFolderReturnTarget();
   tableBody.innerHTML = '';
   addRow();
@@ -13220,6 +13559,8 @@ $('newSetInFolderBtn').onclick = () => {
   $('setupError').textContent = '';
   $('algoTextInput').value = '';
   $('algoParseStatus').textContent = '';
+  $('sentenceTextInput').value = '';
+  $('sentenceParseStatus').textContent = '';
   setActiveInputTab('manual');
   showSetupScreen();
 };
@@ -14217,7 +14558,7 @@ function renderShareSetsPicker(){
       `).join('')}
     </div>
     <div class="row" style="margin-top:12px;">
-      <button class="btn-primary sm" id="shareSetsExportBtn" disabled>Export selected (0)</button>
+      <button class="btn-primary sm" id="shareSetsExportBtn" disabled>Exportar seleccionados (0)</button>
     </div>
   `;
   const checks = () => Array.from(box.querySelectorAll('.share-set-check'));
@@ -14358,7 +14699,7 @@ async function runStorageCheck(){
   lines.push(roundTripOk ? '✅ Storage write/read test passed.' : '⚠️ Storage write/read test FAILED — writes here are not actually persisting, even though no error was thrown. This matches "import doesn\'t reflect."');
 
   // How much of this app's own data is already stored.
-  const appKeys = [SETS_KEY, STATS_KEY, GLOBAL_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, BG_KEY, BG_TYPE_KEY, PALETTE_KEY, BG_BLUR_KEY, BG_BRIGHTNESS_KEY, BRAINBREAK_ENABLED_KEY, BRAINBREAK_INTERVAL_KEY];
+  const appKeys = [SETS_KEY, STATS_KEY, GLOBAL_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, BG_KEY, BG_TYPE_KEY, PALETTE_KEY, BG_BLUR_KEY, BG_BRIGHTNESS_KEY, BRAINBREAK_ENABLED_KEY, BRAINBREAK_INTERVAL_KEY];
   let appBytes = 0;
   appKeys.forEach(k => { const v = lsGet(k); if(v) appBytes += v.length; });
   lines.push(`This app is currently using: ${formatBytes(appBytes)}`);
@@ -15092,9 +15433,8 @@ function initQuestionImageLightbox(){
     statsToggleBtn:['📊 ','Progreso'],
     settingsToggleBtn:['⚙️ ','Ajustes'],
     petToggleBtn:['🐶 ','Compañero'],
-    calendarToggleBtn:['🗓️ ','Plan'],
     communityToggleBtn:['🌐 ','Comunidad'],
-    profSearchToggleBtn:['🧑‍🏫 ','Práctica']
+    profSearchToggleBtn:['🔎 ','Temas']
   };
   Object.entries(labels).forEach(([id,[icon,text]])=>{
     const el=document.getElementById(id); if(!el) return;
@@ -15136,7 +15476,6 @@ function initQuestionImageLightbox(){
   const navMap={
     '#statsView h2':'Tu progreso',
     '#settingsView h2':'Ajustes',
-    '#calendarView h2':'Plan de estudio',
     '#communityView h2':'Comunidad',
   };
   Object.entries(navMap).forEach(([s,t])=>setText(s,t));
@@ -15144,8 +15483,8 @@ function initQuestionImageLightbox(){
   const replacements=new Map([
     ['Study Session','Sesión de estudio'],['Card Breaks','Pausas'],['Focus Timer','Temporizador'],
     ['Focus','Enfoque'],['25 min remaining','25 min restantes'],['No active timers','Sin temporizadores activos'],
-    ['Settings','Ajustes'],['Stats','Progreso'],['Calendar','Plan'],['Community','Comunidad'],['Pet','Compañero'],
-    ['Find Qs','Práctica'],['Your sets','Tus mazos'],['Continue studying','Continúa estudiando'],
+    ['Settings','Ajustes'],['Stats','Progreso'],['Community','Comunidad'],['Pet','Compañero'],
+    ['Your sets','Tus mazos'],['Continue studying','Continúa estudiando'],
     ['Load sample deck','Cargar mazo de ejemplo'],['+ New set','+ Nuevo mazo'],['Save current set','Guardar mazo'],
     ['Cards','Tarjetas'],['Samplex','Ejercicio'],['Professor (optional)','Fuente (opcional)']
   ]);
@@ -15287,7 +15626,7 @@ function optionTipFor(card, optText){
 function optionBodyHtml(card, optText){
   const content = optionTipFor(card, optText);
   if(content) return `<span class="ofb-para">${mdBoldToHtml(content)}</span>`;
-  return `<span class="ofb-para">No additional notes for this option — see the exam tip below.</span>`;
+  return `<span class="ofb-para">No hay notas adicionales para esta opción — consulta el consejo debajo.</span>`;
 }
 
 // The combined view shown the moment a question is answered, before the
@@ -15303,14 +15642,14 @@ function renderInitialOptionFeedback(card, chosen, isCorrect){
   const box = $('optionFeedbackBox');
   box.classList.remove('ofb-correct','ofb-incorrect','ofb-mixed');
   if(isCorrect){
-    $('optionFeedbackLabel').textContent = `✓ ${letters[chosenIdx]} — Correct`;
+    $('optionFeedbackLabel').textContent = `✓ ${letters[chosenIdx]} — Correcto`;
     $('optionFeedbackText').innerHTML = optionBodyHtml(card, chosen);
     box.classList.add('ofb-correct');
   } else {
-    $('optionFeedbackLabel').textContent = 'Review your answer';
+    $('optionFeedbackLabel').textContent = 'Revisa tu respuesta';
     $('optionFeedbackText').innerHTML =
-      `<div class="ofb-block ofb-block-wrong"><span class="ofb-block-label ofb-wrong-label">✕ ${letters[chosenIdx]} — Your answer</span>${optionBodyHtml(card, chosen)}</div>` +
-      `<div class="ofb-block ofb-block-correct"><span class="ofb-block-label ofb-correct-label">✓ ${letters[correctIdx]} — Correct answer</span>${optionBodyHtml(card, card.back)}</div>`;
+      `<div class="ofb-block ofb-block-wrong"><span class="ofb-block-label ofb-wrong-label">✕ ${letters[chosenIdx]} — Tu respuesta</span>${optionBodyHtml(card, chosen)}</div>` +
+      `<div class="ofb-block ofb-block-correct"><span class="ofb-block-label ofb-correct-label">✓ ${letters[correctIdx]} — Respuesta correcta</span>${optionBodyHtml(card, card.back)}</div>`;
     box.classList.add('ofb-mixed');
   }
   box.classList.remove('hidden');
@@ -15332,8 +15671,8 @@ function reviewOption(btn, opt, idx, card){
   const isCorrect = opt.toLowerCase() === card.back.toLowerCase();
   const isChosen = currentChosen !== null && opt.toLowerCase() === currentChosen.toLowerCase();
   const label = isCorrect
-    ? `✓ ${letters[idx]} — Correct`
-    : (isChosen ? `✕ ${letters[idx]} — Your answer` : `✕ ${letters[idx]} — Why it's incorrect`);
+    ? `✓ ${letters[idx]} — Correcto`
+    : (isChosen ? `✕ ${letters[idx]} — Tu respuesta` : `✕ ${letters[idx]} — Por qué es incorrecta`);
   $('optionFeedbackLabel').textContent = label;
   $('optionFeedbackText').innerHTML = optionBodyHtml(card, opt);
   const box = $('optionFeedbackBox');
@@ -16295,7 +16634,7 @@ document.addEventListener('keydown', e => {
 </script>
 
 <div class="zoom-controls">
-<button type="button" id="zoomOut" title="Smaller text">A−</button>
+<button type="button" id="zoomOut" title="Texto más pequeño">A−</button>
 <button type="button" id="zoomReset" title="Reset zoom">⟲</button>
 <button type="button" id="zoomIn" title="Larger text">A+</button>
 <span class="zoom-controls-divider"></span>
@@ -17598,17 +17937,6 @@ function isDevModeEnabled(){return lsGet('esp2ReviewDevMode')==='1'}
     if(!isPetAdopted()){$('petIntro').classList.remove('hidden');$('petIntroName').value='';} syncPetIntroLayout();
   };
 
-  $('calendarToggleBtn').onclick=()=>{
-    saveBeforeNavigation();hideAllScreens();$('calendarView').classList.remove('hidden');
-    // The calendar's own script rendered once already, while this view was
-    // still hidden (so the scroller had no real width to measure). Force
-    // one more render now that it's visible so day/week widths are correct.
-    if(typeof window.uermCalendarRefresh==='function') window.uermCalendarRefresh();
-    // Re-center on today now that the view is actually visible — while it
-    // was hidden the scroller had no real scrollWidth, so any earlier jump
-    // to today couldn't take effect yet.
-    if(typeof window.uermCalendarJumpToday==='function') window.uermCalendarJumpToday();
-  };
   $('backFromCalendarBtn').onclick=()=>{ showLanding(); };
 
   let introSelectedBreed='cavalier';
@@ -17816,7 +18144,7 @@ function isDevModeEnabled(){return lsGet('esp2ReviewDevMode')==='1'}
   // Observe existing screens. The pet element stays mounted, so Home -> Quiz
   // does not cause a disappear/reappear cycle.
   const petObserver=new MutationObserver(updatePetVisibility);
-  ['landing','quiz','statsView','settingsView','folderView','setup','results','caseGame','brainBreak'].forEach(id=>{const el=document.getElementById(id);if(el)petObserver.observe(el,{attributes:true,attributeFilter:['class']})});
+  ['landing','quiz','statsView','settingsView','folderView','setup','results','caseGame','sentenceGame','brainBreak'].forEach(id=>{const el=document.getElementById(id);if(el)petObserver.observe(el,{attributes:true,attributeFilter:['class']})});
 
   // Robust pointer/hold state. Pointer capture can otherwise leave a looping
   // carry animation alive when the pointer is released outside the canvas.
@@ -18604,465 +18932,6 @@ updateNavActiveState();
   else init();
 })();
 
-  /* ================================================================
-     CALENDAR MODULE
-     ================================================================
-     RESERVED FOR THE CALENDAR.
-     Keep calendar CSS/HTML/JS isolated here or in a clearly marked
-     companion module. Do not mix calendar state with quiz state.
-     ================================================================ */
-
-  /* ================================================================
-     JS-15 CALENDAR
-     ---------------------------------------------------------------
-     Calendar logic belongs here.
-
-     Recommended internal order:
-       1. Calendar state / event data
-       2. Date normalization
-       3. Event CRUD / drag handling
-       4. Month renderer
-       5. Week renderer
-       6. Countdown renderer
-       7. Responsive helpers
-       8. Calendar initialization
-
-     Keep all calendar-specific selectors/functions together.
-     ================================================================ */
-
-  /* Embedded UERM exam calendar component. Wrapped in its own IIFE (see
-     inside) so none of its function/const names can collide with the rest
-     of this file. It reads/writes its own localStorage keys (esp2ReviewExams,
-     uermHolidayLayer) and renders into #uermExamCalendar, which lives
-     inside #calendarView. window.uermCalendarRefresh is exposed below so
-     the nav handler can force a re-layout once the view becomes visible
-     (its first render happens while #calendarView is still hidden, so the
-     scroller has no real width to measure yet). */
-(function(){ // scoped so these names can never collide with index.html's own script
-const START=new Date('2026-07-01T00:00:00');
-const END=new Date('2027-06-05T00:00:00');
-function localToday(){
-  const d=new Date();
-  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
-}
-function localTimeFraction(){
-  const d=new Date();
-  return (d.getHours()*3600+d.getMinutes()*60+d.getSeconds()+d.getMilliseconds()/1000)/86400;
-}
-function dateKey(d){
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-let level=2;
-let DAY=150;
-
-const SUBJECTS={
- MED2:{name:'Medicine II',color:'#6aa84f'},SUR2:{name:'Surgery II',color:'#2bbf86'},
- PED2:{name:'Pediatrics II',color:'#f1cc1a'},NEU2:{name:'Neurology II',color:'#c01d1d'},
- PSY2:{name:'Psychiatry II',color:'#e57b45'},OB:{name:'Obstetrics',color:'#cd2678'},
- GYN:{name:'Gynecology',color:'#cd2678'},ORL:{name:'Otorhinolaryngology',color:'#2c6ae7'},
- OPT:{name:'Ophthalmology',color:'#2c6ae7'},CPT:{name:'Clinical Pathology',color:'#6233c1'},
- CMD:{name:'Community Medicine',color:'#622a0f'},LEG:{name:'Legal Medicine',color:'#d4961a'}
-};
-
-
-const HOLIDAYS=[
- ['2026-08-06','Provincial Charter Day','Regional · Cebu'],
- ['2026-08-19','Birthday of Manuel L. Quezon','Regional · Quezon / Aurora'],
- ['2026-08-21','Ninoy Aquino Day','National'],
- ['2026-08-31',"National Heroes' Day",'National'],
- ['2026-09-09','Osmeña Day','Regional · Cebu'],
- ['2026-11-01',"All Saints' Day",'National'],
- ['2026-11-02',"All Souls' Day",'National'],
- ['2026-11-30','Bonifacio Day','National'],
- ['2026-12-08','Immaculate Conception Day','National'],
- ['2026-12-24','Christmas Eve','National'],
- ['2026-12-25','Christmas Day','National'],
- ['2026-12-30','Rizal Day','National'],
- ['2026-12-31',"New Year's Eve",'National'],
- ['2027-01-01',"New Year's Day",'National'],
- ['2027-02-06','Chinese New Year','National'],
- ['2027-02-24','Cebu City Charter Day','Regional · Cebu'],
- ['2027-02-25','People Power Revolution','Not a Public Holiday'],
- ['2027-03-09',"Eid'l Fitr",'National · date subject to confirmation'],
- ['2027-03-16','Davao City Day','Regional · Davao'],
- ['2027-03-25','Maundy Thursday','National'],
- ['2027-03-26','Good Friday','National'],
- ['2027-03-27','Black Saturday','National'],
- ['2027-04-09','The Day of Valor','National'],
- ['2027-05-01','Labor Day','National'],
- ['2027-05-16','Eidul Adha','National · date subject to confirmation'],
- ['2027-06-12','Independence Day','National'],
- ['2027-06-24','Manila Day','Regional · Manila'],
- ['2027-08-06','Provincial Charter Day','Regional · Cebu'],
- ['2027-08-19','Birthday of Manuel L. Quezon','Regional · Quezon / Aurora'],
- ['2027-08-21','Ninoy Aquino Day','National'],
- ['2027-08-30',"National Heroes' Day",'National'],
- ['2027-09-09','Osmeña Day','Regional · Cebu'],
- ['2027-11-01',"All Saints' Day",'National'],
- ['2027-11-30','Bonifacio Day','National'],
- ['2027-12-08','Immaculate Conception Day','National'],
- ['2027-12-25','Christmas Day','National'],
- ['2027-12-30','Rizal Day','National'],
- ['2027-12-31',"New Year's Eve",'National']
-];
-
-const SCHOOL=[
- ['LE 1','2026-08-05','2026-08-12'],['LE 2','2026-09-23','2026-09-30'],
- ['LE 3 · Semestral','2026-11-03','2026-11-04'],['LE 3 / Final · Annual','2026-11-06','2026-11-13'],
- ['LE 4','2027-01-18','2027-02-01'],['LE 5','2027-03-01','2027-03-08'],
- ['LE 6','2027-04-14','2027-04-20'],['FINALS','2027-04-23','2027-04-30']
-];
-
-/* Sample schedule from the screenshot you supplied. */
-const SAMPLE=[
- {subject:'PED2',exam:'LE 1',date:'2026-08-05',start:'13:00',end:'16:00'},
- {subject:'OB',exam:'LE 1',date:'2026-08-07',start:'10:30',end:'12:00'},
- {subject:'OPT',exam:'LE 1',date:'2026-08-07',start:'14:00',end:'16:00'},
- {subject:'ORL',exam:'LE 1',date:'2026-08-07',start:'14:00',end:'16:00'},
- {subject:'NEU2',exam:'LE 1',date:'2026-08-11',start:'10:30',end:'12:30'},
- {subject:'SUR2',exam:'LE 1',date:'2026-08-12',start:'13:30',end:'16:30'},
- {subject:'LEG',exam:'LE 1',date:'2026-08-13',start:'10:30',end:'12:30'},
- {subject:'PSY2',exam:'LE 1',date:'2026-08-13',start:'13:00',end:'15:00'},
- {subject:'MED2',exam:'LE 1',date:'2026-08-14',start:'11:00',end:'13:00'}
-];
-
-function added(){return JSON.parse(localStorage.getItem('esp2ReviewExams')||'[]')}
-function saveAdded(a){lsSet('esp2ReviewExams',JSON.stringify(a))}
-function exams(){return SAMPLE.concat(added())}
-
-/* ---- Custom subjects: user-added subjects that live alongside the
-   built-in SUBJECTS list without ever mutating that constant. Stored
-   as {CODE:{name,color}} and merged in wherever SUBJECTS is read for
-   display/lookup via allSubjects(). ---- */
-const CUSTOM_SUBJECT_PALETTE=['#0e7490','#9333ea','#b45309','#4d7c0f','#be185d','#0369a1','#a16207','#6d28d9','#15803d','#be123c'];
-function customSubjects(){return JSON.parse(localStorage.getItem('uermCustomSubjects')||'{}')}
-function saveCustomSubjects(o){lsSet('uermCustomSubjects',JSON.stringify(o))}
-function allSubjects(){return {...SUBJECTS,...customSubjects()}}
-function addCustomSubject(){
-  const name=(prompt('Subject name (e.g. "Family Medicine"):')||'').trim();
-  if(!name)return null;
-  const cs=customSubjects();
-  let code=name.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)||'SUBJ';
-  if(allSubjects()[code]){
-    let n=2;
-    while(allSubjects()[code+n])n++;
-    code=code+n;
-  }
-  const usedColors=Object.values(allSubjects()).map(s=>s.color);
-  const color=CUSTOM_SUBJECT_PALETTE.find(c=>!usedColors.includes(c))||CUSTOM_SUBJECT_PALETTE[Object.keys(cs).length%CUSTOM_SUBJECT_PALETTE.length];
-  cs[code]={name,color,custom:true};
-  saveCustomSubjects(cs);
-  return code;
-}
-function removeCustomSubject(code){
-  const cs=customSubjects();
-  if(!cs[code])return;
-  if(!confirm(`Remove custom subject "${cs[code].name}"? Any exams already using it will keep showing its code until you edit them.`))return;
-  delete cs[code];
-  saveCustomSubjects(cs);
-  refreshSubjectUI();
-}
-function diff(a,b){return Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000)}
-function index(date){return diff('2026-07-01',date)}
-function fmtTime(t){const [h,m]=t.split(':').map(Number);return `${h%12||12}:${m} ${h>=12?'PM':'AM'}`}
-function label(date){return new Date(date+'T00:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}
-
-
-function updateNextLECountdown(){
-  const now = new Date();
-
-  const upcoming = SCHOOL
-    .filter(e => /^LE\s*\d/i.test(e[0]))
-    .map(e => ({
-      name: e[0].split(' · ')[0],
-      date: e[1]
-    }))
-    .filter(e => new Date(e.date + 'T00:00:00') >= new Date(now.getFullYear(), now.getMonth(), now.getDate()))
-    .sort((a,b) => a.date.localeCompare(b.date))[0];
-
-  const value = document.getElementById('nextLEValue');
-  const sub = document.getElementById('nextLESub');
-  if(!value || !sub) return;
-
-  if(!upcoming){
-    value.textContent = '—';
-    sub.textContent = 'No upcoming LE';
-    return;
-  }
-
-  const target = new Date(upcoming.date + 'T00:00:00');
-  const diffMs = target - now;
-
-  if(diffMs <= 0){
-    value.textContent = 'TODAY';
-    sub.textContent = `${upcoming.name} · ${target.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}`;
-    return;
-  }
-
-  const totalSeconds = Math.floor(diffMs / 1000);
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  value.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
-  sub.textContent = `${upcoming.name} · ${target.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}`;
-}
-
-function render(){
- const viewport=document.getElementById('scroller')?.clientWidth||window.innerWidth||800;
- DAY=level===0?Math.max(32,Math.floor(viewport/30)):level===1?Math.max(72,Math.floor(viewport/7)):150;
- document.getElementById('uermExamCalendar').style.setProperty('--day',DAY+'px');
- document.getElementById('uermExamCalendar').dataset.viewLevel=String(level);
- const total=diff('2026-07-01','2027-06-05')+1;
- document.getElementById('timeline').style.width=(total*DAY)+'px';
-
- const months=document.getElementById('months'),days=document.getElementById('days'),school=document.getElementById('school'),holidayRow=document.getElementById('holidayRow'),grid=document.getElementById('grid');
- months.innerHTML='';days.innerHTML='';school.innerHTML='';holidayRow.innerHTML='';grid.innerHTML='';
-
- let cur=new Date('2026-07-01T00:00:00');
- while(cur<=END){
-   const y=cur.getFullYear(),m=cur.getMonth(),next=new Date(y,m+1,1);
-   const first=cur<START?START:cur,last=new Date(Math.min(END.getTime(),next.getTime()-86400000));
-   const w=(Math.round((last-first)/86400000)+1)*DAY;
-   const el=document.createElement('div');el.className='month';el.style.width=w+'px';el.style.minWidth=w+'px';
-   el.textContent=cur.toLocaleDateString('en-US',{month:'long',year:'numeric'});months.appendChild(el);cur=next;
- }
- for(let i=0;i<total;i++){
-   const d=new Date(START.getFullYear(),START.getMonth(),START.getDate()+i),ds=dateKey(d),el=document.createElement('div');
-   el.className='day';if([0,6].includes(d.getDay()))el.classList.add('weekend');if(ds===localToday())el.classList.add('today');
-   el.innerHTML=`<div class="num">${d.getDate()}</div><div class="dow">${d.toLocaleDateString('en-US',{weekday:'short'})}</div>`;days.appendChild(el);
- }
- const sl=document.createElement('div');sl.className='school-label';sl.textContent='School-wide exam periods';school.appendChild(sl);
- SCHOOL.forEach(e=>{
-   const el=document.createElement('div');el.className='school-event';el.style.left=(index(e[1])*DAY+2)+'px';el.style.width=(diff(e[1],e[2])+1)*DAY-4+'px';el.textContent=e[0];school.appendChild(el);
- });
- if(localStorage.getItem('uermHolidayLayer')!=='off'){
-   const holidayLabel=document.createElement('div');
-   holidayLabel.className='holiday-label';
-   holidayLabel.textContent='Philippine holidays';
-   holidayRow.appendChild(holidayLabel);
-   HOLIDAYS.forEach(h=>{
-     const x=index(h[0]);
-     if(x<0||x>=total)return;
-     const mark=document.createElement('div');
-     mark.className='holiday-mark';
-     mark.style.left=(x*DAY+2)+'px';
-     mark.style.width=DAY+'px';
-     mark.title=`${h[1]} · ${h[2]}`;
-     mark.innerHTML=`<span class="holiday-dot"></span><span class="holiday-name">${h[1]}</span>`;
-     mark.addEventListener('click',()=>openHoliday(h));
-     holidayRow.appendChild(mark);
-   });
- }
- for(let i=0;i<total;i++){
-   const d=new Date(START.getFullYear(),START.getMonth(),START.getDate()+i),ds=dateKey(d),el=document.createElement('div');
-   el.className='column';if([0,6].includes(d.getDay()))el.classList.add('weekend');if(ds===localToday())el.classList.add('today');el.dataset.date=ds;grid.appendChild(el);
- }
- const by={};
-  const manual=added();
-  SAMPLE.forEach(e=>(by[e.date]??=[]).push(e));
-  manual.forEach((e,i)=>(by[e.date]??=[]).push({...e,_addedIndex:i}));
- Object.entries(by).forEach(([date,items])=>{
-   const col=grid.querySelector(`[data-date="${date}"]`);if(!col)return;
-   items.sort((a,b)=>a.start.localeCompare(b.start));
-   items.forEach(e=>{
-     const s=allSubjects()[e.subject],card=document.createElement('div');card.className='exam';card.style.setProperty('--subject',s?.color||'#64748b');
-     if(level<2)card.style.padding='4px 5px';
-     if(level===0){
-       card.innerHTML=`<div class="name">${s?.name||e.subject}</div>`;
-       card.title=`${s?.name||e.subject} · ${e.exam}`;
-       card.style.minHeight='12px';
-       card.style.marginBottom='2px';
-     }
-     else {
-       card.innerHTML=`<div class="time">${fmtTime(e.start)} – ${fmtTime(e.end)}</div><div class="name">${s?.name||e.subject}</div><div class="code">${e.subject}</div><span class="type">${e.exam}</span>`;
-       card.title=`${s?.name||e.subject} · ${e.exam} · ${fmtTime(e.start)} – ${fmtTime(e.end)}`;
-     }
-     card.addEventListener('click',()=>openInfo(e));col.appendChild(card);
-   });
- });
- const today=localToday();
- if(today>='2026-07-01' && today<='2027-06-05'){
-   const x=index(today)*DAY + localTimeFraction()*DAY,line=document.createElement('div'),tag=document.createElement('div');line.className='today-line';line.style.left=x+'px';tag.className='today-tag';tag.style.left=x+'px';tag.textContent='TODAY';grid.append(line,tag);
- }
- document.getElementById('count').textContent=exams().length+' subject exams';
-}
-
-function jump(date,behavior){if(date==='TODAY')date=localToday();document.getElementById('scroller').scrollTo({left:Math.max(0,index(date)*DAY-100),behavior:behavior||'smooth'})}
-function openHoliday(h){
- document.getElementById('modalTitle').textContent=h[1];
- document.getElementById('modalSub').textContent=label(h[0])+' · '+h[2];
- document.getElementById('modal').classList.add('show');
-}
-function openInfo(e){
-  const deleteBtn=document.getElementById('deleteBtn');
-  const saveBtn=document.getElementById('saveBtn');
-  const canDelete=e._addedIndex!==undefined;
-  document.getElementById('modalTitle').textContent=(allSubjects()[e.subject]?.name||e.subject)+' · '+e.exam;
-  document.getElementById('modalSub').textContent=label(e.date)+' · '+fmtTime(e.start)+' – '+fmtTime(e.end);
-  deleteBtn.style.display=canDelete?'block':'none';
-  saveBtn.style.display='none';
-  deleteBtn.dataset.index=canDelete?String(e._addedIndex):'';
-  document.getElementById('modal').classList.add('show');
-}
-function close(){
-  document.getElementById('modal').classList.remove('show');
-  document.getElementById('deleteBtn').style.display='none';
-  document.getElementById('saveBtn').style.display='block';
-}
-
-const subjectSelect=document.getElementById('subject');
-const ADD_CUSTOM_SUBJECT_VALUE='__add_custom_subject__';
-function populateSubjectSelect(selectCode){
-  const prev=selectCode||subjectSelect.value;
-  subjectSelect.innerHTML='';
-  Object.entries(allSubjects()).forEach(([code,s])=>{const o=document.createElement('option');o.value=code;o.textContent=`${s.name} (${code})`;subjectSelect.appendChild(o)});
-  const addOpt=document.createElement('option');addOpt.value=ADD_CUSTOM_SUBJECT_VALUE;addOpt.textContent='+ Add custom subject…';subjectSelect.appendChild(addOpt);
-  if(prev&&allSubjects()[prev])subjectSelect.value=prev;
-}
-populateSubjectSelect();
-subjectSelect.addEventListener('change',()=>{
-  if(subjectSelect.value!==ADD_CUSTOM_SUBJECT_VALUE)return;
-  const code=addCustomSubject();
-  populateSubjectSelect(code||undefined);
-  renderSubjectsLegend();
-  if(!code)subjectSelect.selectedIndex=0;
-});
-function openAdd(){
-  document.getElementById('modalTitle').textContent='Add Subject Exam';
-  document.getElementById('modalSub').textContent='Enter an exact date and time.';
-  document.getElementById('date').value='';
-  document.getElementById('start').value='';
-  document.getElementById('end').value='';
-  document.getElementById('notes').value='';
-  document.getElementById('deleteBtn').style.display='none';
-  document.getElementById('saveBtn').style.display='block';
-  document.getElementById('modal').classList.add('show');
-}
-function saveExam(){
- const date=document.getElementById('date').value,start=document.getElementById('start').value,end=document.getElementById('end').value;
- if(!date||!start||!end){alert('Enter date, start time and end time.');return}
- if(end<=start){alert('End time must be later than start time.');return}
- const a=added();a.push({subject:subjectSelect.value,exam:document.getElementById('exam').value,date,start,end,notes:document.getElementById('notes').value});saveAdded(a);close();render()
-}
-function clearAdded(){if(confirm('Remove all manually added/imported exams?')){localStorage.removeItem('esp2ReviewExams');render()}}
-
-function deleteExam(){
-  const i=Number(document.getElementById('deleteBtn').dataset.index);
-  if(!Number.isInteger(i))return;
-  const a=added();
-  if(!a[i])return;
-  const e=a[i];
-  const name=(allSubjects()[e.subject]?.name||e.subject)+' · '+e.exam;
-  if(confirm(`Delete "${name}" on ${label(e.date)}?`)){
-    a.splice(i,1);
-    saveAdded(a);
-    close();
-    render();
-  }
-}
-
-function parseICS(text){
- const blocks=text.replace(/\r?\n[ \t]/g,'').split('BEGIN:VEVENT').slice(1),out=[];
- function dt(raw){const v=(raw||'').trim(),m=v.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})/);return m?{date:`${m[1]}-${m[2]}-${m[3]}`,time:`${m[4]}:${m[5]}`} : null}
- function subject(text){const u=text.toUpperCase();for(const [c,s] of Object.entries(allSubjects()))if(u.includes(c)||u.includes(s.name.toUpperCase()))return c;return null}
- blocks.forEach(b=>{
-   const summary=(b.match(/(?:^|\n)SUMMARY[^:]*:(.*)/)||[])[1]||'',desc=(b.match(/(?:^|\n)DESCRIPTION[^:]*:(.*)/)||[])[1]||'';
-   const a=dt((b.match(/(?:^|\n)DTSTART[^:]*:(.*)/)||[])[1]),z=dt((b.match(/(?:^|\n)DTEND[^:]*:(.*)/)||[])[1]),s=subject(summary+' '+desc);
-   if(s&&a)out.push({subject:s,exam:summary||'Exam',date:a.date,start:a.time,end:z?.time||a.time,notes:desc})
- });return out
-}
-
-document.getElementById('addBtn').addEventListener('click',openAdd);
-document.getElementById('saveBtn').addEventListener('click',saveExam);
-document.getElementById('deleteBtn').addEventListener('click',deleteExam);
-document.getElementById('clearBtn').addEventListener('click',clearAdded);
-document.getElementById('closeBtn').addEventListener('click',close);
-document.getElementById('cancelBtn').addEventListener('click',close);
-document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')close()});
-document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>jump(b.dataset.jump)));
-document.querySelectorAll('.zoom').forEach(b=>b.addEventListener('click',()=>{level=Number(b.dataset.level);document.querySelectorAll('.zoom').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()}));
-document.getElementById('ics').addEventListener('change',async e=>{
- const f=e.target.files[0];if(!f)return;const got=parseICS(await f.text());
- if(!got.length){alert('No subject exams found. Put a subject name/code such as MED2 or Medicine II in the event title or description.');return}
- const a=added();saveAdded(a.concat(got));render();alert(got.length+' exam(s) imported.');e.target.value=''
-});
-
-function renderSubjectsLegend(){
-  const holder=document.getElementById('subjects');
-  holder.innerHTML='';
-  Object.entries(allSubjects()).forEach(([code,s])=>{
-    const el=document.createElement('div');el.className='subject';el.style.position='relative';
-    el.innerHTML=`<span class="swatch" style="background:${s.color}"></span><div><div class="sname">${s.name}</div><div class="scode">${code}</div></div>`;
-    if(s.custom){
-      const rm=document.createElement('button');
-      rm.type='button';rm.textContent='×';rm.title='Remove custom subject';
-      rm.style.cssText='position:absolute;top:2px;right:4px;border:none;background:none;font-size:12px;line-height:1;cursor:pointer;color:#9aa0aa;padding:2px';
-      rm.addEventListener('click',ev=>{ev.stopPropagation();removeCustomSubject(code)});
-      el.appendChild(rm);
-    }
-    holder.appendChild(el);
-  });
-  const addTile=document.createElement('button');
-  addTile.type='button';addTile.className='subject';
-  addTile.style.cssText='cursor:pointer;justify-content:center;border-style:dashed;color:var(--tile-blue,#3F6E52);font-weight:700;background:none;font-family:inherit;font-size:9px';
-  addTile.textContent='+ Add subject';
-  addTile.addEventListener('click',()=>{
-    const code=addCustomSubject();
-    if(code){populateSubjectSelect(code);renderSubjectsLegend()}
-  });
-  holder.appendChild(addTile);
-}
-function refreshSubjectUI(){populateSubjectSelect();renderSubjectsLegend()}
-renderSubjectsLegend();
-
-const holidayToggle=document.getElementById('holidayToggle');
-function syncHolidayToggle(){
- const on=localStorage.getItem('uermHolidayLayer')!=='off';
- holidayToggle.textContent=on?'HOLIDAYS ON':'HOLIDAYS OFF';
- holidayToggle.classList.toggle('active',on);
-}
-holidayToggle.addEventListener('click',()=>{
- const on=localStorage.getItem('uermHolidayLayer')!=='off';
- localStorage.setItem('uermHolidayLayer',on?'off':'on');
- syncHolidayToggle();render();
-});
-syncHolidayToggle();
-
-let resizeTimer;
-window.addEventListener('resize',()=>{
-  clearTimeout(resizeTimer);
-  resizeTimer=setTimeout(()=>{ if(level!==2) render(); },120);
-});
-
-render();
-updateNextLECountdown();
-setInterval(()=>{
-  updateNextLECountdown();
-  const old=window.__timelineToday;
-  const now=localToday();
-  if(old!==now) render();
-  else {
-    // Re-render only the current-time marker so it moves smoothly through the day.
-    const line=document.querySelector('.today-line');
-    const tag=document.querySelector('.today-tag');
-    const today=localToday();
-    if(line && tag && today>='2026-07-01' && today<='2027-06-05'){
-      const x=index(today)*DAY + localTimeFraction()*DAY;
-      line.style.left=x+'px';tag.style.left=x+'px';
-    }
-  }
-  window.__timelineToday=localToday();
-},1000);
-window.__timelineToday=localToday();
-window.uermCalendarRefresh=render;
-window.uermCalendarJumpToday=()=>jump('TODAY','auto');
-// Land on today by default as soon as the calendar first renders.
-jump('TODAY','auto');
-})();
-
 // ---- Wide-frame toggle for Folders & Calendar ----
 // These two screens (LE/Topic-Cards/Samplex sub-folder tiles, the set list,
 // and the calendar's horizontally-scrolling exam timeline) read as cramped
@@ -19075,7 +18944,7 @@ jump('TODAY','auto');
 (function(){
   const frame = document.querySelector('.frame.wide');
   if(!frame) return;
-  const wideViewIds = ['folderView', 'calendarView'];
+  const wideViewIds = ['folderView'];
   function syncFrameWidth(){
     const anyVisible = wideViewIds.some(id => {
       const el = document.getElementById(id);
@@ -19180,7 +19049,7 @@ jump('TODAY','auto');
 </div>
 
 <style id="final-spanish-cleanup">
-  #tabAlgoBtn,#algoInputWrap,#profSearchToggleBtn{display:none!important}
+  #tabAlgoBtn,#algoInputWrap,#tabSentenceBtn,#sentenceInputWrap{display:none!important}
   #setup .input-tabs{grid-template-columns:1fr!important}
 
   /* Dark mode is available from the floating toolbar and uses a dedicated
@@ -19251,7 +19120,7 @@ jump('TODAY','auto');
     if(header) header.textContent='🇪🇸';
     const h1 = document.querySelector('.header h1');
     if(h1) h1.textContent='Español B2 · España';
-    document.querySelectorAll('[data-act="publish"],#petView,#calendarView,#communityView,#caseGame,#studyPetOverlay,#floatingPet').forEach(el=>el.setAttribute('aria-hidden','true'));
+    document.querySelectorAll('[data-act="publish"],#petView,#communityView,#caseGame,#sentenceGame,#studyPetOverlay,#floatingPet').forEach(el=>el.setAttribute('aria-hidden','true'));
   });
 </script>
 </body>
