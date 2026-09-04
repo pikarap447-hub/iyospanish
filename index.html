@@ -4912,7 +4912,7 @@ body:before{
         <div class="input-tabs" id="inputTabs">
           <button type="button" class="input-tab active" id="tabManualBtn">✍️ Cards</button>
           <button type="button" class="input-tab" id="tabAlgoBtn">🧬 Pegar ejercicio</button>
-          <button type="button" class="input-tab" id="tabSentenceBtn">🧩 Sentence builder</button>
+          <button type="button" class="input-tab" id="tabSentenceBtn">🧩 Ordenar frases</button>
         </div>
 
         <div id="algoInputWrap" class="hidden">
@@ -4980,21 +4980,21 @@ OUTCOME: NEG
 
         <div id="sentenceInputWrap" class="hidden">
           <div class="hint" style="margin-top:0;">
-            Paste a <strong>SENTENCE_FORMAT</strong> set below to play a word-order builder: each sentence gives the learner a cue and a scrambled set of tiles (words, fixed multi-word chunks, or punctuation) to tap back into the right order. Progress and score sync across your devices just like the rest of your sets.
+            Pega un conjunto en formato <strong>SENTENCE_FORMAT</strong> aquí abajo para jugar a ordenar frases: cada frase te da una pista y un conjunto de fichas desordenadas (palabras, bloques fijos de varias palabras o signos de puntuación) que debes tocar en el orden correcto. El progreso y la puntuación se sincronizan entre tus dispositivos igual que el resto de tus mazos.
           </div>
-          <textarea id="sentenceTextInput" placeholder="Paste a SENTENCE_FORMAT set here…"></textarea>
+          <textarea id="sentenceTextInput" placeholder="Pega aquí un conjunto en formato SENTENCE_FORMAT…"></textarea>
           <div class="row" style="justify-content:space-between; margin-top:10px; flex-wrap:wrap; gap:8px;">
-            <button class="btn-primary" id="parseSentenceBtn">🧩 Start sentence builder</button>
+            <button class="btn-primary" id="parseSentenceBtn">🧩 Comenzar</button>
             <span id="sentenceParseStatus" style="font-size:12.5px; font-weight:600;"></span>
           </div>
 
-          <label class="field-label" style="margin-top:22px;">Don't have a sentence set handy?</label>
+          <label class="field-label" style="margin-top:22px;">¿No tienes un conjunto de frases a mano?</label>
           <div class="hint" style="margin-top:0;">
-            Copy a ready-made prompt to paste into ChatGPT, Claude, or any LLM, along with the grammar point or source material you want practiced — it explains the SENTENCE_FORMAT v1.0 spec so the set it writes back can be pasted straight into the box above.
+            Copia un mensaje ya preparado para pegar en ChatGPT, Claude o cualquier LLM, junto con el punto gramatical o el material que quieras practicar — explica la especificación SENTENCE_FORMAT v1.0 para que el conjunto que te devuelva puedas pegarlo directamente en el cuadro de arriba.
           </div>
-          <input type="text" class="text-field" id="sentencePromptTopic" placeholder="Describe the grammar point/topic here, and how many sentences you want">
+          <input type="text" class="text-field" id="sentencePromptTopic" placeholder="Describe aquí el punto gramatical o tema, y cuántas frases quieres">
           <div class="row" style="justify-content:flex-start; margin-top:10px;">
-            <button class="btn-ghost" id="copySentencePromptBtn">📋 Copy prompt for an LLM</button>
+            <button class="btn-ghost" id="copySentencePromptBtn">📋 Copiar mensaje para un LLM</button>
           </div>
         </div>
 
@@ -5261,9 +5261,9 @@ OUTCOME: NEG
 
       <!-- SENTENCE BUILDER (SENTENCE_FORMAT v1.0 word-order game) -->
       <div id="sentenceGame" class="hidden">
-        <button class="back-link" id="sentenceGameBackBtn">← End set</button>
+        <button class="back-link" id="sentenceGameBackBtn">← Terminar mazo</button>
         <div class="index-no-row">
-          <div class="index-no" id="sentenceGameTitle">SENTENCE BUILDER</div>
+          <div class="index-no" id="sentenceGameTitle">ORDENAR FRASES</div>
           <span class="score-tag" id="sentenceScoreTag">0 correct · 0 missed</span>
         </div>
         <div class="hint" id="sentenceIndexTag" style="margin-top:-6px;"></div>
@@ -5277,7 +5277,7 @@ OUTCOME: NEG
         <div id="sentenceEndWrap" class="hidden">
           <div class="case-end" id="sentenceEndMsg"></div>
           <div class="footer-row" style="margin-top:16px; justify-content:flex-start; gap:10px;">
-            <button class="btn-primary" id="sentenceRestartBtn">↻ Restart set</button>
+            <button class="btn-primary" id="sentenceRestartBtn">↻ Reiniciar mazo</button>
             <button class="btn-ghost" id="sentenceExitBtn">Volver a los mazos</button>
           </div>
         </div>
@@ -12349,7 +12349,7 @@ function renderCaseControls(){
     const hbtn = document.createElement('button');
     hbtn.type = 'button';
     hbtn.className = 'case-pill hint-pill';
-    hbtn.textContent = '💡 Need a hint?';
+    hbtn.textContent = '💡 ¿Necesitas una pista?';
     hbtn.onclick = () => {
       caseHintShown = true;
       caseLog.push({cls:'hint', tag:'Hint', text: node.fields.HINT});
@@ -12676,7 +12676,7 @@ function startSentenceGame(raw, setId, name, returnTo){
 
 function updateSentenceScoreTag(){
   const tag = $('sentenceScoreTag');
-  if(tag) tag.textContent = `${sentenceScore} correct · ${sentenceMistakes} missed`;
+  if(tag) tag.textContent = `${sentenceScore} correctas · ${sentenceMistakes} falladas`;
 }
 
 function enterSentence(idx){
@@ -12696,7 +12696,7 @@ function enterSentence(idx){
   sentencePlaced = [];
   sentenceChecked = false;
   sentenceHintShown = false;
-  $('sentenceIndexTag').textContent = `Sentence ${idx + 1} of ${sentenceData.sentences.length}`;
+  $('sentenceIndexTag').textContent = `Frase ${idx + 1} de ${sentenceData.sentences.length}`;
   updateSentenceScoreTag();
   renderSentenceGame();
   persistSentenceProgress();
@@ -12719,7 +12719,7 @@ function renderSentenceGame(){
     if(sentenceChecked && filled) btn.classList.add(sentencePlaced[slotIdx] === slotIdx ? 'correct' : 'wrong');
     btn.textContent = filled ? s.tiles[sentencePlaced[slotIdx]] : '';
     btn.disabled = sentenceChecked || !filled;
-    btn.title = filled && !sentenceChecked ? 'Tap to remove' : '';
+    btn.title = filled && !sentenceChecked ? 'Toca para quitar' : '';
     btn.onclick = () => {
       if(sentenceChecked || !filled) return;
       sentencePlaced.splice(slotIdx, 1);
@@ -12752,7 +12752,7 @@ function renderSentenceGame(){
     const hbtn = document.createElement('button');
     hbtn.type = 'button';
     hbtn.className = 'case-pill hint-pill';
-    hbtn.textContent = '💡 Need a hint?';
+    hbtn.textContent = '💡 ¿Necesitas una pista?';
     hbtn.onclick = () => { sentenceHintShown = true; renderSentenceGame(); };
     hintWrap.appendChild(hbtn);
   } else if(s.hint && sentenceHintShown){
@@ -12769,7 +12769,7 @@ function renderSentenceGame(){
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'btn-primary';
-    btn.textContent = 'Check';
+    btn.textContent = 'Comprobar';
     btn.disabled = !allFilled;
     btn.onclick = () => checkSentence();
     actionsWrap.appendChild(btn);
@@ -12779,13 +12779,13 @@ function renderSentenceGame(){
     msg.className = 'hint';
     msg.style.margin = '0 0 12px';
     msg.innerHTML = allCorrect
-      ? `<strong style="color:var(--green);">✅ Correct!</strong>`
-      : `<strong style="color:var(--red);">Not quite.</strong> Correct order: ${escapeHtml(joinSentenceTiles(s.tiles))}`;
+      ? `<strong style="color:var(--green);">✅ ¡Correcto!</strong>`
+      : `<strong style="color:var(--red);">No del todo.</strong> Orden correcto: ${escapeHtml(joinSentenceTiles(s.tiles))}`;
     actionsWrap.appendChild(msg);
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'btn-primary';
-    btn.textContent = sentenceIndex + 1 < sentenceData.sentences.length ? 'Next sentence →' : 'Finish';
+    btn.textContent = sentenceIndex + 1 < sentenceData.sentences.length ? 'Siguiente frase →' : 'Terminar';
     btn.onclick = () => {
       if(sentenceIndex + 1 < sentenceData.sentences.length) enterSentence(sentenceIndex + 1);
       else endSentenceGame();
@@ -12807,8 +12807,8 @@ function endSentenceGame(){
   $('sentencePlayWrap').classList.add('hidden');
   $('sentenceEndWrap').classList.remove('hidden');
   const total = sentenceData.sentences.length;
-  const badge = sentenceScore === total ? '✅ Perfect run' : (sentenceMistakes === 0 ? '✅ Set complete' : '🟡 Set complete');
-  $('sentenceEndMsg').innerHTML = `<div class="case-end-badge">${badge}</div><div style="margin:12px 0;">You got <strong>${sentenceScore} / ${total}</strong> right on the first try.</div>`;
+  const badge = sentenceScore === total ? '✅ Ronda perfecta' : (sentenceMistakes === 0 ? '✅ Mazo completado' : '🟡 Mazo completado');
+  $('sentenceEndMsg').innerHTML = `<div class="case-end-badge">${badge}</div><div style="margin:12px 0;">Acertaste <strong>${sentenceScore} / ${total}</strong> a la primera.</div>`;
   clearSentenceProgress(sentenceProgressSetId);
 }
 
@@ -12830,7 +12830,7 @@ $('sentenceRestartBtn').onclick = () => {
 $('sentenceExitBtn').onclick = () => exitSentenceGame();
 $('sentenceGameBackBtn').onclick = () => {
   const untouched = sentenceIndex === 0 && sentenceScore === 0 && sentenceMistakes === 0 && !sentenceChecked;
-  if(untouched || confirm('End this set and go back?')) exitSentenceGame();
+  if(untouched || confirm('¿Terminar este mazo y volver?')) exitSentenceGame();
 };
 
 /* ---- Master prompt users can paste into any LLM to generate a
@@ -19049,7 +19049,7 @@ updateNavActiveState();
 </div>
 
 <style id="final-spanish-cleanup">
-  #tabAlgoBtn,#algoInputWrap,#tabSentenceBtn,#sentenceInputWrap{display:none!important}
+  #tabAlgoBtn,#algoInputWrap{display:none!important}
   #setup .input-tabs{grid-template-columns:1fr!important}
 
   /* Dark mode is available from the floating toolbar and uses a dedicated
