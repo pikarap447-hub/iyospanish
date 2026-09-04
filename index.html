@@ -18381,7 +18381,14 @@ updateNavActiveState();
  const nativeFsSupported = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
  let pseudoFsOn = false;
  function isFullscreen(){
-   return nativeFsSupported ? !!(document.fullscreenElement || document.webkitFullscreenElement) : pseudoFsOn;
+   // Check native state first regardless of nativeFsSupported, then fall
+   // back to the pseudo flag. This matters because we now fall back to
+   // pseudo-fullscreen mid-flow (see fsBtn.onclick) even on browsers where
+   // requestFullscreen exists but silently fails/rejects (e.g. in-app
+   // browsers and webviews that block the Fullscreen API via Permissions
+   // Policy) — the old version kept trusting nativeFsSupported and so
+   // never noticed the fallback had kicked in.
+   return !!(document.fullscreenElement || document.webkitFullscreenElement) || pseudoFsOn;
  }
  function updateFsBtn(){
    fsBtn.textContent = isFullscreen() ? '⤢' : '⛶';
@@ -18402,12 +18409,31 @@ updateNavActiveState();
    updateFsBtn();
  }
  fsBtn.onclick = function(){
+   // Exiting: leave whichever mode is actually active, not whichever mode
+   // nativeFsSupported implies (they can disagree after a fallback).
+   if(isFullscreen()){
+     if(document.fullscreenElement || document.webkitFullscreenElement){
+       (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
+     } else {
+       exitPseudoFullscreen();
+     }
+     return;
+   }
+   // Entering: try the native API first if it exists, but don't trust it
+   // blindly — some in-app browsers/webviews expose requestFullscreen yet
+   // block it (Permissions Policy), so the call throws synchronously or
+   // its promise rejects with no visible effect. Catch both and fall back
+   // to pseudo-fullscreen so the button always does *something*.
    if(nativeFsSupported){
      const el = document.documentElement;
-     if(!isFullscreen()) (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el);
-     else (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
+     try{
+       const req = (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el);
+       if(req && typeof req.catch === 'function') req.catch(enterPseudoFullscreen);
+     } catch(err){
+       enterPseudoFullscreen();
+     }
    } else {
-     isFullscreen() ? exitPseudoFullscreen() : enterPseudoFullscreen();
+     enterPseudoFullscreen();
    }
  };
  document.addEventListener('fullscreenchange', updateFsBtn);
