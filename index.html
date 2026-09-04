@@ -16643,6 +16643,107 @@ document.addEventListener('keydown', e => {
 </div>
 
 <script>
+/* ===== Fullscreen toggle wiring — deliberately its own independent
+   DOMContentLoaded listener, not folded into the big shared one below.
+   Reasoning: this button was reported as doing *nothing at all* (icon
+   never even changed) on iPad/Mac. That symptom — not "wrong visual
+   result" but "the click handler plainly never ran" — points to an
+   uncaught error earlier in whatever function was setting it up, which
+   silently kills every statement after it in that same function call
+   (pet-sprite loading, gamepad polling, etc. all live in one large
+   handler elsewhere on this page). Giving this its own scope, wrapped
+   in try/catch, means it wires up no matter what else on the page
+   throws. ===== */
+(function(){
+try{
+  var fsBtn = document.getElementById('fullscreenToggle');
+  if(!fsBtn) return;
+  var nativeFsSupported = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
+  var pseudoFsOn = false;
+  function isFullscreen(){
+    // Check native state first regardless of nativeFsSupported, then fall
+    // back to the pseudo flag. This matters because we fall back to
+    // pseudo-fullscreen mid-flow (see onclick below) even on browsers
+    // where requestFullscreen exists but silently fails/rejects (e.g.
+    // in-app browsers and webviews that block the Fullscreen API via
+    // Permissions Policy) — trusting nativeFsSupported alone would miss
+    // that the fallback had kicked in.
+    return !!(document.fullscreenElement || document.webkitFullscreenElement) || pseudoFsOn;
+  }
+  function updateFsBtn(){
+    try{
+      fsBtn.textContent = isFullscreen() ? '⤢' : '⛶';
+      fsBtn.title = isFullscreen() ? 'Exit full screen' : 'Enter full screen';
+    }catch(e){}
+  }
+  function enterPseudoFullscreen(){
+    document.documentElement.classList.add('pseudo-fullscreen');
+    pseudoFsOn = true;
+    // Needs a frame for the taller layout to lay out before the scroll
+    // trick can push the address bar off-screen (mobile Safari only;
+    // harmless no-op elsewhere).
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ window.scrollTo(0, 1); }); });
+    updateFsBtn();
+  }
+  function exitPseudoFullscreen(){
+    document.documentElement.classList.remove('pseudo-fullscreen');
+    pseudoFsOn = false;
+    window.scrollTo(0, 0);
+    updateFsBtn();
+  }
+  function onFsClick(){
+    try{
+      // Exiting: leave whichever mode is actually active, not whichever
+      // mode nativeFsSupported implies (they can disagree after a fallback).
+      if(isFullscreen()){
+        if(document.fullscreenElement || document.webkitFullscreenElement){
+          (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
+        } else {
+          exitPseudoFullscreen();
+        }
+        return;
+      }
+      // Entering: try the native API first if it exists, but don't trust
+      // it blindly — Safari on Mac/iPad has real per-page quirks where
+      // requestFullscreen can throw synchronously (e.g. called from a
+      // stale/async context) or its promise can reject with no visible
+      // effect. Catch both and fall back to pseudo-fullscreen so the
+      // button always does *something* visible.
+      if(nativeFsSupported){
+        var el = document.documentElement;
+        try{
+          var req = (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el);
+          if(req && typeof req.catch === 'function') req.catch(enterPseudoFullscreen);
+        } catch(err){
+          enterPseudoFullscreen();
+        }
+      } else {
+        enterPseudoFullscreen();
+      }
+    }catch(e){
+      // Absolute last resort: never let the button do literally nothing.
+      try{ enterPseudoFullscreen(); }catch(e2){}
+    }
+  }
+  fsBtn.addEventListener('click', onFsClick);
+  document.addEventListener('fullscreenchange', updateFsBtn);
+  document.addEventListener('webkitfullscreenchange', updateFsBtn);
+  // The address bar can reappear on its own (scroll-up gesture, rotation),
+  // so re-run the hide trick whenever that happens while pseudo mode is on.
+  window.addEventListener('scroll', function(){
+    if(pseudoFsOn && window.scrollY < 1) window.scrollTo(0, 1);
+  }, {passive:true});
+  window.addEventListener('orientationchange', function(){
+    if(pseudoFsOn) requestAnimationFrame(function(){ requestAnimationFrame(function(){ window.scrollTo(0, 1); }); });
+  });
+  updateFsBtn();
+}catch(e){
+  console.error('Fullscreen toggle setup failed:', e);
+}
+})();
+</script>
+
+<script>
 /* ===== JS-04 NAVIGATION / SCREEN CONTROL (cont'd): zoom/scale toolbar — not its own category in the original map, grouped here since it's page-level chrome, not a theme/quiz/data concern ===== */
 document.addEventListener('DOMContentLoaded',function(){
  let scale=parseFloat(lsGet('esp2ReviewScale')||'1');
@@ -18369,84 +18470,6 @@ function isDevModeEnabled(){return lsGet('esp2ReviewDevMode')==='1'}
   if(dogSheet.complete)initializePetSprite();
   petDecayTimer=setInterval(petTick,5000);
 updateNavActiveState();
- /* ---- Full screen mode ----
-    iOS Safari (regular tabs, not installed-to-homescreen) doesn't
-    implement the Fullscreen API for arbitrary elements at all — Apple
-    limits requestFullscreen to <video>. Calling it there is a silent
-    no-op, which is why the button did nothing. Where the real API is
-    missing, fall back to a "pseudo fullscreen" that hides Safari's
-    address/toolbar chrome via the standard scroll trick and pins the
-    app to fill the freed space instead. */
- const fsBtn = document.getElementById('fullscreenToggle');
- const nativeFsSupported = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
- let pseudoFsOn = false;
- function isFullscreen(){
-   // Check native state first regardless of nativeFsSupported, then fall
-   // back to the pseudo flag. This matters because we now fall back to
-   // pseudo-fullscreen mid-flow (see fsBtn.onclick) even on browsers where
-   // requestFullscreen exists but silently fails/rejects (e.g. in-app
-   // browsers and webviews that block the Fullscreen API via Permissions
-   // Policy) — the old version kept trusting nativeFsSupported and so
-   // never noticed the fallback had kicked in.
-   return !!(document.fullscreenElement || document.webkitFullscreenElement) || pseudoFsOn;
- }
- function updateFsBtn(){
-   fsBtn.textContent = isFullscreen() ? '⤢' : '⛶';
-   fsBtn.title = isFullscreen() ? 'Exit full screen' : 'Enter full screen';
- }
- function enterPseudoFullscreen(){
-   document.documentElement.classList.add('pseudo-fullscreen');
-   pseudoFsOn = true;
-   // Needs a frame for the taller layout to lay out before the scroll
-   // trick can push the address bar off-screen.
-   requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, 1)));
-   updateFsBtn();
- }
- function exitPseudoFullscreen(){
-   document.documentElement.classList.remove('pseudo-fullscreen');
-   pseudoFsOn = false;
-   window.scrollTo(0, 0);
-   updateFsBtn();
- }
- fsBtn.onclick = function(){
-   // Exiting: leave whichever mode is actually active, not whichever mode
-   // nativeFsSupported implies (they can disagree after a fallback).
-   if(isFullscreen()){
-     if(document.fullscreenElement || document.webkitFullscreenElement){
-       (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
-     } else {
-       exitPseudoFullscreen();
-     }
-     return;
-   }
-   // Entering: try the native API first if it exists, but don't trust it
-   // blindly — some in-app browsers/webviews expose requestFullscreen yet
-   // block it (Permissions Policy), so the call throws synchronously or
-   // its promise rejects with no visible effect. Catch both and fall back
-   // to pseudo-fullscreen so the button always does *something*.
-   if(nativeFsSupported){
-     const el = document.documentElement;
-     try{
-       const req = (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el);
-       if(req && typeof req.catch === 'function') req.catch(enterPseudoFullscreen);
-     } catch(err){
-       enterPseudoFullscreen();
-     }
-   } else {
-     enterPseudoFullscreen();
-   }
- };
- document.addEventListener('fullscreenchange', updateFsBtn);
- document.addEventListener('webkitfullscreenchange', updateFsBtn);
- // The address bar can reappear on its own (scroll-up gesture, rotation),
- // so re-run the hide trick whenever that happens while pseudo mode is on.
- window.addEventListener('scroll', () => {
-   if(pseudoFsOn && window.scrollY < 1) window.scrollTo(0, 1);
- }, {passive:true});
- window.addEventListener('orientationchange', () => {
-   if(pseudoFsOn) requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, 1)));
- });
- updateFsBtn();
 });
 
 /* ---- Floating pomodoro/focus timer -----------------------------------
