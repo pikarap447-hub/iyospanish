@@ -12702,7 +12702,7 @@ function enterSentence(idx){
   persistSentenceProgress();
 }
 
-function renderSentenceGame(){
+function renderSentenceGame(focusHint){
   const s = sentenceData.sentences[sentenceIndex];
 
   const promptEl = $('sentencePrompt');
@@ -12722,8 +12722,15 @@ function renderSentenceGame(){
     btn.title = filled && !sentenceChecked ? 'Toca para quitar' : '';
     btn.onclick = () => {
       if(sentenceChecked || !filled) return;
+      const removedTileIdx = sentencePlaced[slotIdx];
       sentencePlaced.splice(slotIdx, 1);
-      renderSentenceGame();
+      // Re-render, then hand focus to the bank tile the removed word
+      // reappears as — see restoreSentenceFocus below for why this needs
+      // explicit handling at all (every pick/remove tears down and
+      // rebuilds the whole tile list, so the previously-focused button no
+      // longer exists and focus silently falls back to document.body,
+      // dropping the controller's gp-focus highlight).
+      renderSentenceGame({type:'bankTile', tileIdx: removedTileIdx});
     };
     slotsWrap.appendChild(btn);
   });
@@ -12739,8 +12746,9 @@ function renderSentenceGame(){
     btn.disabled = sentenceChecked;
     btn.onclick = () => {
       if(sentenceChecked || sentencePlaced.length >= s.tiles.length) return;
+      const bankIdx = Array.from(bankWrap.children).indexOf(btn);
       sentencePlaced.push(tileIdx);
-      renderSentenceGame();
+      renderSentenceGame({type:'bankIndex', index: bankIdx});
       persistSentenceProgress();
     };
     bankWrap.appendChild(btn);
@@ -12792,6 +12800,39 @@ function renderSentenceGame(){
     };
     actionsWrap.appendChild(btn);
   }
+
+  restoreSentenceFocus(focusHint, bankWrap, actionsWrap);
+}
+
+// Every pick/remove in the sentence-builder game calls renderSentenceGame(),
+// which wipes and rebuilds the slot/bank DOM from scratch — so whichever
+// tile a controller had focused no longer exists afterward, and focus
+// silently falls back to document.body. That's invisible with a mouse
+// (hover doesn't need a "current" element) but for a controller it means
+// the gp-focus highlight just vanishes on every pick, same underlying issue
+// as the quiz-answer fix above. This restores focus to the most useful
+// still-existing target after each render instead of leaving it on body.
+function restoreSentenceFocus(focusHint, bankWrap, actionsWrap){
+  if(!focusHint) return;
+  const bankTiles = Array.from(bankWrap.children);
+  let target = null;
+  if(focusHint.type === 'bankTile'){
+    // A tile was removed from a slot back into the bank — focus that same
+    // tile where it reappeared, so pressing confirm can place it right back.
+    const idx = sentenceBank.filter(ti => !sentencePlaced.includes(ti)).indexOf(focusHint.tileIdx);
+    if(idx !== -1) target = bankTiles[idx];
+  } else if(focusHint.type === 'bankIndex'){
+    // A tile was placed from the bank — the next tile slides into the same
+    // visual slot the picked one just left, so land focus there to make
+    // picking a run of tiles a single repeated "confirm" press.
+    target = bankTiles[Math.min(focusHint.index, bankTiles.length - 1)];
+  }
+  if(!target && bankTiles.length) target = bankTiles[0];
+  if(!target){
+    const actionBtn = actionsWrap.querySelector('button:not(:disabled)');
+    if(actionBtn) target = actionBtn;
+  }
+  if(target) target.focus({preventScroll:true});
 }
 
 function checkSentence(){
