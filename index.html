@@ -16413,7 +16413,20 @@ document.addEventListener('keydown', e => {
         if(idx !== undefined){
           const opts = Array.from(document.querySelectorAll('#optionsList .opt'));
           const optBtn = opts[idx];
-          if(optBtn && !optBtn.disabled) optBtn.click();
+          if(optBtn && !optBtn.disabled){
+            optBtn.click();
+            // Explicitly focus the chosen option so it carries the gp-focus
+            // highlight right away. optBtn.click() focuses it in some
+            // browsers but not reliably in all (notably not guaranteed on
+            // iOS/Safari), so without this the very next directional press
+            // finds document.activeElement isn't a tracked focusable
+            // element and falls back to jumping focus to the first
+            // focusable thing on screen instead of the next option —
+            // requiring a second press to actually move. Focusing here
+            // keeps moveFocus() on the normal "step to the nearest
+            // neighbor" path from the first press.
+            optBtn.focus({preventScroll:true});
+          }
           return;
         }
       } else if(CONFIRM_BUTTONS.includes(i)){
