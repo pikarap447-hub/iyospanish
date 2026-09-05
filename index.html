@@ -642,6 +642,15 @@ transition:background var(--transition-normal), color var(--transition-normal), 
   :focus-visible{ outline:2px solid var(--tile-blue-mid); outline-offset:2px; border-radius:6px; }
   .frame{width:100%; max-width:680px;}
   .frame.wide{max-width:1020px; min-width:0; justify-self:center; width:100%;}
+  /* Desktop and landscape displays should use the space they provide.
+     Keep the frame capped so very wide monitors do not create unreadable
+     line lengths, while phone layouts remain fluid below the breakpoint. */
+  @media (min-width:1000px){
+    .frame.wide{max-width:1440px;}
+  }
+  @media (max-width:720px){
+    .frame.wide{max-width:100%;}
+  }
   /* Folder browsing (LE/Topic-Cards/Samplex sub-folder tiles, the set list)
      benefits from more room than the standard 1020px frame — more
      sub-folder tiles per row. Toggled on/off .frame.wide via the
@@ -4777,6 +4786,20 @@ body:before{
   .vm-set-card strong{display:block;font-size:13px;margin-bottom:3px}
   .vm-set-card small{display:block;color:var(--vm-muted);font-size:11px;margin-bottom:8px}
   .vm-set-card .vm-btn{padding:6px 8px;font-size:11px}
+  .vm-mobile-cards{display:none}
+  .vm-mobile-card{border:1px solid var(--vm-border);border-radius:15px;background:var(--surface);padding:13px;margin-top:9px}
+  .vm-mobile-card.vm-row-review{border-color:var(--vm-bad)}
+  .vm-mobile-card label{display:block;color:var(--vm-muted);font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin:9px 0 4px}
+  .vm-mobile-card input,.vm-mobile-card textarea{width:100%;min-height:0;margin:0;padding:8px;border:1px solid var(--vm-border);border-radius:9px;background:var(--bg);color:var(--text);font:inherit;font-size:13px}
+  .vm-mobile-card textarea{min-height:58px;resize:vertical}
+  .vm-mobile-card-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+  @media(max-width:720px){.vm-table-wrap{display:none}.vm-mobile-cards{display:block}}
+  .vm-game-intro{margin-bottom:14px;padding:20px;border:1px solid var(--vm-border);border-radius:18px;background:var(--surface);text-align:center}
+  .vm-game-intro h3{margin:0 0 4px;font-size:22px}
+  .vm-game-intro p{margin:0 auto 14px;color:var(--vm-muted);font-size:13px;max-width:52ch}
+  .vm-game-intro-meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+  .vm-game-intro-meta span{padding:7px 10px;border-radius:10px;background:var(--bg);color:var(--text);font-size:12px;font-weight:750}
+  .vm-game-intro button:disabled{opacity:.45;cursor:not-allowed}
   .vm-thumb{width:36px;height:36px;object-fit:cover;border-radius:8px;background:var(--bg)}
   .vm-empty{padding:22px;text-align:center;color:var(--vm-muted)}
   .vm-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
@@ -4820,6 +4843,35 @@ body:before{
   #petView,#communityView,
   #settingsMenu [data-page="appearance"],#settingsPage-appearance{display:none !important}
   #themeSwatchRow,#accentRow,#intensitySlider{display:none !important}
+  /* Vocab + topic pages: use the wide desktop canvas and remove shell
+     backdrop pills that compete with the actual content panel. Phones keep
+     the compact, full-width flow. */
+  @media (min-width:900px){
+    .frame.wide:has(#vocabMatchView:not(.hidden)) .community-panel,
+    .frame.wide:has(#profSearchView:not(.hidden)) .community-panel{max-width:1400px;width:100%;}
+  }
+  .frame.wide:has(#vocabMatchView:not(.hidden)) > .tile-border,
+  .frame.wide:has(#profSearchView:not(.hidden)) > .tile-border,
+  .frame.wide:has(#vocabMatchView:not(.hidden)) .header-title,
+  .frame.wide:has(#profSearchView:not(.hidden)) .header-title,
+  .frame.wide:has(#vocabMatchView:not(.hidden)) .sidebar-nav,
+  .frame.wide:has(#profSearchView:not(.hidden)) .sidebar-nav,
+  .frame.wide:has(#vocabMatchView:not(.hidden)) .back-on-photo,
+  .frame.wide:has(#profSearchView:not(.hidden)) .back-on-photo{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+  @media (max-width:720px){
+    .frame.wide:has(#vocabMatchView:not(.hidden)) .community-panel,
+    .frame.wide:has(#profSearchView:not(.hidden)) .community-panel{max-width:100%;width:100%;}
+  }
+  body:has(#vocabMatchView:not(.hidden)) .tile-border,
+  body:has(#profSearchView:not(.hidden)) .tile-border{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important;}
+  .frame.wide:has(#vocabMatchView:not(.hidden)) > .card,
+  .frame.wide:has(#profSearchView:not(.hidden)) > .card{background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
+  .frame.wide:has(#vocabMatchView:not(.hidden)) > .card > .card-inner,
+  .frame.wide:has(#profSearchView:not(.hidden)) > .card > .card-inner{padding-top:0!important;}
+  .frame.wide:has(#vocabMatchView:not(.hidden)) > .header,
+  .frame.wide:has(#profSearchView:not(.hidden)) > .header{margin-bottom:0!important;}
+  .frame.wide:has(#vocabMatchView:not(.hidden)) .row:has(.back-on-photo),
+  .frame.wide:has(#profSearchView:not(.hidden)) .row:has(.back-on-photo){margin-bottom:4px!important;}
 </style>
 
 </head>
@@ -4856,7 +4908,6 @@ body:before{
     </nav>
   </div>
 
-  <div class="tile-border"></div>
   <div class="card">
     <div class="card-inner">
       <!-- VINE BORDER -->
@@ -6285,7 +6336,7 @@ OUTCOME: NEG
             <div class="vm-import-grid">
               <div class="vm-import-card">
                 <h4>🤖 Generate with AI</h4>
-                <p>Describe a topic, copy the prompt into any AI chat, then import the Excel workbook it creates.</p>
+                <p>Describe a topic, copy the prompt into any AI chat, then import the Excel workbook it creates. If it returns a table instead, paste those cells into the grid.</p>
                 <input id="vmPromptTopic" class="vm-select vm-full" type="text" placeholder="Topic (e.g. restaurant vocabulary, B2 idioms)">
                 <div class="vm-row-2">
                   <select id="vmPromptLevel" class="vm-select">
@@ -6308,12 +6359,13 @@ OUTCOME: NEG
               </div>
             </div>
 
-            <div class="vm-setbar"><select id="vmSetSelect" class="vm-select"><option value="__all__">All saved items</option></select><input id="vmSetNameInput" class="vm-select" placeholder="New set name"><button class="vm-btn vm-btn-primary" id="vmSaveSetBtn">Save current set</button><button class="vm-btn" id="vmAddRowBtn">+ Add row</button><button class="vm-btn" id="vmClearTableBtn">Clear table</button></div>
+            <div class="vm-setbar"><select id="vmSetSelect" class="vm-select"><option value="__all__">All saved items</option></select><input id="vmSetNameInput" class="vm-select" placeholder="Name this library"><button class="vm-btn vm-btn-primary" id="vmSaveSetBtn">Save as library</button><button class="vm-btn" id="vmAddRowBtn">+ Add row</button><button class="vm-btn" id="vmClearTableBtn">Clear table</button></div>
             <div class="vm-library-head"><h3 class="vm-panel-h" style="margin:0;">Vocabulary library</h3><span class="vm-count" id="vmLibrarySummary"></span></div>
-            <div class="vm-table-wrap"><table class="vm-table"><thead><tr><th>Word</th><th>Spanish definition</th><th>Sentence (ES)</th><th>Sentence (EN)</th><th>Image</th><th>Set</th><th></th></tr></thead><tbody id="vmLibraryBody"></tbody></table></div>
+            <div class="vm-table-wrap"><table class="vm-table"><thead><tr><th>Word</th><th>Spanish definition</th><th>Sentence (ES)</th><th>Sentence (EN)</th><th>Image</th><th>Set</th><th></th></tr></thead><tbody id="vmLibraryBody"></tbody></table></div><div class="vm-mobile-cards" id="vmMobileCards"></div>
           </section>
 
           <section id="vmGamePanel" class="hidden">
+            <section class="vm-game-intro" id="vmGameIntro"><h3>Ready to study?</h3><p id="vmGameIntroText">Choose a vocabulary set, then start a focused matching round.</p><div class="vm-game-intro-meta"><span id="vmGameIntroSet">All libraries</span><span id="vmGameIntroCount">0 words ready</span><span id="vmGameIntroMode">Word → definition</span><span id="vmGameIntroPairs">8 pairs</span></div><button class="vm-btn vm-btn-primary" id="vmStartGameBtn">Start round</button></section>
             <div class="vm-toolbar">
               <select id="vmGameSetSelect" class="vm-select"><option value="__all__">All saved items</option></select>
               <select id="vmModeSelect" class="vm-select">
@@ -6345,7 +6397,6 @@ OUTCOME: NEG
         </div>
       </div>
 
-  <div class="tile-border bottom"></div>
   </div>
 </div>
 
@@ -9065,6 +9116,16 @@ function vmPlayableVocab(){ return vmVisibleVocab().filter(x=>String(x.word||x.e
 function vmSetItems(value){ if(value==='__all__')return vmVocab; if(value==='__unsorted__')return vmVocab.filter(x=>!String(x.set||x.category||'').trim()); if(vmSavedSets[value])return vmSavedSets[value]; return vmVocab.filter(x=>String(x.set||x.category||'')===value); }
 function vmChooseSet(value){ $('vmSetSelect').value=value; vmRenderLibrary(); }
 function vmStudySet(value){ $('vmSetSelect').value=value; if(vmPlayableVocab().length<2){vmRenderLibrary();alert('This library needs at least 2 complete vocabulary items before it can be studied.');return;} vmShowGamePanel(); }
+function vmRenderGameIntro(){
+  const value=$('vmGameSetSelect')?.value||'__all__', items=vmSetItems(value), ready=items.filter(x=>String(x.word||x.english||'').trim()&&String(x.definition_es||x.spanish||'').trim()).length;
+  $('vmGameIntroSet').textContent=value==='__all__'?'All libraries':value==='__unsorted__'?'Unsorted':value;
+  $('vmGameIntroCount').textContent=`${ready} word${ready===1?'':'s'} ready`;
+  const mode=$('vmModeSelect')?.selectedOptions?.[0]?.textContent?.trim()||'Word → definition';
+  const pairs=$('vmSizeSelect')?.value||'8';
+  $('vmGameIntroMode').textContent=mode; $('vmGameIntroPairs').textContent=`${pairs} pairs`;
+  $('vmGameIntroText').textContent=ready<2?'Complete at least 2 rows in this library before starting.':'Match each word to its Spanish definition, then use the sentence to lock it in context.';
+  $('vmStartGameBtn').disabled=ready<2;
+}
 function vmRenderLibraryNav(){
   const wrap=$('vmSetCards'); if(!wrap)return; wrap.innerHTML=''; const sets=['__all__',...(vmVocab.some(x=>!String(x.set||x.category||'').trim())?['__unsorted__']:[]),...new Set([...Object.keys(vmSavedSets),...vmVocab.map(x=>String(x.set||x.category||'').trim()).filter(Boolean)])];
   sets.forEach(value=>{const items=vmSetItems(value), ready=items.filter(x=>String(x.word||x.english||'').trim()&&String(x.definition_es||x.spanish||'').trim()).length, card=document.createElement('div');card.className='vm-set-card'+(String($('vmSetSelect')?.value||'__all__')===value?' active':'');
@@ -9088,18 +9149,27 @@ function vmHandleSheetPaste(e){
   }
   rows.forEach((values,r)=>{ const item=visible[rowIndex+r]; if(!item)return; values.forEach((value,c)=>{const field=fields[startCol+c];if(field){item[field]=value.trim();}}); item.spanish=item.definition_es; item.english=item.word; item.category=item.set; });
   cell.dataset.vmPasting='true';
-  vmSaveLibrary();
+  vmSaveLibrary(); vmSaveSavedSets();
+}
+function vmRenderMobileCards(items){
+  const wrap=$('vmMobileCards'); if(!wrap)return; wrap.innerHTML='';
+  if(!items.length){wrap.innerHTML='<div class="vm-empty">No working rows here yet. Import a workbook or tap “+ Add row”.</div>';return;}
+  items.slice(0,500).forEach(w=>{const card=document.createElement('div');card.className='vm-mobile-card';if(!(w.word&&w.definition_es))card.classList.add('vm-row-review');
+    const head=document.createElement('div');head.className='vm-mobile-card-head';const title=document.createElement('strong');title.textContent=w.word||'New vocabulary';const del=document.createElement('button');del.className='vm-delete';del.type='button';del.textContent='×';del.title='Delete row';del.onclick=()=>{vmVocab=vmVocab.filter(x=>String(x.id)!==String(w.id));vmSaveLibrary();};head.append(title,del);card.append(head);
+    [['word','Word','input'],['definition_es','Spanish definition','textarea'],['sentence_es','Sentence (ES)','textarea'],['sentence_en','Sentence (EN)','textarea'],['image','Image URL','input'],['set','Set','input']].forEach(([field,label,type])=>{const l=document.createElement('label');l.textContent=label;const el=document.createElement(type);el.value=w[field]||'';el.addEventListener('change',()=>{const item=vmVocab.find(x=>String(x.id)===String(w.id))||Object.values(vmSavedSets).flat().find(x=>String(x.id)===String(w.id));if(item){item[field]=el.value.trim();item.spanish=item.definition_es;item.english=item.word;item.category=item.set;vmSaveLibrary();vmSaveSavedSets();}});card.append(l,el);});wrap.appendChild(card);
+  });
 }
 function vmRenderLibrary(){
   if(!$('vmLibraryCount')) return; // view not built yet on first load
   $('vmLibraryCount').textContent = vmVocab.length;
   vmRenderSetOptions();
   vmRenderLibraryNav();
+  const visible=vmVisibleVocab();
   const reviewCount=vmVocab.filter(x=>!(String(x.word||x.english||'').trim()&&String(x.definition_es||x.spanish||'').trim())).length;
-  $('vmLibrarySummary').innerHTML = vmVisibleVocab().length + ' shown · ' + vmVocab.length + ' total' + (reviewCount ? ` · <span class="vm-review-note">${reviewCount} need review</span>` : '');
+  $('vmLibrarySummary').innerHTML = visible.length + ' shown · ' + vmVocab.length + ' working rows' + (reviewCount ? ` · <span class="vm-review-note">${reviewCount} need review</span>` : '');
   const body = $('vmLibraryBody'); body.innerHTML = '';
-  if(!vmVocab.length){ body.innerHTML = '<tr><td colspan="7" class="vm-empty">No vocabulary yet. Import a cell-based table or add a row.</td></tr>'; return; }
-  vmVisibleVocab().slice(0, 500).forEach(w => {
+  if(!visible.length){ body.innerHTML = '<tr><td colspan="7" class="vm-empty">Working table is empty. Import a workbook or add a row; saved libraries remain available above.</td></tr>'; vmRenderMobileCards([]); return; }
+  visible.slice(0, 500).forEach(w => {
     const tr = document.createElement('tr');
     if(!(String(w.word||w.english||'').trim()&&String(w.definition_es||w.spanish||'').trim())) tr.className='vm-row-review';
     const src = vmImgSrc(w.image);
@@ -9108,12 +9178,13 @@ function vmRenderLibrary(){
     tr.querySelector('.vm-delete').onclick=()=>{vmVocab=vmVocab.filter(x=>String(x.id)!==String(w.id));vmSaveLibrary();};
     body.appendChild(tr);
   });
+  vmRenderMobileCards(visible);
 }
 function vmParseRows(rows){
   return rows.map((r, i) => {
     const x = {}; Object.keys(r).forEach(k => x[vmSlugKey(k)] = r[k]);
     return vmNormalize({...x, id:x.id || ('import-' + Date.now() + '-' + i)});
-  }).filter(x => x.spanish && x.english);
+  }).filter(x => x.word || x.definition_es || x.sentence_es || x.sentence_en || x.image || x.set);
 }
 function vmAddImported(items){
   if(items.length < 1) return {ok: false, count: 0, total: vmVocab.length};
@@ -9206,7 +9277,7 @@ function vmShowGamePanel(){
   if($('vmSetSelect')?.value && $('vmGameSetSelect')) {$('vmGameSetSelect').value=$('vmSetSelect').value;vmGameSetBefore=$('vmGameSetSelect').value;}
   $('vmLibraryPanel').classList.add('hidden'); $('vmGamePanel').classList.remove('hidden');
   $('vmGameTab').classList.add('active'); $('vmLibraryTab').classList.remove('active');
-  vmStartRound();
+  $('vmGameIntro').classList.remove('hidden'); $('vmGameScreen').classList.add('hidden'); $('vmResultsScreen').classList.add('hidden'); vmRenderGameIntro();
 }
 
 function vmPlaceholder(){ const p = document.createElement('span'); p.className = 'vm-placeholder'; p.textContent = '🖼️'; return p; }
@@ -9243,6 +9314,7 @@ function vmStartRound(){
   vmScore=0; vmCombo=0; $('vmScoreEl').textContent=0; $('vmComboEl').textContent=0;
   vmRoundWords = shuffle(pool).slice(0, Math.min(n, pool.length));
   vmA = vmB = null; vmMatched = 0; vmAttempts = 0; vmMistakes = [];
+  $('vmGameIntro').classList.add('hidden');
   $('vmGameScreen').classList.remove('hidden'); $('vmResultsScreen').classList.add('hidden');
   $('vmFeedbackEl').textContent = ''; $('vmFeedbackEl').className = 'vm-feedback'; $('vmSentenceEl')?.classList.add('hidden');
   vmRenderGame(); vmProgress();
@@ -9303,15 +9375,16 @@ function initVocabMatchUI(){
   $('vmGameTab').onclick = vmShowGamePanel;
   $('vmBackLibraryBtn').onclick = vmShowLibraryPanel;
   $('vmSetSelect').onchange = vmRenderLibrary;
-  $('vmGameSetSelect').onchange = e => { if(vmPlayableVocab().length<2){alert('That set needs at least 2 complete vocabulary items.');e.target.value=vmGameSetBefore;return;} vmGameSetBefore=e.target.value;vmStartRound(); };
+  $('vmGameSetSelect').onchange = e => { if(vmPlayableVocab().length<2){alert('That set needs at least 2 complete vocabulary items.');e.target.value=vmGameSetBefore;return;} vmGameSetBefore=e.target.value; if(!$('vmGameIntro').classList.contains('hidden')) vmRenderGameIntro(); else vmStartRound(); };
+  $('vmStartGameBtn').onclick = vmStartRound;
   $('vmLibraryBody').addEventListener('paste', vmHandleSheetPaste);
   $('vmAddRowBtn').onclick = () => { vmVocab.unshift(vmNormalize({id:'vocab-'+Date.now(), word:'', definition_es:'', sentence_es:'', sentence_en:'', image:'', set:$('vmSetSelect').value==='__all__'?'':$('vmSetSelect').value},0)); vmSaveLibrary(); vmRenderLibrary(); };
   $('vmClearTableBtn').onclick = () => { if(confirm('Clear the working vocabulary table? Saved libraries will remain available.')){ vmVocab=[]; $('vmSetSelect').value='__all__'; vmSaveLibrary(); vmFlashStatus($('vmExcelStatus'),'Working table cleared. Saved libraries were kept.','info'); } };
   $('vmSaveSetBtn').onclick = () => {
     const name=($('vmSetNameInput').value||'').trim(); if(!name){vmFlashStatus($('vmExcelStatus'),'Enter a set name first.','err');return;}
     const visible=vmVisibleVocab().filter(x=>String(x.word||x.english||'').trim()&&String(x.definition_es||x.spanish||'').trim());
-    vmSavedSets[name]=visible.map(x=>({...x,set:name,category:name}));
-    visible.forEach(x=>{x.set=name;x.category=name;}); vmSaveLibrary(); vmSaveSavedSets(); $('vmSetNameInput').value=''; vmFlashStatus($('vmExcelStatus'),`✓ Saved ${visible.length} item${visible.length===1?'':'s'} to “${name}”. It will stay available when the table is cleared.`,'ok');
+    const existed=Object.prototype.hasOwnProperty.call(vmSavedSets,name); vmSavedSets[name]=visible.map(x=>({...x,set:name,category:name}));
+    visible.forEach(x=>{x.set=name;x.category=name;}); vmSaveLibrary(); vmSaveSavedSets(); $('vmSetNameInput').value=''; vmFlashStatus($('vmExcelStatus'),`✓ ${existed?'Updated':'Created'} “${name}” with ${visible.length} item${visible.length===1?'':'s'}. It will stay available when the table is cleared.`,'ok',7000);
   };
   $('vmDownloadTemplateBtn').onclick = () => {
     const rows = [['word', 'definition_es', 'sentence_es', 'sentence_en', 'image', 'set'], ['apple', 'fruta roja o verde', 'Como una manzana cada día.', 'I eat an apple every day.', '', 'Food'], ['dog', 'animal doméstico', 'El perro duerme junto a la puerta.', 'The dog sleeps by the door.', '', 'Animals']];
@@ -9324,8 +9397,8 @@ function initVocabMatchUI(){
     try{
       const XLSX = await vmEnsureXlsxLib();
       const data = new Uint8Array(await f.arrayBuffer()), wb = XLSX.read(data, {type: 'array'}), sheet = wb.Sheets[wb.SheetNames[0]], rows = XLSX.utils.sheet_to_json(sheet, {defval: ''});
-      const res = vmAddImported(vmParseRows(rows));
-      if(res.ok) vmFlashStatus($('vmExcelStatus'), `✓ Imported ${res.count} row${res.count === 1 ? '' : 's'} — library now has ${res.total}.`, 'ok');
+      const items=vmParseRows(rows), review=items.filter(x=>!(x.word&&x.definition_es)).length, sets=[...new Set(items.map(x=>x.set).filter(Boolean))], res = vmAddImported(items);
+      if(res.ok) vmFlashStatus($('vmExcelStatus'), `✓ ${res.count} imported · ${review} need review · ${sets.length} set${sets.length===1?'':'s'} detected · ${res.total} total`, review?'info':'ok', 7000);
       else vmFlashStatus($('vmExcelStatus'), 'No valid rows found — check for word/definition_es columns.', 'err');
     }catch(err){ vmFlashStatus($('vmExcelStatus'), 'Could not read the file: ' + err.message, 'err', 6000); }
     e.target.value = '';
@@ -9344,8 +9417,8 @@ function initVocabMatchUI(){
       vmFlashStatus($('vmPromptStatus'), 'Copy was blocked by the browser — it\'s selected below, press Ctrl/Cmd+C.', 'err', 8000);
     });
   };
-  $('vmModeSelect').onchange = vmStartRound;
-  $('vmSizeSelect').onchange = vmStartRound;
+  $('vmModeSelect').onchange = () => $('vmGameIntro').classList.contains('hidden') ? vmStartRound() : vmRenderGameIntro();
+  $('vmSizeSelect').onchange = () => $('vmGameIntro').classList.contains('hidden') ? vmStartRound() : vmRenderGameIntro();
   $('vmNewRoundBtn').onclick = vmStartRound;
   $('vmPlayAgainBtn').onclick = vmStartRound;
 }
