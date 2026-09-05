@@ -4754,6 +4754,29 @@ body:before{
   .vm-table th,.vm-table td{padding:9px 10px;border-bottom:1px solid var(--vm-border);text-align:left;color:var(--text)}
   .vm-table th{font-size:10px;text-transform:uppercase;color:var(--vm-muted);letter-spacing:.06em;background:var(--bg)}
   .vm-table tr:last-child td{border-bottom:0}
+  .vm-table td[contenteditable="true"]{min-width:120px;background:color-mix(in srgb,var(--surface) 88%,var(--spanish-red) 12%);outline:none;cursor:text}
+  .vm-table td[contenteditable="true"]:focus{box-shadow:inset 0 0 0 2px var(--spanish-red)}
+  .vm-table .vm-delete{border:0;background:transparent;color:var(--vm-muted);font-size:17px;cursor:pointer}
+  .vm-table .vm-delete:hover{color:var(--vm-bad)}
+  .vm-setbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+  .vm-setbar .vm-select{flex:1;min-width:180px}
+  .vm-sentence{margin:14px auto 0;max-width:680px;padding:14px 16px;border:1px solid var(--vm-border);border-radius:14px;background:var(--bg);text-align:left}
+  .vm-sentence strong{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--spanish-red);margin-bottom:5px}
+  .vm-sentence p{margin:4px 0;color:var(--text);font-size:15px}
+  .vm-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 16px}
+  .vm-flow-step{padding:10px 11px;border:1px solid var(--vm-border);border-radius:12px;background:var(--bg);font-size:11px;color:var(--vm-muted)}
+  .vm-flow-step b{display:block;color:var(--text);font-size:12px;margin-bottom:2px}
+  .vm-row-review{background:color-mix(in srgb,var(--vm-badbg) 55%,var(--surface))}
+  .vm-review-note{color:var(--vm-bad);font-size:11px;font-weight:750}
+  .vm-library-nav{margin:14px 0 16px;padding:14px;border:1px solid var(--vm-border);border-radius:16px;background:var(--bg)}
+  .vm-library-nav h4{margin:0 0 3px;font-size:14px}
+  .vm-library-nav p{margin:0 0 10px;color:var(--vm-muted);font-size:12px}
+  .vm-set-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+  .vm-set-card{border:1px solid var(--vm-border);border-radius:12px;background:var(--surface);padding:11px;text-align:left;color:var(--text);cursor:pointer}
+  .vm-set-card:hover,.vm-set-card.active{border-color:var(--spanish-red);box-shadow:0 0 0 2px color-mix(in srgb,var(--spanish-red) 18%,transparent)}
+  .vm-set-card strong{display:block;font-size:13px;margin-bottom:3px}
+  .vm-set-card small{display:block;color:var(--vm-muted);font-size:11px;margin-bottom:8px}
+  .vm-set-card .vm-btn{padding:6px 8px;font-size:11px}
   .vm-thumb{width:36px;height:36px;object-fit:cover;border-radius:8px;background:var(--bg)}
   .vm-empty{padding:22px;text-align:center;color:var(--vm-muted)}
   .vm-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
@@ -6240,7 +6263,7 @@ OUTCOME: NEG
             <div>
               <div class="vm-eyebrow">Vocab · Library + Match</div>
               <h2 class="vm-h1">Vocab Match</h2>
-              <div class="vm-subtitle">Paste from Excel or import a file. Saved with the rest of your study data, so it syncs across devices too.</div>
+              <div class="vm-subtitle">Enter vocabulary directly in the cells, paste copied ranges from Excel or Sheets, or import a file. Saved with the rest of your study data.</div>
             </div>
             <div class="vm-stats">
               <div class="vm-stat"><b id="vmLibraryCount">0</b><span>Words</span></div>
@@ -6255,12 +6278,14 @@ OUTCOME: NEG
           </nav>
 
           <section id="vmLibraryPanel" class="vm-panel">
-            <h3 class="vm-panel-h">Add vocabulary</h3>
-            <p class="vm-panel-p">All three feed the same library, which is saved locally and synced to the cloud like your other study data.</p>
+            <h3 class="vm-panel-h">Build your vocabulary sets</h3>
+            <p class="vm-panel-p">Import one row per item, edit any cell directly, and save the set for practice later.</p>
+            <div class="vm-flow"><div class="vm-flow-step"><b>1 · Import</b>Upload an Excel file</div><div class="vm-flow-step"><b>2 · Review</b>Fill or edit cells</div><div class="vm-flow-step"><b>3 · Save set</b>Name your group</div><div class="vm-flow-step"><b>4 · Practice</b>Choose a set and play</div></div>
+            <div class="vm-library-nav"><h4>Choose what to study</h4><p>Pick a library below to review its words or start a game with only that set.</p><div class="vm-set-cards" id="vmSetCards"></div></div>
             <div class="vm-import-grid">
               <div class="vm-import-card">
                 <h4>🤖 Generate with AI</h4>
-                <p>Describe a topic, copy the prompt into any AI chat, then paste its reply into the box on the right.</p>
+                <p>Describe a topic, copy the prompt into any AI chat, then import the Excel workbook it creates.</p>
                 <input id="vmPromptTopic" class="vm-select vm-full" type="text" placeholder="Topic (e.g. restaurant vocabulary, B2 idioms)">
                 <div class="vm-row-2">
                   <select id="vmPromptLevel" class="vm-select">
@@ -6274,28 +6299,23 @@ OUTCOME: NEG
                 <div class="vm-note" id="vmPromptStatus"></div>
               </div>
               <div class="vm-import-card">
-                <h4>📋 Paste from Excel or AI reply</h4>
-                <p>Paste cells from Excel, or the reply you got from an AI chat. Tabs, commas, and line breaks are detected automatically.</p>
-                <textarea id="vmPasteBox" class="vm-textarea" placeholder="id&#9;spanish&#9;english&#9;image&#9;category&#9;level&#10;001&#9;la manzana&#9;apple&#9;https://...&#9;Food&#9;A2"></textarea>
-                <div class="vm-actions"><button class="vm-btn vm-btn-primary" id="vmPasteImportBtn">Import Pasted Cells</button><button class="vm-btn" id="vmClearPasteBtn">Clear</button></div>
-                <div class="vm-note" id="vmPasteStatus"></div>
-              </div>
-              <div class="vm-import-card">
                 <h4>📁 Import Excel</h4>
                 <p>Upload <b>.xlsx</b>, <b>.xls</b>, or <b>.csv</b>. The first sheet is used.</p>
                 <input id="vmExcelInput" type="file" accept=".xlsx,.xls,.csv">
-                <div class="vm-actions"><button class="vm-btn" id="vmDownloadTemplateBtn">Download Template</button><button class="vm-btn" id="vmClearLibraryBtn">Clear Library</button></div>
-                <div class="vm-note">Recommended columns: <b>id, spanish, english, image, category, level</b>.</div>
+                <div class="vm-actions"><button class="vm-btn" id="vmDownloadTemplateBtn">Download Template</button></div>
+                <div class="vm-note">Recommended columns: <b>word, definition_es, sentence_es, sentence_en, image, set</b>.</div>
                 <div class="vm-note" id="vmExcelStatus"></div>
               </div>
             </div>
 
+            <div class="vm-setbar"><select id="vmSetSelect" class="vm-select"><option value="__all__">All saved items</option></select><input id="vmSetNameInput" class="vm-select" placeholder="New set name"><button class="vm-btn vm-btn-primary" id="vmSaveSetBtn">Save current set</button><button class="vm-btn" id="vmAddRowBtn">+ Add row</button><button class="vm-btn" id="vmClearTableBtn">Clear table</button></div>
             <div class="vm-library-head"><h3 class="vm-panel-h" style="margin:0;">Vocabulary library</h3><span class="vm-count" id="vmLibrarySummary"></span></div>
-            <div class="vm-table-wrap"><table class="vm-table"><thead><tr><th>Image</th><th>ID</th><th>Spanish</th><th>English</th><th>Category</th><th>Level</th></tr></thead><tbody id="vmLibraryBody"></tbody></table></div>
+            <div class="vm-table-wrap"><table class="vm-table"><thead><tr><th>Word</th><th>Spanish definition</th><th>Sentence (ES)</th><th>Sentence (EN)</th><th>Image</th><th>Set</th><th></th></tr></thead><tbody id="vmLibraryBody"></tbody></table></div>
           </section>
 
           <section id="vmGamePanel" class="hidden">
             <div class="vm-toolbar">
+              <select id="vmGameSetSelect" class="vm-select"><option value="__all__">All saved items</option></select>
               <select id="vmModeSelect" class="vm-select">
                 <option value="word-meaning">🇪🇸 Word → Meaning</option>
                 <option value="word-picture">🇪🇸 Word → Picture</option>
@@ -6313,6 +6333,7 @@ OUTCOME: NEG
                 <section class="vm-column"><div class="vm-column-title" id="vmRightTitle">Meaning</div><div class="vm-items" id="vmRightItems"></div></section>
               </div>
               <div class="vm-feedback" id="vmFeedbackEl"></div>
+              <div class="vm-sentence hidden" id="vmSentenceEl"><strong>In context</strong><p id="vmSentenceEs"></p><p id="vmSentenceEn" class="vm-muted"></p></div>
               <div class="vm-actions" style="justify-content:center"><button class="vm-btn" id="vmNewRoundBtn">New Round</button></div>
             </div>
             <section class="vm-results hidden" id="vmResultsScreen">
@@ -6557,7 +6578,8 @@ const INTERVENTIONS_KEY = 'esp2Review_interventions_v1'; // pre/post/delayed tar
 // SETS_KEY, so it rides the existing IndexedDB cache + cloud sync +
 // backup/restore system for free instead of needing its own plumbing.
 const VOCAB_KEY = 'esp2Review_vocabLibrary_v1';
-const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY, VOCAB_KEY];
+const VOCAB_SETS_KEY = 'esp2Review_vocabSets_v1';
+const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY, VOCAB_KEY, VOCAB_SETS_KEY];
 // Cloud sync Milestone 2 scope: everything in APP_DATA_KEYS (stats,
 // sessions, case progress, pomodoro, attempts, learning/mastery,
 // interventions) plus LOCAL_SYNC_KEYS (streak, virtual pet, calendar/exams)
@@ -9006,42 +9028,97 @@ const VM_DEMO = [
   {id:'015', spanish:'llamar la atención', english:'to attract attention / stand out', image:'', category:'Expressions', level:'B2'},
   {id:'016', spanish:'estar hecho polvo', english:'to be exhausted', image:'', category:'Idioms', level:'B2'}
 ];
-let vmRoundWords = [], vmA = null, vmB = null, vmMatched = 0, vmScore = 0, vmCombo = 0, vmAttempts = 0, vmMistakes = [];
+let vmRoundWords = [], vmA = null, vmB = null, vmMatched = 0, vmScore = 0, vmCombo = 0, vmAttempts = 0, vmMistakes = [], vmGameSetBefore = '__all__';
+
+function vmNormalize(x, i){
+  const word = String(x.word || x.english || x.en || '').trim();
+  const definition = String(x.definition_es || x.spanish || x.es || x.meaning || '').trim();
+  const set = String(x.set || x.category || '').trim();
+  return {id:String(x.id || ('vocab-' + Date.now() + '-' + i)), word, definition_es:definition,
+    sentence_es:String(x.sentence_es || x.example_es || x.example || '').trim(), sentence_en:String(x.sentence_en || x.example_en || '').trim(),
+    image:String(x.image || x.imageurl || x.picture || x.pictureurl || '').trim(), set, level:String(x.level || '').trim(),
+    spanish:definition, english:word, category:set};
+}
 
 function vmLoadLibrary(){
   try{
     const arr = JSON.parse(appDataCache[VOCAB_KEY] || 'null');
-    return (Array.isArray(arr) && arr.length) ? arr : VM_DEMO.map(x => ({...x}));
-  }catch(e){ return VM_DEMO.map(x => ({...x})); }
+    return (Array.isArray(arr) && arr.length) ? arr.map(vmNormalize) : VM_DEMO.map((x,i) => vmNormalize(x,i));
+  }catch(e){ return VM_DEMO.map((x,i) => vmNormalize(x,i)); }
 }
 let vmVocab = vmLoadLibrary();
+function vmLoadSavedSets(){ try{return JSON.parse(appDataCache[VOCAB_SETS_KEY]||'null')||{};}catch(e){return {};} }
+let vmSavedSets = vmLoadSavedSets();
 function vmSaveLibrary(){ appDataSet(VOCAB_KEY, JSON.stringify(vmVocab)); vmRenderLibrary(); }
+function vmSaveSavedSets(){ appDataSet(VOCAB_SETS_KEY, JSON.stringify(vmSavedSets)); vmRenderLibrary(); }
 function vmSlugKey(x){ return String(x || '').trim().toLowerCase().replace(/[\s_-]+/g, ''); }
 function vmImgSrc(x){ return String(x ?? '').trim(); }
 
+function vmRenderSetOptions(){
+  const sets=[...new Set([...Object.keys(vmSavedSets),...vmVocab.map(x=>String(x.set||x.category||'').trim()).filter(Boolean)])].sort();
+  const hasUnsorted=vmVocab.some(x=>!String(x.set||x.category||'').trim());
+  ['vmSetSelect','vmGameSetSelect'].forEach(id=>{const select=$(id);if(!select)return;const current=select.value;select.innerHTML='<option value="__all__">All saved items</option>'+(hasUnsorted?'<option value="__unsorted__">Unsorted</option>':'')+sets.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');if(sets.includes(current)||current==='__unsorted__'&&hasUnsorted)select.value=current;});
+}
+function vmSelectedSet(){ const gameVisible=!$('vmGamePanel')?.classList.contains('hidden'); return (gameVisible ? $('vmGameSetSelect')?.value : $('vmSetSelect')?.value) || '__all__'; }
+function vmVisibleVocab(){ return vmSetItems(vmSelectedSet()); }
+function vmPlayableVocab(){ return vmVisibleVocab().filter(x=>String(x.word||x.english||'').trim()&&String(x.definition_es||x.spanish||'').trim()); }
+function vmSetItems(value){ if(value==='__all__')return vmVocab; if(value==='__unsorted__')return vmVocab.filter(x=>!String(x.set||x.category||'').trim()); if(vmSavedSets[value])return vmSavedSets[value]; return vmVocab.filter(x=>String(x.set||x.category||'')===value); }
+function vmChooseSet(value){ $('vmSetSelect').value=value; vmRenderLibrary(); }
+function vmStudySet(value){ $('vmSetSelect').value=value; if(vmPlayableVocab().length<2){vmRenderLibrary();alert('This library needs at least 2 complete vocabulary items before it can be studied.');return;} vmShowGamePanel(); }
+function vmRenderLibraryNav(){
+  const wrap=$('vmSetCards'); if(!wrap)return; wrap.innerHTML=''; const sets=['__all__',...(vmVocab.some(x=>!String(x.set||x.category||'').trim())?['__unsorted__']:[]),...new Set([...Object.keys(vmSavedSets),...vmVocab.map(x=>String(x.set||x.category||'').trim()).filter(Boolean)])];
+  sets.forEach(value=>{const items=vmSetItems(value), ready=items.filter(x=>String(x.word||x.english||'').trim()&&String(x.definition_es||x.spanish||'').trim()).length, card=document.createElement('div');card.className='vm-set-card'+(String($('vmSetSelect')?.value||'__all__')===value?' active':'');
+    const title=document.createElement('strong');title.textContent=value==='__all__'?'All libraries':value==='__unsorted__'?'Unsorted':value;const meta=document.createElement('small');meta.textContent=`${items.length} word${items.length===1?'':'s'} · ${ready} ready to study`;const choose=document.createElement('button');choose.className='vm-btn';choose.type='button';choose.textContent='View library';choose.onclick=()=>vmChooseSet(value);const study=document.createElement('button');study.className='vm-btn vm-btn-primary';study.type='button';study.textContent='Study';study.onclick=()=>vmStudySet(value);card.append(title,meta,choose,study);card.onclick=e=>{if(e.target.tagName!=='BUTTON')vmChooseSet(value)};wrap.appendChild(card);
+  });
+  if(!sets.length)wrap.innerHTML='<div class="vm-muted">Import or add vocabulary to create your first library.</div>';
+}
+function vmHandleSheetPaste(e){
+  const text=e.clipboardData?.getData('text/plain')||''; if(!/[\t\n]/.test(text)) return;
+  const cell=e.target.closest('td[data-field]'), row=cell?.parentElement; if(!cell||!row) return;
+  e.preventDefault();
+  const rows=text.replace(/\r/g,'').split('\n').filter((line,i)=>line||i<text.split('\n').length-1).map(line=>line.split('\t'));
+  let visible=vmVisibleVocab(), rowIndex=[...row.parentElement.children].indexOf(row), fields=['word','definition_es','sentence_es','sentence_en','image','set'], startCol=fields.indexOf(cell.dataset.field);
+  // Match the set editor behavior: a pasted range creates enough blank
+  // rows to receive every clipboard row, including when a set filter is on.
+  const needed=rowIndex+rows.length;
+  while(visible.length<needed){
+    const selectedSet=$('vmSetSelect')?.value;
+    vmVocab.push(vmNormalize({id:'vocab-'+Date.now()+'-'+vmVocab.length,word:'',definition_es:'',sentence_es:'',sentence_en:'',image:'',set:selectedSet&&selectedSet!=='__all__'?selectedSet:''},vmVocab.length));
+    visible=vmVisibleVocab();
+  }
+  rows.forEach((values,r)=>{ const item=visible[rowIndex+r]; if(!item)return; values.forEach((value,c)=>{const field=fields[startCol+c];if(field){item[field]=value.trim();}}); item.spanish=item.definition_es; item.english=item.word; item.category=item.set; });
+  cell.dataset.vmPasting='true';
+  vmSaveLibrary();
+}
 function vmRenderLibrary(){
   if(!$('vmLibraryCount')) return; // view not built yet on first load
   $('vmLibraryCount').textContent = vmVocab.length;
-  $('vmLibrarySummary').textContent = vmVocab.length + ' vocabulary item' + (vmVocab.length === 1 ? '' : 's');
+  vmRenderSetOptions();
+  vmRenderLibraryNav();
+  const reviewCount=vmVocab.filter(x=>!(String(x.word||x.english||'').trim()&&String(x.definition_es||x.spanish||'').trim())).length;
+  $('vmLibrarySummary').innerHTML = vmVisibleVocab().length + ' shown · ' + vmVocab.length + ' total' + (reviewCount ? ` · <span class="vm-review-note">${reviewCount} need review</span>` : '');
   const body = $('vmLibraryBody'); body.innerHTML = '';
-  if(!vmVocab.length){ body.innerHTML = '<tr><td colspan="6" class="vm-empty">No vocabulary yet. Paste from Excel or import a file.</td></tr>'; return; }
-  vmVocab.slice(0, 500).forEach(w => {
+  if(!vmVocab.length){ body.innerHTML = '<tr><td colspan="7" class="vm-empty">No vocabulary yet. Import a cell-based table or add a row.</td></tr>'; return; }
+  vmVisibleVocab().slice(0, 500).forEach(w => {
     const tr = document.createElement('tr');
+    if(!(String(w.word||w.english||'').trim()&&String(w.definition_es||w.spanish||'').trim())) tr.className='vm-row-review';
     const src = vmImgSrc(w.image);
-    tr.innerHTML = `<td>${src ? `<img class="vm-thumb" src="${escapeHtml(src)}" alt="" onerror="this.style.display='none'">` : '—'}</td><td>${escapeHtml(w.id)}</td><td><b>${escapeHtml(w.spanish)}</b></td><td>${escapeHtml(w.english)}</td><td>${escapeHtml(w.category)}</td><td>${escapeHtml(w.level)}</td>`;
+    tr.innerHTML = `${[['word',w.word||w.english],['definition_es',w.definition_es||w.spanish],['sentence_es',w.sentence_es],['sentence_en',w.sentence_en]].map(([k,v])=>`<td contenteditable="true" data-field="${k}">${escapeHtml(v||'')}</td>`).join('')}<td contenteditable="true" data-field="image">${src ? `<img class="vm-thumb" src="${escapeHtml(src)}" alt="" onerror="this.style.display='none'">` : ''}<span>${escapeHtml(src)}</span></td><td contenteditable="true" data-field="set">${escapeHtml(w.set||w.category||'')}</td><td><button class="vm-delete" title="Delete row" aria-label="Delete row">×</button></td>`;
+    tr.querySelectorAll('[contenteditable]').forEach(cell=>cell.addEventListener('blur',()=>{ if(cell.dataset.vmPasting){delete cell.dataset.vmPasting;return;} const item=vmVocab.find(x=>String(x.id)===String(w.id))||Object.values(vmSavedSets).flat().find(x=>String(x.id)===String(w.id)); if(item){item[cell.dataset.field]=cell.textContent.trim(); item.spanish=item.definition_es; item.english=item.word; item.category=item.set; vmSaveLibrary(); vmSaveSavedSets();}}));
+    tr.querySelector('.vm-delete').onclick=()=>{vmVocab=vmVocab.filter(x=>String(x.id)!==String(w.id));vmSaveLibrary();};
     body.appendChild(tr);
   });
 }
 function vmParseRows(rows){
   return rows.map((r, i) => {
     const x = {}; Object.keys(r).forEach(k => x[vmSlugKey(k)] = r[k]);
-    return {id: String(x.id || i + 1), spanish: String(x.spanish || x.es || ''), english: String(x.english || x.en || x.meaning || ''), image: String(x.image || x.imageurl || x.picture || x.pictureurl || ''), category: String(x.category || ''), level: String(x.level || '')};
+    return vmNormalize({...x, id:x.id || ('import-' + Date.now() + '-' + i)});
   }).filter(x => x.spanish && x.english);
 }
 function vmAddImported(items){
   if(items.length < 1) return {ok: false, count: 0, total: vmVocab.length};
   const map = new Map(vmVocab.map(x => [String(x.id), x]));
-  items.forEach(x => map.set(String(x.id), x));
+  items.map(vmNormalize).forEach(x => map.set(String(x.id), x));
   vmVocab = [...map.values()]; vmSaveLibrary();
   return {ok: true, count: items.length, total: vmVocab.length};
 }
@@ -9073,35 +9150,34 @@ function vmBuildPrompt(){
   const topic = ($('vmPromptTopic').value || 'general everyday').trim();
   const level = $('vmPromptLevel').value;
   const count = Math.max(5, Math.min(100, Number($('vmPromptCount').value) || 20));
-  return `Generate ${count} Spanish vocabulary items for a ${level}-level learner on this topic: "${topic}".
+  return `Create an actual Excel workbook file (.xlsx) containing ${count} Spanish vocabulary items for a ${level}-level learner on this topic: "${topic}".
 
-Output ONLY a tab-separated table with this exact header row, then one row per word — no commentary, no markdown, no numbering:
-
-id\tspanish\tenglish\timage\tcategory\tlevel
+The workbook must contain one sheet named "Vocabulary" and a header row with these exact columns, in this exact order:
+word | definition_es | sentence_es | sentence_en | image | set
 
 Rules:
-- id: sequential number starting at 001
-- spanish: the Spanish word or phrase
-- english: a concise English translation/meaning
-- image: leave blank
-- category: a short topical label (e.g. "Food", "Verbs", "Expressions")
-- level: "${level}" for every row
-- Separate columns with real tab characters, one row per line
-- Do not wrap the output in a code block`;
+- word: the English word or phrase to learn
+- definition_es: a concise Spanish definition
+- sentence_es: a natural Spanish example sentence using the word
+- sentence_en: the English translation of that sentence
+- image: an optional direct image URL, otherwise leave blank
+- set: a short group name (e.g. "Food", "Verbs", "Expressions")
+- Return the downloadable .xlsx file, not a markdown table or plain text.
+- Do not add commentary outside the workbook.`;
 }
 function vmParsePasted(text){
   const lines = text.trim().split(/\r?\n/).filter(Boolean); if(!lines.length) return [];
   const delimiter = lines[0].includes('\t') ? '\t' : ',';
   const cells = lines.map(line => line.split(delimiter).map(s => s.trim()));
   let headers = cells[0].map(vmSlugKey);
-  const known = ['id', 'spanish', 'english', 'image', 'category', 'level', 'meaning', 'es', 'en'];
+  const known = ['id', 'word', 'definitiones', 'spanish', 'english', 'image', 'category', 'set', 'sentencees', 'sentenceen', 'level', 'meaning', 'es', 'en'];
   const hasHeader = headers.some(h => known.includes(h));
   if(hasHeader){
     return cells.slice(1).map(row => { const o = {}; headers.forEach((h, i) => o[h] = row[i] ?? ''); return o; })
-      .map((r, i) => ({id: String(r.id || i + 1), spanish: String(r.spanish || r.es || ''), english: String(r.english || r.en || r.meaning || ''), image: String(r.image || r.imageurl || r.picture || r.pictureurl || ''), category: String(r.category || ''), level: String(r.level || '')}))
-      .filter(x => x.spanish && x.english);
+      .map((r, i) => vmNormalize({id:r.id || ('import-' + Date.now() + '-' + i), word:r.word || r.english || r.en, definition_es:r.definitiones || r.spanish || r.es || r.meaning, sentence_es:r.sentencees, sentence_en:r.sentenceen, image:r.image || r.imageurl, set:r.set || r.category, level:r.level}))
+      .filter(x => x.word && x.definition_es);
   }
-  return cells.map((r, i) => ({id: String(r[0] || i + 1), spanish: String(r[1] || ''), english: String(r[2] || ''), image: String(r[3] || ''), category: String(r[4] || ''), level: String(r[5] || '')})).filter(x => x.spanish && x.english);
+  return cells.map((r, i) => vmNormalize({id:r[0] || i + 1, word:r[0], definition_es:r[1], sentence_es:r[2], sentence_en:r[3], image:r[4], set:r[5]})).filter(x => x.word && x.definition_es);
 }
 // The standalone tool loaded xlsx.js from a CDN unconditionally. This
 // app doesn't add any script-tag dependencies at page load, so the
@@ -9126,7 +9202,8 @@ function vmShowLibraryPanel(){
   vmRenderLibrary();
 }
 function vmShowGamePanel(){
-  if(vmVocab.length < 2){ alert('Add at least 2 vocabulary items first.'); return; }
+  if(vmPlayableVocab().length < 2){ alert('Choose a set with at least 2 complete vocabulary items first.'); return; }
+  if($('vmSetSelect')?.value && $('vmGameSetSelect')) {$('vmGameSetSelect').value=$('vmSetSelect').value;vmGameSetBefore=$('vmGameSetSelect').value;}
   $('vmLibraryPanel').classList.add('hidden'); $('vmGamePanel').classList.remove('hidden');
   $('vmGameTab').classList.add('active'); $('vmLibraryTab').classList.remove('active');
   vmStartRound();
@@ -9137,24 +9214,24 @@ function vmMakeCard(w, side, type){
   const btn = document.createElement('button'); btn.className = 'vm-match'; btn.dataset.id = w.id; btn.dataset.side = side;
   if(type === 'picture'){
     const src = vmImgSrc(w.image);
-    if(src){ const im = document.createElement('img'); im.className = 'vm-thumb-big'; im.src = src; im.alt = w.spanish; im.onerror = () => im.replaceWith(vmPlaceholder()); btn.appendChild(im); }
+    if(src){ const im = document.createElement('img'); im.className = 'vm-thumb-big'; im.src = src; im.alt = w.word || w.english; im.onerror = () => im.replaceWith(vmPlaceholder()); btn.appendChild(im); }
     else btn.appendChild(vmPlaceholder());
   } else {
     const div = document.createElement('div');
-    div.innerHTML = type === 'word' ? `<span class="vm-word">${escapeHtml(w.spanish)}</span>` : `<span class="vm-meaning">${escapeHtml(w.english)}</span>`;
+    div.innerHTML = type === 'word' ? `<span class="vm-word">${escapeHtml(w.word || w.english)}</span>` : `<span class="vm-meaning">${escapeHtml(w.definition_es || w.spanish)}</span>`;
     btn.appendChild(div);
   }
   btn.onclick = () => vmSelect(btn);
   return btn;
 }
-function vmTitle(t){ return t === 'word' ? '🇪🇸 Spanish' : t === 'meaning' ? '🇬🇧 Meaning' : '🖼️ Picture'; }
+function vmTitle(t){ return t === 'word' ? '🔤 Word' : t === 'meaning' ? '🇪🇸 Spanish definition' : '🖼️ Picture'; }
 function vmSetTitles(l, r){ $('vmLeftTitle').textContent = l; $('vmRightTitle').textContent = r; }
 function vmRenderGame(){
   const m = $('vmModeSelect').value; let lt, rt;
-  if(m === 'word-meaning'){ lt = 'word'; rt = 'meaning'; vmSetTitles('🇪🇸 Spanish', '🇬🇧 Meaning'); }
-  if(m === 'word-picture'){ lt = 'word'; rt = 'picture'; vmSetTitles('🇪🇸 Spanish', '🖼️ Picture'); }
-  if(m === 'picture-word'){ lt = 'picture'; rt = 'word'; vmSetTitles('🖼️ Picture', '🇪🇸 Spanish'); }
-  if(m === 'picture-meaning'){ lt = 'picture'; rt = 'meaning'; vmSetTitles('🖼️ Picture', '🇬🇧 Meaning'); }
+  if(m === 'word-meaning'){ lt = 'word'; rt = 'meaning'; vmSetTitles('🔤 Word', '🇪🇸 Spanish definition'); }
+  if(m === 'word-picture'){ lt = 'word'; rt = 'picture'; vmSetTitles('🔤 Word', '🖼️ Picture'); }
+  if(m === 'picture-word'){ lt = 'picture'; rt = 'word'; vmSetTitles('🖼️ Picture', '🔤 Word'); }
+  if(m === 'picture-meaning'){ lt = 'picture'; rt = 'meaning'; vmSetTitles('🖼️ Picture', '🇪🇸 Spanish definition'); }
   if(m === 'mixed'){ [lt, rt] = shuffle(['word', 'meaning', 'picture']); vmSetTitles(vmTitle(lt), vmTitle(rt)); }
   const L = $('vmLeftItems'), R = $('vmRightItems'); L.innerHTML = ''; R.innerHTML = '';
   vmRoundWords.forEach(w => L.appendChild(vmMakeCard(w, 'a', lt)));
@@ -9162,10 +9239,12 @@ function vmRenderGame(){
 }
 function vmStartRound(){
   const n = Number($('vmSizeSelect').value);
-  vmRoundWords = shuffle(vmVocab).slice(0, Math.min(n, vmVocab.length));
+  const pool=vmPlayableVocab();
+  vmScore=0; vmCombo=0; $('vmScoreEl').textContent=0; $('vmComboEl').textContent=0;
+  vmRoundWords = shuffle(pool).slice(0, Math.min(n, pool.length));
   vmA = vmB = null; vmMatched = 0; vmAttempts = 0; vmMistakes = [];
   $('vmGameScreen').classList.remove('hidden'); $('vmResultsScreen').classList.add('hidden');
-  $('vmFeedbackEl').textContent = ''; $('vmFeedbackEl').className = 'vm-feedback';
+  $('vmFeedbackEl').textContent = ''; $('vmFeedbackEl').className = 'vm-feedback'; $('vmSentenceEl')?.classList.add('hidden');
   vmRenderGame(); vmProgress();
 }
 function vmSelect(btn){
@@ -9184,6 +9263,8 @@ function vmCheck(){
     $('vmFeedbackEl').textContent = vmCombo >= 3 ? `🔥 ${vmCombo} in a row!` : '✓ Correct!';
     $('vmFeedbackEl').className = 'vm-feedback good';
     $('vmScoreEl').textContent = vmScore; $('vmComboEl').textContent = vmCombo;
+    const matchedWord=vmRoundWords.find(x=>String(x.id)===String(vmA.dataset.id));
+    if(matchedWord && (matchedWord.sentence_es || matchedWord.sentence_en)){ $('vmSentenceEl').classList.remove('hidden'); $('vmSentenceEs').textContent=matchedWord.sentence_es||'Add a Spanish sentence in the library.'; $('vmSentenceEn').textContent=matchedWord.sentence_en||''; }
     const a = vmA, b = vmB;
     setTimeout(() => { a.classList.add('matched'); b.classList.add('matched'); vmProgress(); if(vmMatched === vmRoundWords.length) vmFinish(); }, 280);
   } else {
@@ -9207,7 +9288,7 @@ function vmFinish(){
     const box = $('vmMistakesBox'), list = $('vmMistakesList'); list.innerHTML = '';
     if(vmMistakes.length){
       box.classList.remove('hidden');
-      vmMistakes.forEach(w => { const d = document.createElement('div'); d.className = 'vm-mistake'; d.innerHTML = `<b>${escapeHtml(w.spanish)}</b><small>${escapeHtml(w.english)}</small>`; list.appendChild(d); });
+      vmMistakes.forEach(w => { const d = document.createElement('div'); d.className = 'vm-mistake'; d.innerHTML = `<b>${escapeHtml(w.word || w.english)}</b><small>${escapeHtml(w.definition_es || w.spanish)}</small>`; list.appendChild(d); });
     } else box.classList.add('hidden');
   }, 450);
 }
@@ -9221,12 +9302,19 @@ function initVocabMatchUI(){
   $('vmLibraryTab').onclick = vmShowLibraryPanel;
   $('vmGameTab').onclick = vmShowGamePanel;
   $('vmBackLibraryBtn').onclick = vmShowLibraryPanel;
-  $('vmClearPasteBtn').onclick = () => { $('vmPasteBox').value = ''; vmFlashStatus($('vmPasteStatus'), '', null, 1); };
-  $('vmClearLibraryBtn').onclick = () => {
-    if(confirm('Clear the entire vocabulary library?')){ vmVocab = []; vmSaveLibrary(); vmFlashStatus($('vmExcelStatus'), 'Library cleared.', 'info'); }
+  $('vmSetSelect').onchange = vmRenderLibrary;
+  $('vmGameSetSelect').onchange = e => { if(vmPlayableVocab().length<2){alert('That set needs at least 2 complete vocabulary items.');e.target.value=vmGameSetBefore;return;} vmGameSetBefore=e.target.value;vmStartRound(); };
+  $('vmLibraryBody').addEventListener('paste', vmHandleSheetPaste);
+  $('vmAddRowBtn').onclick = () => { vmVocab.unshift(vmNormalize({id:'vocab-'+Date.now(), word:'', definition_es:'', sentence_es:'', sentence_en:'', image:'', set:$('vmSetSelect').value==='__all__'?'':$('vmSetSelect').value},0)); vmSaveLibrary(); vmRenderLibrary(); };
+  $('vmClearTableBtn').onclick = () => { if(confirm('Clear the working vocabulary table? Saved libraries will remain available.')){ vmVocab=[]; $('vmSetSelect').value='__all__'; vmSaveLibrary(); vmFlashStatus($('vmExcelStatus'),'Working table cleared. Saved libraries were kept.','info'); } };
+  $('vmSaveSetBtn').onclick = () => {
+    const name=($('vmSetNameInput').value||'').trim(); if(!name){vmFlashStatus($('vmExcelStatus'),'Enter a set name first.','err');return;}
+    const visible=vmVisibleVocab().filter(x=>String(x.word||x.english||'').trim()&&String(x.definition_es||x.spanish||'').trim());
+    vmSavedSets[name]=visible.map(x=>({...x,set:name,category:name}));
+    visible.forEach(x=>{x.set=name;x.category=name;}); vmSaveLibrary(); vmSaveSavedSets(); $('vmSetNameInput').value=''; vmFlashStatus($('vmExcelStatus'),`✓ Saved ${visible.length} item${visible.length===1?'':'s'} to “${name}”. It will stay available when the table is cleared.`,'ok');
   };
   $('vmDownloadTemplateBtn').onclick = () => {
-    const rows = [['id', 'spanish', 'english', 'image', 'category', 'level'], ['001', 'la manzana', 'apple', '', 'Food', 'A2'], ['002', 'el perro', 'dog', '', 'Animals', 'A1']];
+    const rows = [['word', 'definition_es', 'sentence_es', 'sentence_en', 'image', 'set'], ['apple', 'fruta roja o verde', 'Como una manzana cada día.', 'I eat an apple every day.', '', 'Food'], ['dog', 'animal doméstico', 'El perro duerme junto a la puerta.', 'The dog sleeps by the door.', '', 'Animals']];
     const csv = rows.map(r => r.map(x => `"${String(x).replace(/"/g, '""')}"`).join(',')).join('\n');
     const blob = new Blob([csv], {type: 'text/csv'}), url = URL.createObjectURL(blob), a = document.createElement('a');
     a.href = url; a.download = 'vocab_template.csv'; a.click(); URL.revokeObjectURL(url);
@@ -9238,32 +9326,9 @@ function initVocabMatchUI(){
       const data = new Uint8Array(await f.arrayBuffer()), wb = XLSX.read(data, {type: 'array'}), sheet = wb.Sheets[wb.SheetNames[0]], rows = XLSX.utils.sheet_to_json(sheet, {defval: ''});
       const res = vmAddImported(vmParseRows(rows));
       if(res.ok) vmFlashStatus($('vmExcelStatus'), `✓ Imported ${res.count} row${res.count === 1 ? '' : 's'} — library now has ${res.total}.`, 'ok');
-      else vmFlashStatus($('vmExcelStatus'), 'No valid rows found — check for spanish/english columns.', 'err');
+      else vmFlashStatus($('vmExcelStatus'), 'No valid rows found — check for word/definition_es columns.', 'err');
     }catch(err){ vmFlashStatus($('vmExcelStatus'), 'Could not read the file: ' + err.message, 'err', 6000); }
     e.target.value = '';
-  };
-  // Live preview: parse-as-you-type/paste so the person can see the row
-  // count land before they click Import, instead of finding out only
-  // after the fact whether their paste was recognized.
-  let vmPasteDebounce;
-  $('vmPasteBox').addEventListener('input', () => {
-    clearTimeout(vmPasteDebounce);
-    vmPasteDebounce = setTimeout(() => {
-      const text = $('vmPasteBox').value;
-      if(!text.trim()){ $('vmPasteStatus').textContent = ''; $('vmPasteStatus').className = 'vm-note'; return; }
-      const items = vmParsePasted(text);
-      if(items.length) vmFlashStatus($('vmPasteStatus'), `${items.length} row${items.length === 1 ? '' : 's'} detected — ready to import.`, 'info', 8000);
-      else vmFlashStatus($('vmPasteStatus'), 'No valid rows detected yet — needs at least spanish + english columns.', 'err', 8000);
-    }, 200);
-  });
-  $('vmPasteImportBtn').onclick = () => {
-    const res = vmAddImported(vmParsePasted($('vmPasteBox').value));
-    if(res.ok){
-      vmFlashStatus($('vmPasteStatus'), `✓ Imported ${res.count} row${res.count === 1 ? '' : 's'} — library now has ${res.total}.`, 'ok');
-      $('vmPasteBox').value = '';
-    } else {
-      vmFlashStatus($('vmPasteStatus'), 'No valid vocabulary found — make sure you have at least spanish and english columns.', 'err');
-    }
   };
   // "Generate with AI": builds a ready-to-use prompt from the topic/
   // level/count fields and copies it to the clipboard, so the person
