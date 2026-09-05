@@ -3786,10 +3786,12 @@ body.theme-midnight .recent-item-hero{ background:linear-gradient(155deg, var(--
   .tile-border{background:linear-gradient(90deg,#9B1C31 0 33%,#D6A928 33% 66%,#172A46 66%);height:5px;border-radius:999px}
   .sidebar-nav .stats-toggle{color:var(--ink)}
   .sidebar-nav .stats-toggle:hover,.sidebar-nav .stats-toggle.active{color:var(--primary);background:var(--primary-soft)}
-  /* Removed product areas: the app is now focused on Spanish learning. */
+  /* Removed product areas: the app is now focused on Spanish learning.
+     Community is back on — its markup, styles, and JS were left intact,
+     only these two hidden-by-default rules kept it off. */
   #studyPetOverlay,#floatingPet,#petView,#petToggleBtn,
-  #communityView,#communityToggleBtn,#caseGame,.case-game-launch,[data-act="publish"],
-  #petOnScreenToggle,.pet-related,.community-related{display:none!important}
+  #caseGame,.case-game-launch,
+  #petOnScreenToggle,.pet-related{display:none!important}
 </style>
 
 <style id="pet-final-fix">
@@ -4839,8 +4841,8 @@ body:before{
   /* This build is intentionally a focused Spanish workspace. Keep the
      legacy modules and IDs available for data compatibility, but remove
      their controls from the learner-facing interface. */
-  #petToggleBtn,#communityToggleBtn,#floatingPet,#studyPetOverlay,#darkModeToggle,
-  #petView,#communityView,
+  #petToggleBtn,#floatingPet,#studyPetOverlay,#darkModeToggle,
+  #petView,
   #settingsMenu [data-page="appearance"],#settingsPage-appearance{display:none !important}
   #themeSwatchRow,#accentRow,#intensitySlider{display:none !important}
   /* Vocab + topic pages: use the wide desktop canvas and remove shell
@@ -9373,6 +9375,15 @@ function vmFinish(){
 
 function initVocabMatchUI(){
   $('vocabMatchToggleBtn').onclick = () => {
+    // vmVocab/vmSavedSets were captured once at script-load time, before the
+    // IndexedDB-backed app data finishes loading (initAppDataStorage() runs
+    // async, later). On a fresh page load that early snapshot is empty, so
+    // without this refresh a saved library looks like it "disappeared" even
+    // though it was written to storage correctly — the in-memory copy just
+    // never caught up. Every other saved-set screen re-reads its data on
+    // entry the same way; Vocab Match was the one place that didn't.
+    vmVocab = vmLoadLibrary();
+    vmSavedSets = vmLoadSavedSets();
     saveBeforeNavigation(); hideAllScreens(); $('vocabMatchView').classList.remove('hidden');
     vmShowLibraryPanel();
   };
@@ -14263,6 +14274,12 @@ migrateCardIds();
 initAppDataStorage().then(() => {
   migrateSetTypes();
   migrateCardIds();
+  // vocabMatchToggleBtn lives in the header, outside #landing, so it's
+  // clickable before this resolves. Refresh the in-memory copies here too
+  // in case the panel was opened (and its stale/empty snapshot cached)
+  // during that window.
+  vmVocab = vmLoadLibrary();
+  vmSavedSets = vmLoadSavedSets();
   showLanding();
 });
 initAccountSettingsUI();
@@ -19867,7 +19884,7 @@ updateNavActiveState();
     if(header) header.textContent='🇪🇸';
     const h1 = document.querySelector('.header h1');
     if(h1) h1.textContent='Palabría · España';
-    document.querySelectorAll('[data-act="publish"],#petView,#communityView,#caseGame,#sentenceGame,#studyPetOverlay,#floatingPet').forEach(el=>el.setAttribute('aria-hidden','true'));
+    document.querySelectorAll('#petView,#caseGame,#sentenceGame,#studyPetOverlay,#floatingPet').forEach(el=>el.setAttribute('aria-hidden','true'));
   });
 </script>
 </body>
