@@ -4702,6 +4702,94 @@ body:before{
     .header-title h1{font-size:23px !important}
     .sidebar-nav{overflow-x:auto}
   }
+  /* ===== VOCAB MATCH (library + matching game) =====
+     Namespaced under .vm-app / vm- classes so nothing here can collide
+     with the rest of the app's CSS. Colors are pulled from the app's own
+     theme variables (and the Spanish red/gold accents above) rather than
+     hardcoded, so this follows light/dark mode and the chosen accent
+     automatically instead of looking like a pasted-in standalone page. */
+  .vm-app{
+    --vm-muted:var(--text-muted);
+    --vm-border:var(--border);
+    --vm-good:#15803d; --vm-goodbg:rgba(21,128,61,.10);
+    --vm-bad:#c0392b; --vm-badbg:rgba(192,57,43,.10);
+    color:var(--text);
+  }
+  .vm-app *{box-sizing:border-box}
+  .vm-header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap}
+  .vm-eyebrow{font-size:11px;font-weight:850;letter-spacing:.11em;text-transform:uppercase;color:var(--spanish-red)}
+  .vm-h1{font-size:clamp(22px,4vw,32px);letter-spacing:-.03em;margin:3px 0}
+  .vm-subtitle{color:var(--vm-muted);font-size:13px;max-width:52ch}
+  .vm-stats{display:flex;gap:8px;flex-wrap:wrap}
+  .vm-stat{background:var(--surface,#fff);border:1px solid var(--vm-border);border-radius:13px;padding:8px 13px;text-align:center;min-width:70px}
+  .vm-stat b{display:block;font-size:16px;color:var(--text)}
+  .vm-stat span{font-size:10px;color:var(--vm-muted)}
+  .vm-tabs{display:flex;gap:7px;margin:0 0 14px}
+  .vm-tab{border:1px solid var(--vm-border);background:var(--surface,#fff);color:var(--text);border-radius:11px;padding:9px 14px;font-weight:800;cursor:pointer}
+  .vm-tab.active{background:var(--spanish-red);color:#fff;border-color:var(--spanish-red)}
+  .vm-panel-h{font-size:18px;letter-spacing:-.01em;margin:0 0 5px}
+  .vm-panel-p{color:var(--vm-muted);font-size:13px;margin:0 0 14px}
+  .vm-import-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .vm-import-card{border:1px solid var(--vm-border);border-radius:15px;padding:14px;background:var(--surface,#fff);display:flex;flex-direction:column}
+  .vm-import-card h4{margin:0 0 6px;font-size:14px;color:var(--text)}
+  .vm-import-card p{margin:0 0 10px;color:var(--vm-muted);font-size:12px}
+  .vm-full{width:100%;margin-bottom:8px}
+  .vm-row-2{display:flex;gap:8px;margin-bottom:2px}
+  .vm-row-2 .vm-select{flex:1}
+  .vm-note.vm-status-ok{color:var(--vm-good);font-weight:750}
+  .vm-note.vm-status-err{color:var(--vm-bad);font-weight:750}
+  .vm-note.vm-status-info{color:var(--spanish-red);font-weight:750}
+  .vm-textarea{width:100%;min-height:130px;border:1px solid var(--vm-border);background:var(--bg);color:var(--text);border-radius:11px;padding:10px;font:12px ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical}
+  .vm-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+  .vm-btn{border:1px solid var(--vm-border);background:var(--surface,#fff);color:var(--text);border-radius:11px;padding:9px 13px;font:inherit;font-weight:800;cursor:pointer}
+  .vm-btn:hover{border-color:var(--spanish-red)}
+  .vm-btn-primary{background:var(--spanish-red);color:#fff;border-color:var(--spanish-red)}
+  .vm-btn-primary:hover{background:var(--spanish-red-dark)}
+  #vmExcelInput{max-width:100%;color:var(--text)}
+  .vm-note{font-size:11px;color:var(--vm-muted);line-height:1.5;margin-top:11px}
+  .vm-library-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px}
+  .vm-count{font-size:12px;color:var(--vm-muted)}
+  .vm-table-wrap{overflow:auto;margin-top:10px;border:1px solid var(--vm-border);border-radius:14px}
+  .vm-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px}
+  .vm-table th,.vm-table td{padding:9px 10px;border-bottom:1px solid var(--vm-border);text-align:left;color:var(--text)}
+  .vm-table th{font-size:10px;text-transform:uppercase;color:var(--vm-muted);letter-spacing:.06em;background:var(--bg)}
+  .vm-table tr:last-child td{border-bottom:0}
+  .vm-thumb{width:36px;height:36px;object-fit:cover;border-radius:8px;background:var(--bg)}
+  .vm-empty{padding:22px;text-align:center;color:var(--vm-muted)}
+  .vm-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .vm-select{border:1px solid var(--vm-border);background:var(--surface,#fff);color:var(--text);border-radius:11px;padding:9px 11px;font:inherit;font-weight:750}
+  .vm-progress-wrap{height:8px;background:var(--vm-border);border-radius:99px;overflow:hidden;margin-bottom:16px}
+  .vm-progress{height:100%;width:0;background:var(--spanish-red);transition:.25s}
+  .vm-game{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .vm-column{background:var(--surface,#fff);border:1px solid var(--vm-border);border-radius:18px;padding:12px}
+  .vm-column-title{font-size:11px;font-weight:850;letter-spacing:.07em;text-transform:uppercase;color:var(--vm-muted);margin:2px 4px 10px}
+  .vm-items{display:grid;gap:8px}
+  .vm-match{width:100%;min-height:58px;border:1px solid var(--vm-border);background:var(--surface,#fff);color:var(--text);border-radius:13px;padding:10px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:11px;transition:.12s}
+  .vm-match:hover{transform:translateY(-1px);border-color:var(--spanish-red)}
+  .vm-match.selected{border:2px solid var(--spanish-red);padding:9px}
+  .vm-match.correct{background:var(--vm-goodbg);border-color:var(--vm-good);color:var(--vm-good);pointer-events:none}
+  .vm-match.wrong{background:var(--vm-badbg);border-color:var(--vm-bad);color:var(--vm-bad);animation:vmShake .28s}
+  .vm-match.matched{opacity:0;transform:scale(.96);pointer-events:none}
+  .vm-thumb-big{width:54px;height:54px;object-fit:cover;border-radius:10px;background:var(--bg)}
+  .vm-placeholder{width:54px;height:54px;border-radius:10px;background:var(--bg);display:grid;place-items:center;font-size:22px;flex:0 0 54px}
+  .vm-word{font-weight:800}
+  .vm-meaning{color:var(--vm-muted);font-size:12px}
+  .vm-feedback{text-align:center;min-height:26px;margin:14px 0 3px;font-weight:800;color:var(--text)}
+  .vm-feedback.good{color:var(--vm-good)}
+  .vm-feedback.bad{color:var(--vm-bad)}
+  .vm-results{background:var(--surface,#fff);border:1px solid var(--vm-border);border-radius:19px;padding:26px;text-align:center}
+  .vm-final{font-size:46px;font-weight:900;letter-spacing:-.04em;color:var(--spanish-red)}
+  .vm-muted{color:var(--vm-muted)}
+  .vm-mistakes{max-width:620px;margin:18px auto;text-align:left}
+  .vm-mistake{display:flex;justify-content:space-between;border-bottom:1px solid var(--vm-border);padding:9px 0;gap:14px;color:var(--text)}
+  .vm-mistake small{color:var(--vm-muted)}
+  @keyframes vmShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  @media(max-width:720px){
+    .vm-header{flex-direction:column}
+    .vm-import-grid,.vm-game{grid-template-columns:1fr}
+    .vm-stats{justify-content:flex-start}
+  }
+
   /* This build is intentionally a focused Spanish workspace. Keep the
      legacy modules and IDs available for data compatibility, but remove
      their controls from the learner-facing interface. */
@@ -4741,6 +4829,7 @@ body:before{
       <button class="btn-ghost stats-toggle" id="petToggleBtn" title="Pet" aria-label="Pet">🐶 <span>Pet</span></button>
       <button class="btn-ghost stats-toggle" id="communityToggleBtn" title="Community" aria-label="Community">🌐 <span>Community</span><span class="nav-new-dot" id="communityNewDot"></span></button>
       <button class="btn-ghost stats-toggle" id="profSearchToggleBtn" title="Buscar tarjetas por tema" aria-label="Buscar por tema">🔎 <span>Temas</span></button>
+      <button class="btn-ghost stats-toggle" id="vocabMatchToggleBtn" title="Vocab Match" aria-label="Vocab Match">🃏 <span>Vocab</span></button>
     </nav>
   </div>
 
@@ -6141,6 +6230,100 @@ OUTCOME: NEG
         </div>
       </div>
 
+      <!-- ===== Vocab Match (library + matching game, ported from a standalone tool) ===== -->
+      <div id="vocabMatchView" class="hidden">
+        <div class="row" style="margin-bottom:14px;">
+          <button class="btn-ghost back-on-photo" id="backFromVocabMatchBtn">← Volver</button>
+        </div>
+        <div class="vm-app community-panel">
+          <div class="vm-header">
+            <div>
+              <div class="vm-eyebrow">Vocab · Library + Match</div>
+              <h2 class="vm-h1">Vocab Match</h2>
+              <div class="vm-subtitle">Paste from Excel or import a file. Saved with the rest of your study data, so it syncs across devices too.</div>
+            </div>
+            <div class="vm-stats">
+              <div class="vm-stat"><b id="vmLibraryCount">0</b><span>Words</span></div>
+              <div class="vm-stat"><b id="vmScoreEl">0</b><span>Score</span></div>
+              <div class="vm-stat"><b id="vmComboEl">0</b><span>Combo</span></div>
+            </div>
+          </div>
+
+          <nav class="vm-tabs">
+            <button class="vm-tab active" id="vmLibraryTab">📚 Library</button>
+            <button class="vm-tab" id="vmGameTab">🎮 Match Game</button>
+          </nav>
+
+          <section id="vmLibraryPanel" class="vm-panel">
+            <h3 class="vm-panel-h">Add vocabulary</h3>
+            <p class="vm-panel-p">All three feed the same library, which is saved locally and synced to the cloud like your other study data.</p>
+            <div class="vm-import-grid">
+              <div class="vm-import-card">
+                <h4>🤖 Generate with AI</h4>
+                <p>Describe a topic, copy the prompt into any AI chat, then paste its reply into the box on the right.</p>
+                <input id="vmPromptTopic" class="vm-select vm-full" type="text" placeholder="Topic (e.g. restaurant vocabulary, B2 idioms)">
+                <div class="vm-row-2">
+                  <select id="vmPromptLevel" class="vm-select">
+                    <option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option>
+                    <option value="B2" selected>B2</option><option value="C1">C1</option><option value="C2">C2</option>
+                  </select>
+                  <input id="vmPromptCount" class="vm-select" type="number" min="5" max="100" value="20" style="width:76px">
+                </div>
+                <div class="vm-actions"><button class="vm-btn vm-btn-primary" id="vmCopyPromptBtn">📋 Copy Prompt</button></div>
+                <textarea id="vmPromptFallback" class="vm-textarea hidden" style="min-height:70px" readonly></textarea>
+                <div class="vm-note" id="vmPromptStatus"></div>
+              </div>
+              <div class="vm-import-card">
+                <h4>📋 Paste from Excel or AI reply</h4>
+                <p>Paste cells from Excel, or the reply you got from an AI chat. Tabs, commas, and line breaks are detected automatically.</p>
+                <textarea id="vmPasteBox" class="vm-textarea" placeholder="id&#9;spanish&#9;english&#9;image&#9;category&#9;level&#10;001&#9;la manzana&#9;apple&#9;https://...&#9;Food&#9;A2"></textarea>
+                <div class="vm-actions"><button class="vm-btn vm-btn-primary" id="vmPasteImportBtn">Import Pasted Cells</button><button class="vm-btn" id="vmClearPasteBtn">Clear</button></div>
+                <div class="vm-note" id="vmPasteStatus"></div>
+              </div>
+              <div class="vm-import-card">
+                <h4>📁 Import Excel</h4>
+                <p>Upload <b>.xlsx</b>, <b>.xls</b>, or <b>.csv</b>. The first sheet is used.</p>
+                <input id="vmExcelInput" type="file" accept=".xlsx,.xls,.csv">
+                <div class="vm-actions"><button class="vm-btn" id="vmDownloadTemplateBtn">Download Template</button><button class="vm-btn" id="vmClearLibraryBtn">Clear Library</button></div>
+                <div class="vm-note">Recommended columns: <b>id, spanish, english, image, category, level</b>.</div>
+                <div class="vm-note" id="vmExcelStatus"></div>
+              </div>
+            </div>
+
+            <div class="vm-library-head"><h3 class="vm-panel-h" style="margin:0;">Vocabulary library</h3><span class="vm-count" id="vmLibrarySummary"></span></div>
+            <div class="vm-table-wrap"><table class="vm-table"><thead><tr><th>Image</th><th>ID</th><th>Spanish</th><th>English</th><th>Category</th><th>Level</th></tr></thead><tbody id="vmLibraryBody"></tbody></table></div>
+          </section>
+
+          <section id="vmGamePanel" class="hidden">
+            <div class="vm-toolbar">
+              <select id="vmModeSelect" class="vm-select">
+                <option value="word-meaning">🇪🇸 Word → Meaning</option>
+                <option value="word-picture">🇪🇸 Word → Picture</option>
+                <option value="picture-word">🖼️ Picture → Word</option>
+                <option value="picture-meaning">🖼️ Picture → Meaning</option>
+                <option value="mixed">🎲 Mixed</option>
+              </select>
+              <select id="vmSizeSelect" class="vm-select"><option value="6">6 pairs</option><option value="8" selected>8 pairs</option><option value="10">10 pairs</option></select>
+              <button class="vm-btn" id="vmBackLibraryBtn">← Library</button>
+            </div>
+            <div class="vm-progress-wrap"><div class="vm-progress" id="vmProgressEl"></div></div>
+            <div id="vmGameScreen">
+              <div class="vm-game">
+                <section class="vm-column"><div class="vm-column-title" id="vmLeftTitle">Spanish</div><div class="vm-items" id="vmLeftItems"></div></section>
+                <section class="vm-column"><div class="vm-column-title" id="vmRightTitle">Meaning</div><div class="vm-items" id="vmRightItems"></div></section>
+              </div>
+              <div class="vm-feedback" id="vmFeedbackEl"></div>
+              <div class="vm-actions" style="justify-content:center"><button class="vm-btn" id="vmNewRoundBtn">New Round</button></div>
+            </div>
+            <section class="vm-results hidden" id="vmResultsScreen">
+              <h3>¡Round complete!</h3><div class="vm-final" id="vmFinalScore">0</div><div class="vm-muted" id="vmFinalStats"></div>
+              <div class="vm-mistakes hidden" id="vmMistakesBox"><h4>Review mistakes</h4><div id="vmMistakesList"></div></div>
+              <div class="vm-actions" style="justify-content:center"><button class="vm-btn vm-btn-primary" id="vmPlayAgainBtn">Play Again</button></div>
+            </section>
+          </section>
+        </div>
+      </div>
+
   <div class="tile-border bottom"></div>
   </div>
 </div>
@@ -6369,7 +6552,12 @@ const POMODORO_KEY = 'esp2Review_pomodoro_v1';
 const ATTEMPTS_KEY = 'esp2Review_attempts_v1';
 const LEARNING_KEY = 'esp2Review_learning_v1';
 const INTERVENTIONS_KEY = 'esp2Review_interventions_v1'; // pre/post/delayed targeted-practice tracking
-const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY];
+// Vocab Match's word library (id/spanish/english/image/category/level
+// entries). Stored as a JSON-stringified array, same convention as
+// SETS_KEY, so it rides the existing IndexedDB cache + cloud sync +
+// backup/restore system for free instead of needing its own plumbing.
+const VOCAB_KEY = 'esp2Review_vocabLibrary_v1';
+const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY, VOCAB_KEY];
 // Cloud sync Milestone 2 scope: everything in APP_DATA_KEYS (stats,
 // sessions, case progress, pomodoro, attempts, learning/mastery,
 // interventions) plus LOCAL_SYNC_KEYS (streak, virtual pet, calendar/exams)
@@ -6825,6 +7013,11 @@ const mergeStrategies = {
   [SENTENCE_PROGRESS_KEY]: (local, cloud) => mergeKeyedById(local, cloud, 'id'),
   [ATTEMPTS_KEY]: (local, cloud) => mergeArrayById(local, cloud, 'attemptId').slice(-2000),
   [INTERVENTIONS_KEY]: (local, cloud) => mergeArrayById(local, cloud, 'id').slice(-40),
+  // Vocab Match's library is a flat array of {id, spanish, english, ...}
+  // entries with no updatedAt field, so mergeKeyedById's "newer wins"
+  // logic doesn't apply — mergeArrayById's "keep whichever copy has more
+  // filled-in fields" fallback is the closest fit for a plain word list.
+  [VOCAB_KEY]: (local, cloud) => mergeArrayById(local, cloud, 'id'),
   [STATS_KEY]: (local, cloud) => {
     const merged = Object.assign({}, cloud || {});
     Object.keys(local || {}).forEach(bucketId => {
@@ -8787,6 +8980,311 @@ function initProfSearchUI(){
   };
 }
 
+// ===== Vocab Match (library + matching game) =====
+// Ported from a standalone tool. Everything here is namespaced with a
+// vm* prefix (variables, functions, element ids) so nothing can collide
+// with the rest of the app's globals. Storage rides the existing
+// appDataGet/appDataSet + VOCAB_KEY plumbing (see APP_DATA_KEYS /
+// mergeStrategies above) instead of localStorage, so the library syncs
+// across devices the same way sets/stats do. escapeHtml() and shuffle()
+// are reused from the app rather than redefined.
+const VM_DEMO = [
+  {id:'001', spanish:'la manzana', english:'apple', image:'', category:'Food', level:'A2'},
+  {id:'002', spanish:'el perro', english:'dog', image:'', category:'Animals', level:'A1'},
+  {id:'003', spanish:'aprovechar', english:'to take advantage of / make use of', image:'', category:'Verbs', level:'B2'},
+  {id:'004', spanish:'agobiarse', english:'to feel overwhelmed', image:'', category:'Feelings', level:'B2'},
+  {id:'005', spanish:'la sobremesa', english:'time spent chatting after a meal', image:'', category:'Culture', level:'B2'},
+  {id:'006', spanish:'desenvolverse', english:'to manage / get by', image:'', category:'Verbs', level:'B2'},
+  {id:'007', spanish:'llevarse bien', english:'to get along well', image:'', category:'Relationships', level:'B1'},
+  {id:'008', spanish:'dar por hecho', english:'to take for granted / assume', image:'', category:'Expressions', level:'B2'},
+  {id:'009', spanish:'tener en cuenta', english:'to take into account', image:'', category:'Expressions', level:'B2'},
+  {id:'010', spanish:'darse cuenta', english:'to realize', image:'', category:'Expressions', level:'B1'},
+  {id:'011', spanish:'echar de menos', english:'to miss someone or something', image:'', category:'Expressions', level:'B1'},
+  {id:'012', spanish:'ponerse de acuerdo', english:'to reach an agreement', image:'', category:'Expressions', level:'B2'},
+  {id:'013', spanish:'estar al tanto', english:'to be up to date / informed', image:'', category:'Expressions', level:'B2'},
+  {id:'014', spanish:'sacar partido', english:'to make the most of', image:'', category:'Expressions', level:'B2'},
+  {id:'015', spanish:'llamar la atención', english:'to attract attention / stand out', image:'', category:'Expressions', level:'B2'},
+  {id:'016', spanish:'estar hecho polvo', english:'to be exhausted', image:'', category:'Idioms', level:'B2'}
+];
+let vmRoundWords = [], vmA = null, vmB = null, vmMatched = 0, vmScore = 0, vmCombo = 0, vmAttempts = 0, vmMistakes = [];
+
+function vmLoadLibrary(){
+  try{
+    const arr = JSON.parse(appDataCache[VOCAB_KEY] || 'null');
+    return (Array.isArray(arr) && arr.length) ? arr : VM_DEMO.map(x => ({...x}));
+  }catch(e){ return VM_DEMO.map(x => ({...x})); }
+}
+let vmVocab = vmLoadLibrary();
+function vmSaveLibrary(){ appDataSet(VOCAB_KEY, JSON.stringify(vmVocab)); vmRenderLibrary(); }
+function vmSlugKey(x){ return String(x || '').trim().toLowerCase().replace(/[\s_-]+/g, ''); }
+function vmImgSrc(x){ return String(x ?? '').trim(); }
+
+function vmRenderLibrary(){
+  if(!$('vmLibraryCount')) return; // view not built yet on first load
+  $('vmLibraryCount').textContent = vmVocab.length;
+  $('vmLibrarySummary').textContent = vmVocab.length + ' vocabulary item' + (vmVocab.length === 1 ? '' : 's');
+  const body = $('vmLibraryBody'); body.innerHTML = '';
+  if(!vmVocab.length){ body.innerHTML = '<tr><td colspan="6" class="vm-empty">No vocabulary yet. Paste from Excel or import a file.</td></tr>'; return; }
+  vmVocab.slice(0, 500).forEach(w => {
+    const tr = document.createElement('tr');
+    const src = vmImgSrc(w.image);
+    tr.innerHTML = `<td>${src ? `<img class="vm-thumb" src="${escapeHtml(src)}" alt="" onerror="this.style.display='none'">` : '—'}</td><td>${escapeHtml(w.id)}</td><td><b>${escapeHtml(w.spanish)}</b></td><td>${escapeHtml(w.english)}</td><td>${escapeHtml(w.category)}</td><td>${escapeHtml(w.level)}</td>`;
+    body.appendChild(tr);
+  });
+}
+function vmParseRows(rows){
+  return rows.map((r, i) => {
+    const x = {}; Object.keys(r).forEach(k => x[vmSlugKey(k)] = r[k]);
+    return {id: String(x.id || i + 1), spanish: String(x.spanish || x.es || ''), english: String(x.english || x.en || x.meaning || ''), image: String(x.image || x.imageurl || x.picture || x.pictureurl || ''), category: String(x.category || ''), level: String(x.level || '')};
+  }).filter(x => x.spanish && x.english);
+}
+function vmAddImported(items){
+  if(items.length < 1) return {ok: false, count: 0, total: vmVocab.length};
+  const map = new Map(vmVocab.map(x => [String(x.id), x]));
+  items.forEach(x => map.set(String(x.id), x));
+  vmVocab = [...map.values()]; vmSaveLibrary();
+  return {ok: true, count: items.length, total: vmVocab.length};
+}
+// Small inline-status helper — used instead of alert()/confirm() dialogs so
+// import feedback doesn't interrupt the flow of pasting/importing more.
+function vmFlashStatus(el, msg, kind, ms){
+  if(!el) return;
+  el.textContent = msg;
+  el.className = 'vm-note' + (kind ? ' vm-status-' + kind : '');
+  clearTimeout(el._vmTimer);
+  el._vmTimer = setTimeout(() => { if(el.textContent === msg){ el.textContent = ''; el.className = 'vm-note'; } }, ms || 4000);
+}
+function vmCopyToClipboard(text){
+  if(navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+  // Fallback for browsers/contexts where the async Clipboard API is
+  // unavailable (older browsers, some non-HTTPS/embedded contexts).
+  return new Promise((resolve, reject) => {
+    try{
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('execCommand copy failed'));
+    }catch(e){ reject(e); }
+  });
+}
+function vmBuildPrompt(){
+  const topic = ($('vmPromptTopic').value || 'general everyday').trim();
+  const level = $('vmPromptLevel').value;
+  const count = Math.max(5, Math.min(100, Number($('vmPromptCount').value) || 20));
+  return `Generate ${count} Spanish vocabulary items for a ${level}-level learner on this topic: "${topic}".
+
+Output ONLY a tab-separated table with this exact header row, then one row per word — no commentary, no markdown, no numbering:
+
+id\tspanish\tenglish\timage\tcategory\tlevel
+
+Rules:
+- id: sequential number starting at 001
+- spanish: the Spanish word or phrase
+- english: a concise English translation/meaning
+- image: leave blank
+- category: a short topical label (e.g. "Food", "Verbs", "Expressions")
+- level: "${level}" for every row
+- Separate columns with real tab characters, one row per line
+- Do not wrap the output in a code block`;
+}
+function vmParsePasted(text){
+  const lines = text.trim().split(/\r?\n/).filter(Boolean); if(!lines.length) return [];
+  const delimiter = lines[0].includes('\t') ? '\t' : ',';
+  const cells = lines.map(line => line.split(delimiter).map(s => s.trim()));
+  let headers = cells[0].map(vmSlugKey);
+  const known = ['id', 'spanish', 'english', 'image', 'category', 'level', 'meaning', 'es', 'en'];
+  const hasHeader = headers.some(h => known.includes(h));
+  if(hasHeader){
+    return cells.slice(1).map(row => { const o = {}; headers.forEach((h, i) => o[h] = row[i] ?? ''); return o; })
+      .map((r, i) => ({id: String(r.id || i + 1), spanish: String(r.spanish || r.es || ''), english: String(r.english || r.en || r.meaning || ''), image: String(r.image || r.imageurl || r.picture || r.pictureurl || ''), category: String(r.category || ''), level: String(r.level || '')}))
+      .filter(x => x.spanish && x.english);
+  }
+  return cells.map((r, i) => ({id: String(r[0] || i + 1), spanish: String(r[1] || ''), english: String(r[2] || ''), image: String(r[3] || ''), category: String(r[4] || ''), level: String(r[5] || '')})).filter(x => x.spanish && x.english);
+}
+// The standalone tool loaded xlsx.js from a CDN unconditionally. This
+// app doesn't add any script-tag dependencies at page load, so the
+// library is fetched lazily — only if someone actually picks a file —
+// and cached on window so repeat imports don't refetch it.
+function vmEnsureXlsxLib(){
+  if(window.XLSX) return Promise.resolve(window.XLSX);
+  if(window.__vmXlsxLoading) return window.__vmXlsxLoading;
+  window.__vmXlsxLoading = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+    s.onload = () => resolve(window.XLSX);
+    s.onerror = () => reject(new Error('Could not load the Excel-reading library (are you offline?)'));
+    document.head.appendChild(s);
+  });
+  return window.__vmXlsxLoading;
+}
+
+function vmShowLibraryPanel(){
+  $('vmLibraryPanel').classList.remove('hidden'); $('vmGamePanel').classList.add('hidden');
+  $('vmLibraryTab').classList.add('active'); $('vmGameTab').classList.remove('active');
+  vmRenderLibrary();
+}
+function vmShowGamePanel(){
+  if(vmVocab.length < 2){ alert('Add at least 2 vocabulary items first.'); return; }
+  $('vmLibraryPanel').classList.add('hidden'); $('vmGamePanel').classList.remove('hidden');
+  $('vmGameTab').classList.add('active'); $('vmLibraryTab').classList.remove('active');
+  vmStartRound();
+}
+
+function vmPlaceholder(){ const p = document.createElement('span'); p.className = 'vm-placeholder'; p.textContent = '🖼️'; return p; }
+function vmMakeCard(w, side, type){
+  const btn = document.createElement('button'); btn.className = 'vm-match'; btn.dataset.id = w.id; btn.dataset.side = side;
+  if(type === 'picture'){
+    const src = vmImgSrc(w.image);
+    if(src){ const im = document.createElement('img'); im.className = 'vm-thumb-big'; im.src = src; im.alt = w.spanish; im.onerror = () => im.replaceWith(vmPlaceholder()); btn.appendChild(im); }
+    else btn.appendChild(vmPlaceholder());
+  } else {
+    const div = document.createElement('div');
+    div.innerHTML = type === 'word' ? `<span class="vm-word">${escapeHtml(w.spanish)}</span>` : `<span class="vm-meaning">${escapeHtml(w.english)}</span>`;
+    btn.appendChild(div);
+  }
+  btn.onclick = () => vmSelect(btn);
+  return btn;
+}
+function vmTitle(t){ return t === 'word' ? '🇪🇸 Spanish' : t === 'meaning' ? '🇬🇧 Meaning' : '🖼️ Picture'; }
+function vmSetTitles(l, r){ $('vmLeftTitle').textContent = l; $('vmRightTitle').textContent = r; }
+function vmRenderGame(){
+  const m = $('vmModeSelect').value; let lt, rt;
+  if(m === 'word-meaning'){ lt = 'word'; rt = 'meaning'; vmSetTitles('🇪🇸 Spanish', '🇬🇧 Meaning'); }
+  if(m === 'word-picture'){ lt = 'word'; rt = 'picture'; vmSetTitles('🇪🇸 Spanish', '🖼️ Picture'); }
+  if(m === 'picture-word'){ lt = 'picture'; rt = 'word'; vmSetTitles('🖼️ Picture', '🇪🇸 Spanish'); }
+  if(m === 'picture-meaning'){ lt = 'picture'; rt = 'meaning'; vmSetTitles('🖼️ Picture', '🇬🇧 Meaning'); }
+  if(m === 'mixed'){ [lt, rt] = shuffle(['word', 'meaning', 'picture']); vmSetTitles(vmTitle(lt), vmTitle(rt)); }
+  const L = $('vmLeftItems'), R = $('vmRightItems'); L.innerHTML = ''; R.innerHTML = '';
+  vmRoundWords.forEach(w => L.appendChild(vmMakeCard(w, 'a', lt)));
+  shuffle(vmRoundWords).forEach(w => R.appendChild(vmMakeCard(w, 'b', rt)));
+}
+function vmStartRound(){
+  const n = Number($('vmSizeSelect').value);
+  vmRoundWords = shuffle(vmVocab).slice(0, Math.min(n, vmVocab.length));
+  vmA = vmB = null; vmMatched = 0; vmAttempts = 0; vmMistakes = [];
+  $('vmGameScreen').classList.remove('hidden'); $('vmResultsScreen').classList.add('hidden');
+  $('vmFeedbackEl').textContent = ''; $('vmFeedbackEl').className = 'vm-feedback';
+  vmRenderGame(); vmProgress();
+}
+function vmSelect(btn){
+  if(btn.classList.contains('matched') || btn.classList.contains('correct')) return;
+  if(btn.dataset.side === 'a'){ document.querySelectorAll('.vm-match[data-side="a"]').forEach(x => x.classList.remove('selected')); vmA = btn; }
+  else{ document.querySelectorAll('.vm-match[data-side="b"]').forEach(x => x.classList.remove('selected')); vmB = btn; }
+  btn.classList.add('selected');
+  if(vmA && vmB) vmCheck();
+}
+function vmCheck(){
+  vmAttempts++;
+  if(vmA.dataset.id === vmB.dataset.id){
+    vmMatched++; vmCombo++; vmScore += 100 + Math.min(vmCombo - 1, 5) * 25;
+    vmA.classList.remove('selected'); vmB.classList.remove('selected');
+    vmA.classList.add('correct'); vmB.classList.add('correct');
+    $('vmFeedbackEl').textContent = vmCombo >= 3 ? `🔥 ${vmCombo} in a row!` : '✓ Correct!';
+    $('vmFeedbackEl').className = 'vm-feedback good';
+    $('vmScoreEl').textContent = vmScore; $('vmComboEl').textContent = vmCombo;
+    const a = vmA, b = vmB;
+    setTimeout(() => { a.classList.add('matched'); b.classList.add('matched'); vmProgress(); if(vmMatched === vmRoundWords.length) vmFinish(); }, 280);
+  } else {
+    vmCombo = 0; $('vmComboEl').textContent = 0;
+    vmA.classList.add('wrong'); vmB.classList.add('wrong');
+    const w = vmRoundWords.find(x => String(x.id) === String(vmA.dataset.id));
+    if(w && !vmMistakes.some(x => x.id === w.id)) vmMistakes.push(w);
+    $('vmFeedbackEl').textContent = 'Not quite — try again!'; $('vmFeedbackEl').className = 'vm-feedback bad';
+    const a = vmA, b = vmB;
+    setTimeout(() => { a.classList.remove('wrong', 'selected'); b.classList.remove('wrong', 'selected'); }, 450);
+  }
+  vmA = vmB = null;
+}
+function vmProgress(){ $('vmProgressEl').style.width = (vmMatched / vmRoundWords.length * 100) + '%'; }
+function vmFinish(){
+  setTimeout(() => {
+    $('vmGameScreen').classList.add('hidden'); $('vmResultsScreen').classList.remove('hidden');
+    const acc = Math.round(vmMatched / vmAttempts * 100);
+    $('vmFinalScore').textContent = vmScore;
+    $('vmFinalStats').textContent = `${vmMatched}/${vmRoundWords.length} matched • ${acc}% accuracy • ${vmMistakes.length} to review`;
+    const box = $('vmMistakesBox'), list = $('vmMistakesList'); list.innerHTML = '';
+    if(vmMistakes.length){
+      box.classList.remove('hidden');
+      vmMistakes.forEach(w => { const d = document.createElement('div'); d.className = 'vm-mistake'; d.innerHTML = `<b>${escapeHtml(w.spanish)}</b><small>${escapeHtml(w.english)}</small>`; list.appendChild(d); });
+    } else box.classList.add('hidden');
+  }, 450);
+}
+
+function initVocabMatchUI(){
+  $('vocabMatchToggleBtn').onclick = () => {
+    saveBeforeNavigation(); hideAllScreens(); $('vocabMatchView').classList.remove('hidden');
+    vmShowLibraryPanel();
+  };
+  $('backFromVocabMatchBtn').onclick = () => { $('vocabMatchView').classList.add('hidden'); showLanding(); };
+  $('vmLibraryTab').onclick = vmShowLibraryPanel;
+  $('vmGameTab').onclick = vmShowGamePanel;
+  $('vmBackLibraryBtn').onclick = vmShowLibraryPanel;
+  $('vmClearPasteBtn').onclick = () => { $('vmPasteBox').value = ''; vmFlashStatus($('vmPasteStatus'), '', null, 1); };
+  $('vmClearLibraryBtn').onclick = () => {
+    if(confirm('Clear the entire vocabulary library?')){ vmVocab = []; vmSaveLibrary(); vmFlashStatus($('vmExcelStatus'), 'Library cleared.', 'info'); }
+  };
+  $('vmDownloadTemplateBtn').onclick = () => {
+    const rows = [['id', 'spanish', 'english', 'image', 'category', 'level'], ['001', 'la manzana', 'apple', '', 'Food', 'A2'], ['002', 'el perro', 'dog', '', 'Animals', 'A1']];
+    const csv = rows.map(r => r.map(x => `"${String(x).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type: 'text/csv'}), url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = 'vocab_template.csv'; a.click(); URL.revokeObjectURL(url);
+  };
+  $('vmExcelInput').onchange = async e => {
+    const f = e.target.files[0]; if(!f) return;
+    try{
+      const XLSX = await vmEnsureXlsxLib();
+      const data = new Uint8Array(await f.arrayBuffer()), wb = XLSX.read(data, {type: 'array'}), sheet = wb.Sheets[wb.SheetNames[0]], rows = XLSX.utils.sheet_to_json(sheet, {defval: ''});
+      const res = vmAddImported(vmParseRows(rows));
+      if(res.ok) vmFlashStatus($('vmExcelStatus'), `✓ Imported ${res.count} row${res.count === 1 ? '' : 's'} — library now has ${res.total}.`, 'ok');
+      else vmFlashStatus($('vmExcelStatus'), 'No valid rows found — check for spanish/english columns.', 'err');
+    }catch(err){ vmFlashStatus($('vmExcelStatus'), 'Could not read the file: ' + err.message, 'err', 6000); }
+    e.target.value = '';
+  };
+  // Live preview: parse-as-you-type/paste so the person can see the row
+  // count land before they click Import, instead of finding out only
+  // after the fact whether their paste was recognized.
+  let vmPasteDebounce;
+  $('vmPasteBox').addEventListener('input', () => {
+    clearTimeout(vmPasteDebounce);
+    vmPasteDebounce = setTimeout(() => {
+      const text = $('vmPasteBox').value;
+      if(!text.trim()){ $('vmPasteStatus').textContent = ''; $('vmPasteStatus').className = 'vm-note'; return; }
+      const items = vmParsePasted(text);
+      if(items.length) vmFlashStatus($('vmPasteStatus'), `${items.length} row${items.length === 1 ? '' : 's'} detected — ready to import.`, 'info', 8000);
+      else vmFlashStatus($('vmPasteStatus'), 'No valid rows detected yet — needs at least spanish + english columns.', 'err', 8000);
+    }, 200);
+  });
+  $('vmPasteImportBtn').onclick = () => {
+    const res = vmAddImported(vmParsePasted($('vmPasteBox').value));
+    if(res.ok){
+      vmFlashStatus($('vmPasteStatus'), `✓ Imported ${res.count} row${res.count === 1 ? '' : 's'} — library now has ${res.total}.`, 'ok');
+      $('vmPasteBox').value = '';
+    } else {
+      vmFlashStatus($('vmPasteStatus'), 'No valid vocabulary found — make sure you have at least spanish and english columns.', 'err');
+    }
+  };
+  // "Generate with AI": builds a ready-to-use prompt from the topic/
+  // level/count fields and copies it to the clipboard, so the person
+  // can paste it straight into any AI chat and then paste the reply
+  // back into the paste-import box above.
+  $('vmCopyPromptBtn').onclick = () => {
+    const text = vmBuildPrompt();
+    vmCopyToClipboard(text).then(() => {
+      $('vmPromptFallback').classList.add('hidden');
+      vmFlashStatus($('vmPromptStatus'), '✓ Copied — paste it into any AI chat, then paste its reply into the box on the right.', 'ok', 6000);
+    }).catch(() => {
+      const ta = $('vmPromptFallback'); ta.value = text; ta.classList.remove('hidden'); ta.focus(); ta.select();
+      vmFlashStatus($('vmPromptStatus'), 'Copy was blocked by the browser — it\'s selected below, press Ctrl/Cmd+C.', 'err', 8000);
+    });
+  };
+  $('vmModeSelect').onchange = vmStartRound;
+  $('vmSizeSelect').onchange = vmStartRound;
+  $('vmNewRoundBtn').onclick = vmStartRound;
+  $('vmPlayAgainBtn').onclick = vmStartRound;
+}
+
 function initCommunityUI(){
   $('communityToggleBtn').onclick = () => {
     saveBeforeNavigation(); hideAllScreens(); $('communityView').classList.remove('hidden');
@@ -8975,7 +9473,7 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', saveBeforeNavigation);
 
 function hideAllScreens(){
-  ['landing','folderView','setup','quiz','caseGame','sentenceGame','brainBreak','results','statsView','settingsView','petView','communityView','profSearchView'].forEach(id => {
+  ['landing','folderView','setup','quiz','caseGame','sentenceGame','brainBreak','results','statsView','settingsView','petView','communityView','profSearchView','vocabMatchView'].forEach(id => {
     const el = $(id);
     if(el) el.classList.add('hidden');
   });
@@ -13626,6 +14124,7 @@ initAppDataStorage().then(() => {
 initAccountSettingsUI();
 initCommunityUI();
 initProfSearchUI();
+initVocabMatchUI();
 initCloudSync();
 
 $('homeBtn').onclick = () => {
@@ -15475,7 +15974,8 @@ function initQuestionImageLightbox(){
     settingsToggleBtn:['⚙️ ','Ajustes'],
     petToggleBtn:['🐶 ','Compañero'],
     communityToggleBtn:['🌐 ','Comunidad'],
-    profSearchToggleBtn:['🔎 ','Temas']
+    profSearchToggleBtn:['🔎 ','Temas'],
+    vocabMatchToggleBtn:['🃏 ','Vocab']
   };
   Object.entries(labels).forEach(([id,[icon,text]])=>{
     const el=document.getElementById(id); if(!el) return;
