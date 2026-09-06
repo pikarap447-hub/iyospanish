@@ -4838,6 +4838,78 @@ body:before{
     .vm-stats{justify-content:flex-start}
   }
 
+  /* ===== DELE B2 PHOTO TASK (Foto → habla) =====
+     Namespaced under .pg-app / pg- classes, following the exact same
+     convention as the Vocab Match block above: colors pulled from the
+     app's own theme variables and the Spanish red/gold accents, so it
+     follows light/dark mode and the chosen accent automatically. */
+  .pg-app{
+    --pg-muted:var(--text-muted);
+    --pg-border:var(--border);
+    --pg-strong:#15803d; --pg-strongbg:rgba(21,128,61,.10);
+    --pg-mid:#8a6100; --pg-midbg:rgba(231,184,60,.16);
+    --pg-weak:#a3271d; --pg-weakbg:rgba(200,59,59,.10);
+    color:var(--text);
+  }
+  .pg-app *{box-sizing:border-box}
+  .pg-header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap}
+  .pg-eyebrow{font-size:11px;font-weight:850;letter-spacing:.11em;text-transform:uppercase;color:var(--spanish-red)}
+  .pg-h1{font-size:clamp(22px,4vw,32px);letter-spacing:-.03em;margin:3px 0}
+  .pg-subtitle{color:var(--pg-muted);font-size:13px;max-width:56ch}
+  .pg-stats{display:flex;gap:8px;flex-wrap:wrap}
+  .pg-stat{background:var(--surface,#fff);border:1px solid var(--pg-border);border-radius:13px;padding:8px 13px;text-align:center;min-width:70px}
+  .pg-stat b{display:block;font-size:16px;color:var(--text)}
+  .pg-stat span{font-size:10px;color:var(--pg-muted)}
+  .pg-tabs{display:flex;gap:7px;margin:0 0 14px}
+  .pg-tab{border:1px solid var(--pg-border);background:var(--surface,#fff);color:var(--text);border-radius:11px;padding:9px 14px;font-weight:800;cursor:pointer}
+  .pg-tab.active{background:var(--spanish-red);color:#fff;border-color:var(--spanish-red)}
+  .pg-panel-h{font-size:18px;letter-spacing:-.01em;margin:0 0 5px}
+  .pg-panel-p{color:var(--pg-muted);font-size:13px;margin:0 0 14px}
+  .pg-import-card{border:1px solid var(--pg-border);border-radius:15px;padding:14px;background:var(--surface,#fff);margin-bottom:14px}
+  .pg-input{border:1px solid var(--pg-border);background:var(--bg);color:var(--text);border-radius:11px;padding:9px 11px;font:inherit}
+  .pg-input:focus{outline:none;border-color:var(--spanish-red)}
+  .pg-note{font-size:12px;color:var(--pg-muted);line-height:1.5}
+  .pg-note.pg-status-ok{color:var(--pg-strong);font-weight:750}
+  .pg-note.pg-status-err{color:var(--pg-weak);font-weight:750}
+  .pg-note.pg-status-info{color:var(--spanish-red);font-weight:750}
+  .pg-textarea{width:100%;min-height:190px;border:1px solid var(--pg-border);background:var(--bg);color:var(--text);border-radius:11px;padding:10px;font:12px ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical}
+  .pg-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+  .pg-btn{border:1px solid var(--pg-border);background:var(--surface,#fff);color:var(--text);border-radius:11px;padding:9px 13px;font:inherit;font-weight:800;cursor:pointer}
+  .pg-btn:hover{border-color:var(--spanish-red)}
+  .pg-btn:disabled{opacity:.45;cursor:not-allowed}
+  .pg-btn-primary{background:var(--spanish-red);color:#fff;border-color:var(--spanish-red)}
+  .pg-btn-primary:hover{background:var(--spanish-red-dark)}
+  .pg-library-nav{margin:16px 0 0;padding:14px;border:1px solid var(--pg-border);border-radius:16px;background:var(--bg)}
+  .pg-library-nav h4{margin:0 0 3px;font-size:14px}
+  .pg-library-nav p{margin:0 0 10px;color:var(--pg-muted);font-size:12px}
+  .pg-set-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+  .pg-set-card{border:1px solid var(--pg-border);border-radius:12px;background:var(--surface);padding:11px;text-align:left;color:var(--text)}
+  .pg-set-card strong{display:block;font-size:13px;margin-bottom:3px}
+  .pg-set-card small{display:block;color:var(--pg-muted);font-size:11px;margin-bottom:8px}
+  .pg-set-card .pg-actions{margin-top:0}
+  .pg-set-card .pg-btn{padding:6px 8px;font-size:11px}
+  .pg-empty{padding:18px;text-align:center;color:var(--pg-muted);font-size:13px}
+  .pg-score{font-size:13px;font-weight:800;color:var(--text)}
+  .pg-photobar{position:sticky;top:0;background:var(--surface,#fff);z-index:5;padding-top:2px;padding-bottom:10px;margin-bottom:8px;border-bottom:1px solid var(--pg-border);border-radius:14px 14px 0 0}
+  .pg-photo{width:100%;max-height:230px;object-fit:contain;border-radius:14px;background:var(--bg)}
+  .pg-prompt{font-size:18px;font-weight:750;margin:10px 0;color:var(--text)}
+  .pg-choice{width:100%;text-align:left;padding:13px 15px;margin:7px 0;border-radius:13px;border:1px solid var(--pg-border);background:var(--surface,#fff);color:var(--text);font:inherit;cursor:pointer;transition:.08s ease}
+  .pg-choice:hover{border-color:var(--spanish-red)}
+  .pg-choice:active{transform:scale(.99)}
+  .pg-badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.02em}
+  .pg-badge.pg-strong{background:var(--pg-strongbg);color:var(--pg-strong)}
+  .pg-badge.pg-mid{background:var(--pg-midbg);color:var(--pg-mid)}
+  .pg-badge.pg-weak{background:var(--pg-weakbg);color:var(--pg-weak)}
+  .pg-notice{padding:10px 12px;background:var(--bg);border-radius:10px;margin:10px 0;color:var(--text);font-size:13px}
+  .pg-tip{border-left:3px solid var(--spanish-red);background:var(--bg);padding:12px 14px;border-radius:9px;margin-top:12px;color:var(--text);font-size:13px}
+  .pg-speakbox{min-height:150px}
+  .pg-timer{font-variant-numeric:tabular-nums;font-size:22px;font-weight:850;color:var(--text)}
+  .pg-pill{padding:6px 9px;border-radius:999px;background:var(--bg);font-size:12px;font-weight:800;color:var(--text)}
+  @media(max-width:720px){
+    .pg-header{flex-direction:column}
+    .pg-stats{justify-content:flex-start}
+  }
+
   /* This build is intentionally a focused Spanish workspace. Keep the
      legacy modules and IDs available for data compatibility, but remove
      their controls from the learner-facing interface. */
@@ -4851,31 +4923,42 @@ body:before{
   @media (min-width:900px){
     .frame.wide:has(#vocabMatchView:not(.hidden)) .community-panel,
     .frame.wide:has(#profSearchView:not(.hidden)) .community-panel,
+    .frame.wide:has(#photoGameView:not(.hidden)) .community-panel,
     .frame.wide:has(#communityView:not(.hidden)) .community-panel{max-width:1400px;width:100%;}
   }
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .tile-border,
   .frame.wide:has(#profSearchView:not(.hidden)) > .tile-border,
+  .frame.wide:has(#photoGameView:not(.hidden)) > .tile-border,
   .frame.wide:has(#vocabMatchView:not(.hidden)) .header-title,
   .frame.wide:has(#profSearchView:not(.hidden)) .header-title,
+  .frame.wide:has(#photoGameView:not(.hidden)) .header-title,
   .frame.wide:has(#vocabMatchView:not(.hidden)) .sidebar-nav,
   .frame.wide:has(#profSearchView:not(.hidden)) .sidebar-nav,
+  .frame.wide:has(#photoGameView:not(.hidden)) .sidebar-nav,
   .frame.wide:has(#vocabMatchView:not(.hidden)) .back-on-photo,
-  .frame.wide:has(#profSearchView:not(.hidden)) .back-on-photo{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+  .frame.wide:has(#profSearchView:not(.hidden)) .back-on-photo,
+  .frame.wide:has(#photoGameView:not(.hidden)) .back-on-photo{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
   @media (max-width:720px){
     .frame.wide:has(#vocabMatchView:not(.hidden)) .community-panel,
     .frame.wide:has(#profSearchView:not(.hidden)) .community-panel,
+    .frame.wide:has(#photoGameView:not(.hidden)) .community-panel,
     .frame.wide:has(#communityView:not(.hidden)) .community-panel{max-width:100%;width:100%;}
   }
   body:has(#vocabMatchView:not(.hidden)) .tile-border,
-  body:has(#profSearchView:not(.hidden)) .tile-border{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important;}
+  body:has(#profSearchView:not(.hidden)) .tile-border,
+  body:has(#photoGameView:not(.hidden)) .tile-border{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .card,
-  .frame.wide:has(#profSearchView:not(.hidden)) > .card{background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
+  .frame.wide:has(#profSearchView:not(.hidden)) > .card,
+  .frame.wide:has(#photoGameView:not(.hidden)) > .card{background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .card > .card-inner,
-  .frame.wide:has(#profSearchView:not(.hidden)) > .card > .card-inner{padding-top:0!important;}
+  .frame.wide:has(#profSearchView:not(.hidden)) > .card > .card-inner,
+  .frame.wide:has(#photoGameView:not(.hidden)) > .card > .card-inner{padding-top:0!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .header,
-  .frame.wide:has(#profSearchView:not(.hidden)) > .header{margin-bottom:0!important;}
+  .frame.wide:has(#profSearchView:not(.hidden)) > .header,
+  .frame.wide:has(#photoGameView:not(.hidden)) > .header{margin-bottom:0!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) .row:has(.back-on-photo),
-  .frame.wide:has(#profSearchView:not(.hidden)) .row:has(.back-on-photo){margin-bottom:4px!important;}
+  .frame.wide:has(#profSearchView:not(.hidden)) .row:has(.back-on-photo),
+  .frame.wide:has(#photoGameView:not(.hidden)) .row:has(.back-on-photo){margin-bottom:4px!important;}
 </style>
 
 </head>
@@ -4909,6 +4992,7 @@ body:before{
       <button class="btn-ghost stats-toggle" id="communityToggleBtn" title="Community" aria-label="Community">🌐 <span>Community</span><span class="nav-new-dot" id="communityNewDot"></span></button>
       <button class="btn-ghost stats-toggle" id="profSearchToggleBtn" title="Buscar tarjetas por tema" aria-label="Buscar por tema">🔎 <span>Temas</span></button>
       <button class="btn-ghost stats-toggle" id="vocabMatchToggleBtn" title="Emparejar vocabulario" aria-label="Emparejar vocabulario">🃏 <span>Vocabulario</span></button>
+      <button class="btn-ghost stats-toggle" id="photoGameToggleBtn" title="Foto → habla (DELE B2 · Tarea 2)" aria-label="Foto → habla">📷 <span>Foto</span></button>
     </nav>
   </div>
 
@@ -6392,6 +6476,86 @@ OUTCOME: NEG
         </div>
       </div>
 
+      <!-- ===== DELE B2 Photo Task (Foto → habla), ported from a standalone tool ===== -->
+      <div id="photoGameView" class="hidden">
+        <div class="row" style="margin-bottom:14px;">
+          <button class="btn-ghost back-on-photo" id="backFromPhotoGameBtn">← Volver</button>
+        </div>
+        <div class="pg-app community-panel">
+          <div class="pg-header">
+            <div>
+              <div class="pg-eyebrow">DELE B2 · Tarea 2</div>
+              <h2 class="pg-h1">Foto → habla</h2>
+              <div class="pg-subtitle">Describe una fotografía imaginada, elige cómo lo dirías y practica la Tarea 2 del DELE B2 con casos que puedes crear con una IA.</div>
+            </div>
+            <div class="pg-stats">
+              <div class="pg-stat"><b id="pgCaseCount">0</b><span>Casos</span></div>
+              <div class="pg-stat"><b id="pgScoreStat">0/0</b><span>Puntuación</span></div>
+            </div>
+          </div>
+
+          <nav class="pg-tabs">
+            <button class="pg-tab active" id="pgLibraryTab">📚 Mis casos</button>
+            <button class="pg-tab" id="pgPlayTab">🎮 Practicar</button>
+          </nav>
+
+          <section id="pgLibraryPanel" class="pg-panel">
+            <h3 class="pg-panel-h">Importar un caso nuevo</h3>
+            <p class="pg-panel-p">Pega un archivo PHOTO-mode CASE_FORMAT generado por una IA. Copia la dirección real de una foto (p. ej. "Copiar dirección de la imagen" en Google Imágenes), dale esa URL y la foto a la IA junto con el prompt de abajo — así la IA la ve y la describe, y el entrenador la carga directamente desde la web.</p>
+
+            <div class="pg-import-card">
+              <label class="pg-panel-p" style="font-weight:800;color:var(--text);display:block;margin-bottom:6px" for="pgImgTestUrl">🔗 Probar un enlace antes de crear un caso</label>
+              <div class="row" style="align-items:flex-start">
+                <input type="url" id="pgImgTestUrl" class="pg-input" placeholder="Pega aquí la URL de una imagen…" style="flex:1;min-width:220px">
+                <button class="pg-btn" id="pgImgTestBtn">Probar</button>
+              </div>
+              <div id="pgImgTestResult" class="pg-note" style="margin-top:8px"></div>
+            </div>
+
+            <textarea id="pgSource" class="pg-textarea" placeholder="CASE_FORMAT_VERSION: 1.2
+CASE_TITLE: Un conflicto familiar
+MODE: DELE_PHOTO
+START_NODE: PHOTO
+
+----------------------------------------
+NODE: PHOTO
+TYPE: SCENE
+IMAGE: https://...
+PROMPT: Imagina la situación y descríbela durante aproximadamente dos minutos.
+NEXT: OPEN
+..."></textarea>
+            <div class="pg-actions">
+              <button class="pg-btn pg-btn-primary" id="pgImportBtn">Importar y jugar</button>
+              <button class="pg-btn" id="pgSampleBtn">Cargar ejemplo</button>
+              <button class="pg-btn" id="pgCopyPromptBtn">📋 Copiar prompt para la IA</button>
+            </div>
+            <div id="pgImportStatus" class="pg-note"></div>
+
+            <div class="pg-library-nav">
+              <h4>Casos guardados</h4>
+              <p>Guarda un caso importado para volver a jugarlo cuando quieras. Se sincronizan con el resto de tu estudio.</p>
+              <div class="pg-set-cards" id="pgSetCards"></div>
+            </div>
+          </section>
+
+          <section id="pgPlayPanel" class="pg-panel hidden">
+            <div class="row between" style="align-items:center;margin-bottom:10px">
+              <div><div class="pg-eyebrow" id="pgTitle"></div><h3 id="pgNodeTitle" style="margin:2px 0 0"></h3></div>
+              <div class="pg-score">Puntuación: <span id="pgScore">0</span></div>
+            </div>
+            <div id="pgLenWarning" class="pg-notice hidden"></div>
+            <div id="pgPhotoBar" class="hidden"></div>
+            <div id="pgContent"></div>
+            <div id="pgChoices"></div>
+            <div id="pgTip"></div>
+            <div class="pg-actions" style="margin-top:14px">
+              <button class="pg-btn" id="pgBackToLibraryBtn">← Volver a mis casos</button>
+              <button class="pg-btn pg-btn-primary" id="pgSaveCaseBtn">💾 Guardar este caso</button>
+            </div>
+          </section>
+        </div>
+      </div>
+
   </div>
 </div>
 
@@ -6624,8 +6788,16 @@ const INTERVENTIONS_KEY = 'esp2Review_interventions_v1'; // pre/post/delayed tar
 // SETS_KEY, so it rides the existing IndexedDB cache + cloud sync +
 // backup/restore system for free instead of needing its own plumbing.
 const VOCAB_KEY = 'esp2Review_vocabLibrary_v1';
+// DELE B2 Photo Task's saved-case library (ported from a standalone tool).
+// Stored as a JSON-stringified object keyed by id: {id, title, source,
+// createdAt, updatedAt} — the raw CASE_FORMAT text is kept as `source` so a
+// saved case can be reloaded and re-parsed with pgParse() at any time. Same
+// convention as SETS_KEY (object keyed by id, mergeKeyedById-compatible)
+// so it rides the existing IndexedDB cache + cloud sync + backup/restore
+// system for free instead of needing its own plumbing.
+const PHOTO_CASES_KEY = 'esp2Review_photoCases_v1';
 const VOCAB_SETS_KEY = 'esp2Review_vocabSets_v1';
-const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY, VOCAB_KEY, VOCAB_SETS_KEY];
+const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY, VOCAB_KEY, VOCAB_SETS_KEY, PHOTO_CASES_KEY];
 // Cloud sync Milestone 2 scope: everything in APP_DATA_KEYS (stats,
 // sessions, case progress, pomodoro, attempts, learning/mastery,
 // interventions) plus LOCAL_SYNC_KEYS (streak, virtual pet, calendar/exams)
@@ -7086,6 +7258,10 @@ const mergeStrategies = {
   // logic doesn't apply — mergeArrayById's "keep whichever copy has more
   // filled-in fields" fallback is the closest fit for a plain word list.
   [VOCAB_KEY]: (local, cloud) => mergeArrayById(local, cloud, 'id'),
+  // Photo-case library is an object keyed by id, each entry stamped with
+  // updatedAt on save — mergeKeyedById's newer-wins logic is the correct
+  // fit here (same convention as SETS_KEY/CASE_PROGRESS_KEY above).
+  [PHOTO_CASES_KEY]: (local, cloud) => mergeKeyedById(local, cloud, 'id'),
   [STATS_KEY]: (local, cloud) => {
     const merged = Object.assign({}, cloud || {});
     Object.keys(local || {}).forEach(bucketId => {
@@ -9434,6 +9610,509 @@ function initVocabMatchUI(){
   $('vmPlayAgainBtn').onclick = vmStartRound;
 }
 
+// ================= DELE B2 Photo Task (Foto → habla) =================
+// Ported from a standalone tool the user built separately. Renamed with a
+// `pg` prefix throughout so nothing collides with the app's existing (and
+// unrelated, more complex) Cases/CASE_FORMAT medical-simulation engine —
+// this reuses the same general node-file idea but is its own independent
+// format/state. Reuses the app's existing $()/shuffle()/escapeHtml()
+// helpers instead of redefining them.
+let pgData = null, pgCurrent = null, pgScore = 0, pgMaxScore = 0, pgTimer = null,
+    pgRemaining = 120, pgSpeaking = false, pgCaseImage = null, pgStepNum = 0,
+    pgCurrentSource = '', pgCurrentCaseId = null;
+let pgLibrary = pgLoadLibrary();
+
+const PG_STEP_LABEL = {SCENE:'La foto', DECISION:'Punto de decisión', SPEAK:'Habla', FOLLOWUP:'Pregunta de seguimiento', END:'Cierre'};
+
+const PG_SAMPLE = `CASE_FORMAT_VERSION: 1.2
+CASE_TITLE: Un conflicto familiar
+MODE: DELE_PHOTO
+START_NODE: PHOTO
+
+----------------------------------------
+NODE: PHOTO
+TYPE: SCENE
+IMAGE: https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=80
+PROMPT: Imagina la situación y descríbela durante aproximadamente dos minutos.
+NEXT: OPEN
+
+----------------------------------------
+NODE: OPEN
+TYPE: DECISION
+QUESTION: Quieres empezar la descripción. ¿Qué dirías primero?
+CHOICE: A primera vista, parece que varias personas están reunidas al aire libre, pasando un buen rato juntas.
+  SCORE: 3
+  EXPLAIN: Sitúas la escena y añades una hipótesis sin afirmar como hecho algo que no puedes saber. Buen arranque.
+  PEARL: B2: A primera vista..., parece que..., da la impresión de que...
+  NEXT: PLACE
+CHOICE: Puedo ver a varias personas juntas; probablemente estén compartiendo un momento agradable entre ellas.
+  SCORE: 2
+  EXPLAIN: Correcto y con una hipótesis, pero todavía poco desarrollado como situación completa.
+  PEARL: Añade contexto: dónde, quiénes, qué relación.
+  NEXT: PLACE
+CHOICE: Hay varias personas en la imagen y todas están sentadas cerca unas de otras.
+  SCORE: 1
+  EXPLAIN: Es correcto, pero se queda en una enumeración de datos. En el DELE conviene convertir los detalles en una situación.
+  PEARL: Intenta: parece que..., diría que..., probablemente...
+  NEXT: PLACE
+
+----------------------------------------
+NODE: PLACE
+TYPE: DECISION
+QUESTION: ¿Cómo situarías el lugar y el ambiente?
+CHOICE: Por el entorno, diría que se encuentran al aire libre, en un lugar pensado para reunirse.
+  SCORE: 3
+  EXPLAIN: Hipótesis + justificación con un conector natural de nivel B2.
+  PEARL: Conectores: por el entorno, ya que, puesto que, por lo que se ve.
+  NEXT: SPEAK
+CHOICE: Parece un espacio exterior tranquilo, quizás un jardín o una terraza donde suelen quedar.
+  SCORE: 2
+  EXPLAIN: Buena hipótesis sobre el lugar, aunque falta conectarla con el resto de la escena.
+  PEARL: Prueba: quizás, es posible que, suele ser...
+  NEXT: SPEAK
+CHOICE: Están fuera, hay árboles alrededor y parece que hace buen tiempo ese día.
+  SCORE: 1
+  EXPLAIN: Describes detalles observables, pero todavía falta convertirlos en una interpretación de la situación.
+  PEARL: Prueba: creo que..., diría que..., probablemente...
+  NEXT: SPEAK
+
+----------------------------------------
+NODE: SPEAK
+TYPE: SPEAK
+DURATION: 120
+PROMPT: Ahora haz la tarea completa. No respondas como una lista: construye una historia conectada. Incluye dónde están, quiénes son, qué ha ocurrido, qué piensan o dicen y qué ocurrirá después.
+TIP: Intenta usar al menos 3 conectores y 2 expresiones de hipótesis.
+NEXT: FOLLOWUP
+
+----------------------------------------
+NODE: FOLLOWUP
+TYPE: FOLLOWUP
+QUESTION: ¿Crees que una situación como esta es habitual? ¿Por qué?
+TIP: Responde con tu opinión y justifícala. Puedes usar: desde mi punto de vista, considero que, sin embargo, por lo tanto...
+NEXT: END
+
+----------------------------------------
+NODE: END
+TYPE: END
+END_TYPE: SUCCESS
+SUMMARY: Has completado la Tarea 2. El objetivo es ganar soltura y poder construir una respuesta sin depender de las opciones.
+`;
+
+const PG_LLM_PROMPT = `You create content for a DELE B2 Spanish speaking trainer.
+
+The supplied image is for Tarea 2: Describir una situación imaginada a partir de una fotografía y conversar sobre ella.
+
+GOAL:
+Train the learner to become comfortable producing a connected 2–3 minute response to an unfamiliar photo. Do NOT turn this into an object-recognition quiz.
+
+OUTPUT:
+Return ONLY a valid CASE_FORMAT_VERSION: 1.2 file using:
+CASE_TITLE
+MODE: DELE_PHOTO
+START_NODE
+NODE blocks separated by ----------------------------------------
+
+Allowed node types:
+SCENE, DECISION, SPEAK, FOLLOWUP, END
+
+EXACT SYNTAX (follow this indentation precisely — the importer is strict):
+
+NODE: NODE_ID
+TYPE: DECISION
+QUESTION: <question text>
+CHOICE: <what the candidate would say, option A>
+  SCORE: 3
+  EXPLAIN: <why this works, in English>
+  PEARL: <2–5 B2 expressions>
+  NEXT: NEXT_NODE_ID
+CHOICE: <what the candidate would say, option B>
+  SCORE: 2
+  EXPLAIN: <why this is decent but not as strong, in English>
+  PEARL: <alternative B2 expressions>
+  NEXT: NEXT_NODE_ID
+CHOICE: <what the candidate would say, option C>
+  SCORE: 1
+  EXPLAIN: <why this is weakest, in English>
+  PEARL: <alternative B2 expressions>
+  NEXT: NEXT_NODE_ID
+
+(SCORE/EXPLAIN/PEARL/NEXT must be indented two spaces under their CHOICE line. Every CHOICE needs its own NEXT.)
+
+CRITICAL — do not let the answer be guessable without reading the Spanish:
+- Always give exactly 3 CHOICE options per DECISION, scored 3 / 2 / 1.
+- All 3 choices must be within about 20% of each other in word count. Never make the SCORE:3 choice noticeably longer or more elaborate than the others — length must carry no signal at all.
+- The choices differ in *quality of language use* (hedging, connectors, justification, register), never in how much information they contain or how long they are.
+- Don't default to always writing the strongest choice first — the trainer shuffles choice order at render time, but keep your own drafting order varied too, so a spot-check of the raw file doesn't reveal a pattern either.
+
+For a SCENE node:
+NODE: PHOTO
+TYPE: SCENE
+IMAGE: <url>
+PROMPT: <instruction>
+NEXT: NEXT_NODE_ID
+
+For each photo create this progression:
+PHOTO/SCENE -> OPEN -> PLACE -> PEOPLE -> PAST -> DIALOGUE -> NEXT -> SPEAK -> FOLLOWUP -> END
+
+PHOTO:
+- IMAGE: I will always give you the real, working image URL as plain text in this conversation (e.g. copied via "Copy image address"), alongside the picture itself so you can see and describe it. Copy that URL into IMAGE: exactly, character for character — don't shorten, "clean up", or re-host it.
+- Only if I do NOT give you a URL as text (i.e. you were only shown the picture as an uploaded/pasted image) should you write exactly: IMAGE: NONE. In that case, do NOT invent a plausible-looking URL (e.g. a stock-photo site link) — a fabricated address will not work. The trainer has no way to show a photo without a real link, so IMAGE: NONE means the learner will be prompted to paste one in manually — always prefer a real URL if you have one.
+- PROMPT: an official-style instruction.
+
+DECISION nodes:
+- The QUESTION must ask what the candidate would ACTUALLY SAY.
+- Give 3 choices representing candidate utterances, not factual interpretations.
+- One should be a strong natural B2 response (3), one solid but less developed (2), one understandable but weakest (1).
+- EXPLAIN must explain the speaking strategy/grammar.
+- PEARL must give 2–5 useful B2 expressions, connectors, or structures.
+- Do not mark an imagined story fact as objectively wrong. Judge language, development, justification, uncertainty and coherence — never length.
+
+The sequence should train:
+1. Opening/situating the image
+2. Place + atmosphere
+3. People + relationship + personality
+4. What happened before the photo
+5. What they may be thinking/saying
+6. What happens next/how it ends
+
+SPEAK:
+TYPE: SPEAK
+DURATION: 120
+PROMPT: tell the complete connected story; do not answer as a checklist.
+TIP: suggest useful connectors, hypothesis language, B2 vocabulary and discourse strategies.
+NEXT: FOLLOWUP
+
+FOLLOWUP:
+Ask one natural examiner-style question requiring opinion, justification or personal experience.
+TIP: give useful B2 language.
+NEXT: END
+
+IMPORTANT:
+- Use Castilian/standard European Spanish.
+- Keep the learner speaking, not clicking.
+- Prefer: parece que, da la impresión de que, podría ser, es posible que + subjuntivo, puede que + subjuntivo, probablemente, diría que, por lo que se ve, ya que, puesto que, sin embargo, además, por eso, a continuación, finalmente.
+- Include useful B2 vocabulary specific to the image.
+- Avoid overly literary or C1 language.
+- Never invent visible details that are not in the image as facts.
+- No answer key should depend on a single "correct" story.`;
+
+function pgLoadLibrary(){ try{ return JSON.parse(appDataCache[PHOTO_CASES_KEY]||'null')||{}; }catch(e){ return {}; } }
+function pgSaveLibrary(){ appDataSet(PHOTO_CASES_KEY, JSON.stringify(pgLibrary)); pgRenderLibrary(); }
+
+function pgUpdateStatsHeader(){
+  if($('pgCaseCount')) $('pgCaseCount').textContent = Object.keys(pgLibrary).length;
+  if($('pgScoreStat')) $('pgScoreStat').textContent = `${pgScore}/${pgMaxScore}`;
+}
+
+function pgRenderLibrary(){
+  const wrap = $('pgSetCards'); if(!wrap) return;
+  pgUpdateStatsHeader();
+  const entries = Object.values(pgLibrary).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
+  if(!entries.length){ wrap.innerHTML = '<div class="pg-empty">Todavía no has guardado ningún caso. Importa uno arriba y pulsa "Guardar este caso" mientras juegas.</div>'; return; }
+  wrap.innerHTML = '';
+  entries.forEach(entry => {
+    const card = document.createElement('div'); card.className = 'pg-set-card';
+    const date = entry.updatedAt ? new Date(entry.updatedAt).toLocaleDateString() : '';
+    card.innerHTML = `<strong>${escapeHtml(entry.title||'Sin título')}</strong><small>Guardado ${escapeHtml(date)}</small>`;
+    const actions = document.createElement('div'); actions.className = 'pg-actions';
+    const playBtn = document.createElement('button'); playBtn.className = 'pg-btn pg-btn-primary'; playBtn.textContent = '▶ Jugar';
+    playBtn.onclick = () => pgPlayLibraryCase(entry.id);
+    const delBtn = document.createElement('button'); delBtn.className = 'pg-btn'; delBtn.textContent = '🗑';
+    delBtn.onclick = () => { if(confirm(`¿Eliminar "${entry.title||'este caso'}"?`)){ delete pgLibrary[entry.id]; pgSaveLibrary(); } };
+    actions.append(playBtn, delBtn); card.appendChild(actions);
+    wrap.appendChild(card);
+  });
+}
+
+function pgPlayLibraryCase(id){
+  const entry = pgLibrary[id]; if(!entry) return;
+  pgCurrentCaseId = id;
+  $('pgSource').value = entry.source;
+  pgLoad();
+}
+
+function pgSaveCurrentCase(){
+  if(!pgCurrentSource){ return; }
+  const defaultTitle = (pgData && pgData.header && pgData.header.CASE_TITLE) || 'Caso sin título';
+  const title = prompt('Título para este caso:', defaultTitle);
+  if(title === null) return;
+  const id = pgCurrentCaseId || ('pg-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8));
+  const now = Date.now();
+  pgLibrary[id] = {id, title: title.trim() || defaultTitle, source: pgCurrentSource, createdAt: (pgLibrary[id] && pgLibrary[id].createdAt) || now, updatedAt: now};
+  pgCurrentCaseId = id;
+  pgSaveLibrary();
+}
+
+// Parses a PHOTO-mode CASE_FORMAT file. Deliberately kept close to the
+// standalone tool's original grammar (NODE/TYPE/CHOICE/SCORE/EXPLAIN/
+// PEARL/NEXT), independent of the app's own Cases importer.
+function pgParse(raw){
+  const lines = (raw||'').replace(/\r/g,'').split('\n'), header = {}, nodes = new Map();
+  let i = 0, cur = null, field = null;
+  const push = () => { if(cur) nodes.set(cur.id, cur); cur = null; field = null; };
+  while(i < lines.length && !/^\s*NODE:\s*/.test(lines[i]) && !/^-{3,}\s*$/.test(lines[i])){
+    const m = lines[i].match(/^\s*([A-Z_]+):\s*(.*)$/); if(m) header[m[1]] = m[2].trim(); i++;
+  }
+  while(i < lines.length){
+    const line = lines[i];
+    if(/^-{3,}\s*$/.test(line)){ push(); i++; continue; }
+    const nm = line.match(/^\s*NODE:\s*(\S+)/);
+    if(nm){ push(); cur = {id: nm[1], fields: {}, choices: [], line: i+1}; i++; continue; }
+    if(!cur){ i++; continue; }
+    let m = line.match(/^\s*CHOICE:\s*(.*?)(?:\s*->\s*(\S+))?$/);
+    if(m){ const c = {text: m[1], dest: m[2]||undefined}; cur.choices.push(c); field = {kind:'choice', ref:c, k:'text'}; i++; continue; }
+    m = line.match(/^\s*([A-Z_]+):\s*(.*)$/);
+    if(m){
+      const k = m[1], v = m[2].trim();
+      if(field && field.kind === 'choice' && ['SCORE','EXPLAIN','PEARL','NEXT'].includes(k)){
+        const key = k === 'NEXT' ? 'dest' : k.toLowerCase();
+        field.ref[key] = v; field = {kind:'choice', ref:field.ref, k:key};
+      } else { cur.fields[k] = v; field = {kind:'field', ref:cur.fields, k}; }
+      i++; continue;
+    }
+    if(field && field.k && line.trim() !== ''){
+      if(field.kind === 'field') field.ref[field.k] += '\n' + line.trim();
+      else if(field.kind === 'choice') field.ref[field.k] += '\n' + line.trim();
+    }
+    i++;
+  }
+  push();
+  const errors = [];
+  if(!header.START_NODE) errors.push('Falta START_NODE');
+  if(header.START_NODE && !nodes.has(header.START_NODE)) errors.push('START_NODE no existe');
+  const VALID_TYPES = ['SCENE','DECISION','SPEAK','FOLLOWUP','END'];
+  nodes.forEach(n => {
+    const t = (n.fields.TYPE||'').trim();
+    if(!VALID_TYPES.includes(t)) errors.push(`${n.id}: TYPE "${t}" no válido (debe ser uno de ${VALID_TYPES.join(', ')})`);
+    if(t === 'SCENE' && !n.fields.NEXT) errors.push(`${n.id}: SCENE necesita NEXT`);
+    if(t === 'DECISION' && (n.choices.length < 2 || !n.fields.QUESTION)) errors.push(`${n.id}: DECISION necesita QUESTION y al menos 2 choices`);
+    n.choices.forEach(c => { if(!c.dest) errors.push(`${n.id}: la opción "${(c.text||'').slice(0,30)}" no tiene destino (falta NEXT)`); else if(!nodes.has(c.dest)) errors.push(`${n.id}: la opción apunta a un nodo desconocido "${c.dest}"`); });
+    if(t === 'SPEAK' && !n.fields.NEXT) errors.push(`${n.id}: SPEAK necesita NEXT`);
+    if(t === 'FOLLOWUP' && !n.fields.NEXT) errors.push(`${n.id}: FOLLOWUP necesita NEXT`);
+  });
+  if(errors.length) throw new Error(errors.slice(0,8).join(' • '));
+  return {header, nodes, start: header.START_NODE};
+}
+
+// Flags DECISION nodes where one choice is much longer/shorter than the
+// others — a giveaway that lets the learner guess from length alone.
+function pgLengthWarnings(parsed){
+  const flagged = [];
+  parsed.nodes.forEach(n => {
+    if((n.fields.TYPE||'').trim() !== 'DECISION' || n.choices.length < 2) return;
+    const counts = n.choices.map(c => (c.text||'').trim().split(/\s+/).filter(Boolean).length);
+    const mx = Math.max(...counts), mn = Math.min(...counts);
+    if(mn > 0 && mx/mn >= 1.6) flagged.push(n.id);
+  });
+  return flagged;
+}
+
+function pgLoad(){
+  const status = $('pgImportStatus');
+  try{
+    const raw = $('pgSource').value;
+    pgData = pgParse(raw); pgScore = 0; pgMaxScore = 0; pgStepNum = 0;
+    pgCurrentSource = raw;
+    $('pgScore').textContent = '0';
+    $('pgTitle').textContent = pgData.header.CASE_TITLE || 'DELE FOTO';
+    if(status){ status.textContent = ''; status.className = 'pg-note'; }
+    pgCaseImage = null;
+    pgData.nodes.forEach(n => { if(!pgCaseImage && n.fields.IMAGE && n.fields.IMAGE.trim().toUpperCase() !== 'NONE') pgCaseImage = n.fields.IMAGE.trim(); });
+    const warns = pgLengthWarnings(pgData);
+    const warnBox = $('pgLenWarning');
+    if(warns.length){ warnBox.classList.remove('hidden'); warnBox.innerHTML = `⚠ <strong>Aviso:</strong> en ${warns.map(escapeHtml).join(', ')}, una opción es notablemente más larga que las demás — eso puede permitir adivinar la respuesta en vez de evaluarla.`; }
+    else { warnBox.classList.add('hidden'); warnBox.innerHTML = ''; }
+    pgShowPlayPanel();
+    pgEnter(pgData.start);
+  }catch(e){
+    if(status){ status.textContent = 'Error al importar: ' + e.message; status.className = 'pg-note pg-status-err'; }
+  }
+}
+
+function pgEnter(id){
+  pgCurrent = pgData.nodes.get(id);
+  if(!pgCurrent){ pgRenderFatal(`Este paso ("${id}") no existe en el archivo importado.`); return; }
+  if(pgTimer){ clearInterval(pgTimer); pgTimer = null; } pgSpeaking = false;
+  const f = pgCurrent.fields, t = (f.TYPE||'').trim();
+  pgStepNum++;
+  $('pgNodeTitle').textContent = `Paso ${pgStepNum} · ${PG_STEP_LABEL[t] || t || 'Desconocido'}`;
+  $('pgContent').innerHTML = ''; $('pgChoices').innerHTML = ''; $('pgTip').innerHTML = '';
+  pgRenderPhotoBar();
+  if(f.PROMPT){ const p = document.createElement('div'); p.className = 'pg-prompt'; p.textContent = f.PROMPT; $('pgContent').appendChild(p); }
+  if(t === 'SCENE'){
+    if(!pgCaseImage){
+      const attach = document.createElement('div'); attach.className = 'pg-notice';
+      attach.innerHTML = 'No se dio ninguna URL de imagen para este caso (el archivo tiene <code>IMAGE: NONE</code> o falta ese campo). Pega un enlace que funcione:';
+      const row = document.createElement('div'); row.className = 'row'; row.style.marginTop = '8px';
+      const urlInput = document.createElement('input'); urlInput.type = 'url'; urlInput.className = 'pg-input'; urlInput.placeholder = 'https://...'; urlInput.style.flex = '1'; urlInput.style.minWidth = '200px';
+      const go = document.createElement('button'); go.className = 'pg-btn'; go.textContent = 'Usar este enlace';
+      go.onclick = () => { const v = urlInput.value.trim(); if(!v) return; pgCaseImage = v; pgRenderPhotoBar(); attach.classList.add('hidden'); };
+      row.append(urlInput, go); attach.appendChild(row);
+      $('pgContent').appendChild(attach);
+    }
+    pgAddButton('Continuar →', () => pgEnter(f.NEXT), true); return;
+  }
+  if(t === 'DECISION'){ pgRenderDecision(); return; }
+  if(t === 'SPEAK'){ pgRenderSpeak(); return; }
+  if(t === 'FOLLOWUP'){ pgRenderFollowup(); return; }
+  if(t === 'END'){ pgRenderEnd(); return; }
+  pgRenderFatal(`El paso "${pgCurrent.id}" tiene un TYPE no admitido ("${t||'(ninguno)'}"), así que no hay nada que mostrar.`);
+}
+
+function pgRenderPhotoBar(){
+  const bar = $('pgPhotoBar');
+  if(!pgCaseImage){ bar.classList.add('hidden'); bar.innerHTML = ''; return; }
+  bar.classList.remove('hidden'); bar.innerHTML = '';
+  const wrap = document.createElement('div'); wrap.className = 'pg-photobar';
+  const img = document.createElement('img'); img.className = 'pg-photo'; img.alt = 'Foto DELE B2'; img.src = pgCaseImage;
+  const broken = document.createElement('div'); broken.className = 'pg-notice hidden';
+  broken.innerHTML = '⚠ Este enlace de imagen no cargó. Puede que el enlace esté caducado, sea falso o bloquee el hotlinking.<label class="pg-panel-p" style="display:block;margin:8px 0 4px">Pega un enlace que funcione:</label>';
+  const row = document.createElement('div'); row.className = 'row';
+  const urlInput = document.createElement('input'); urlInput.type = 'url'; urlInput.className = 'pg-input'; urlInput.placeholder = 'https://...'; urlInput.style.flex = '1'; urlInput.style.minWidth = '200px';
+  const go = document.createElement('button'); go.className = 'pg-btn'; go.textContent = 'Usar este enlace';
+  go.onclick = () => { const v = urlInput.value.trim(); if(!v) return; pgCaseImage = v; pgRenderPhotoBar(); };
+  row.append(urlInput, go); broken.appendChild(row);
+  img.onerror = () => { img.classList.add('hidden'); broken.classList.remove('hidden'); };
+  wrap.append(img, broken); bar.appendChild(wrap);
+}
+
+function pgRenderFatal(msg){
+  $('pgContent').innerHTML = `<div class="pg-notice"><strong>⚠ Algo no va bien</strong><br>${escapeHtml(msg)}</div>`;
+  $('pgChoices').innerHTML = '';
+  pgAddButton('Volver a mis casos', pgShowLibraryPanel, true);
+}
+
+function pgAddButton(txt, fn, primary){
+  const b = document.createElement('button'); b.textContent = txt; b.className = 'pg-btn' + (primary ? ' pg-btn-primary' : ''); b.onclick = fn; $('pgChoices').appendChild(b);
+}
+
+function pgTierOf(sc){
+  if(sc >= 3) return {cls:'pg-strong', label:'✓ Opción sólida'};
+  if(sc === 2) return {cls:'pg-mid', label:'→ Bien — se puede desarrollar más'};
+  return {cls:'pg-weak', label:'→ Desarrolla la idea más'};
+}
+
+function pgRenderDecision(){
+  if(pgCurrent.fields.QUESTION){ const q = document.createElement('div'); q.className = 'pg-prompt'; q.textContent = pgCurrent.fields.QUESTION; $('pgContent').appendChild(q); }
+  pgMaxScore += Math.max(0, ...pgCurrent.choices.map(c => Number(c.score||0)));
+  shuffle(pgCurrent.choices).forEach(c => {
+    const b = document.createElement('button'); b.className = 'pg-choice'; b.innerHTML = escapeHtml(c.text);
+    b.onclick = () => {
+      pgScore += Number(c.score||0); $('pgScore').textContent = pgScore; pgUpdateStatsHeader();
+      $('pgChoices').innerHTML = '';
+      const tier = pgTierOf(Number(c.score||0));
+      const box = document.createElement('div'); box.className = 'pg-notice'; box.setAttribute('aria-live','polite');
+      box.innerHTML = `<span class="pg-badge ${tier.cls}">${tier.label}</span><br><br>${escapeHtml(c.explain||'')}${c.pearl ? `<div class="pg-tip">💡 ${escapeHtml(c.pearl)}</div>` : ''}`;
+      $('pgChoices').appendChild(box);
+      if(c.dest) pgAddButton('Continuar →', () => pgEnter(c.dest), true);
+      else pgRenderFatal('Esta opción no tiene destino en el archivo importado.');
+    };
+    $('pgChoices').appendChild(b);
+  });
+}
+
+function pgRenderSpeak(){
+  let dur = Math.max(30, Number(pgCurrent.fields.DURATION || 120)); pgRemaining = dur;
+  const box = document.createElement('div'); box.className = 'pg-speakbox';
+  box.innerHTML = `<div class="row between"><div><div class="pg-eyebrow">Objetivo: 2–3 min</div><div class="pg-timer" id="pgTimerEl" aria-live="polite">${pgFmt(pgRemaining)}</div></div><span class="pg-pill">Sin leer una lista</span></div>
+  <div class="pg-tip" style="margin-top:16px">🧠 <strong>Estructura:</strong> situación → personas → qué ha pasado → qué piensan/dicen → qué pasará después.<br>🔗 <strong>Lengua:</strong> usa conectores y frases de hipótesis con naturalidad.</div>
+  <div class="pg-panel-p" style="margin-top:14px">${escapeHtml(pgCurrent.fields.TIP||'')}</div>`;
+  $('pgContent').appendChild(box);
+  const controls = document.createElement('div'); controls.className = 'row'; controls.style.marginTop = '12px';
+  const start = document.createElement('button'); start.className = 'pg-btn pg-btn-primary'; start.textContent = '▶ Empezar a hablar';
+  start.onclick = () => {
+    if(pgSpeaking) return;
+    if(pgRemaining <= 0){ pgRemaining = dur; }
+    pgSpeaking = true; start.disabled = true;
+    pgTimer = setInterval(() => {
+      pgRemaining--; const el = $('pgTimerEl'); if(el) el.textContent = pgFmt(pgRemaining);
+      if(pgRemaining <= 0){ clearInterval(pgTimer); pgTimer = null; pgSpeaking = false; start.disabled = false; start.textContent = '▶ Reiniciar cronómetro'; if(el) el.textContent = '00:00'; }
+    }, 1000);
+  };
+  const done = document.createElement('button'); done.className = 'pg-btn'; done.textContent = 'He terminado →';
+  done.onclick = () => { if(pgTimer){ clearInterval(pgTimer); pgTimer = null; } pgSpeaking = false; pgScore += 3; pgMaxScore += 3; $('pgScore').textContent = pgScore; pgUpdateStatsHeader(); pgEnter(pgCurrent.fields.NEXT); };
+  controls.append(start, done); $('pgContent').appendChild(controls);
+}
+
+function pgRenderFollowup(){
+  if(pgCurrent.fields.QUESTION){ const q = document.createElement('div'); q.className = 'pg-prompt'; q.textContent = pgCurrent.fields.QUESTION; $('pgContent').appendChild(q); }
+  const p = document.createElement('div'); p.className = 'pg-tip'; p.textContent = pgCurrent.fields.TIP || 'Da tu opinión y justifícala.'; $('pgContent').appendChild(p);
+  const ta = document.createElement('textarea'); ta.className = 'pg-textarea pg-speakbox'; ta.placeholder = 'Habla en voz alta. Luego, cuando termines, continúa.'; ta.style.marginTop = '12px'; $('pgContent').appendChild(ta);
+  pgAddButton('Continuar →', () => { pgScore += 2; pgMaxScore += 2; $('pgScore').textContent = pgScore; pgUpdateStatsHeader(); pgEnter(pgCurrent.fields.NEXT); }, true);
+}
+
+function pgRenderEnd(){
+  const pct = pgMaxScore ? Math.round(100 * pgScore / pgMaxScore) : 0;
+  let grade = 'Sigue practicando'; if(pct >= 90) grade = 'Excelente'; else if(pct >= 75) grade = 'Bien'; else if(pct >= 60) grade = 'Aceptable';
+  $('pgContent').innerHTML = `<div class="pg-notice"><strong>${escapeHtml(pgCurrent.fields.SUMMARY || 'Tarea completada.')}</strong><br><span class="pg-panel-p">Puntuación: ${pgScore} / ${pgMaxScore} (${pct}% — ${grade}). El objetivo real es la fluidez: ver una foto nueva y saber cómo empezar, desarrollar y cerrar tu respuesta sin depender de las opciones.</span></div>`;
+  $('pgChoices').innerHTML = '';
+  pgAddButton('Volver a mis casos', pgShowLibraryPanel);
+  pgAddButton('💾 Guardar este caso', pgSaveCurrentCase, true);
+}
+
+function pgFmt(n){ return String(Math.floor(n/60)).padStart(2,'0') + ':' + String(n%60).padStart(2,'0'); }
+
+function pgShowLibraryPanel(){
+  $('pgLibraryTab').classList.add('active'); $('pgPlayTab').classList.remove('active');
+  $('pgLibraryPanel').classList.remove('hidden'); $('pgPlayPanel').classList.add('hidden');
+  if(pgTimer){ clearInterval(pgTimer); pgTimer = null; } pgSpeaking = false;
+  pgRenderLibrary();
+}
+function pgShowPlayPanel(){
+  $('pgPlayTab').classList.add('active'); $('pgLibraryTab').classList.remove('active');
+  $('pgPlayPanel').classList.remove('hidden'); $('pgLibraryPanel').classList.add('hidden');
+}
+
+function initPhotoGameUI(){
+  $('photoGameToggleBtn').onclick = () => {
+    // Same async-load-race refresh as Vocab Match above — read the
+    // library fresh on entry instead of trusting a possibly-stale
+    // in-memory snapshot from before IndexedDB finished loading.
+    pgLibrary = pgLoadLibrary();
+    saveBeforeNavigation(); hideAllScreens(); $('photoGameView').classList.remove('hidden');
+    pgShowLibraryPanel();
+  };
+  $('backFromPhotoGameBtn').onclick = () => {
+    if(pgTimer){ clearInterval(pgTimer); pgTimer = null; } pgSpeaking = false;
+    $('photoGameView').classList.add('hidden'); showLanding();
+  };
+  $('pgLibraryTab').onclick = pgShowLibraryPanel;
+  $('pgPlayTab').onclick = () => { if(pgData) pgShowPlayPanel(); else pgShowLibraryPanel(); };
+  $('pgImportBtn').onclick = pgLoad;
+  $('pgSampleBtn').onclick = () => {
+    $('pgSource').value = PG_SAMPLE;
+    const status = $('pgImportStatus'); status.textContent = 'Ejemplo cargado — pulsa "Importar y jugar" para empezar.'; status.className = 'pg-note pg-status-info';
+  };
+  $('pgCopyPromptBtn').onclick = () => {
+    vmCopyToClipboard(PG_LLM_PROMPT).then(() => {
+      const status = $('pgImportStatus'); status.textContent = '✓ Prompt copiado. Pégalo en un chat de IA junto con la foto y su URL.'; status.className = 'pg-note pg-status-ok';
+    }).catch(() => {
+      $('pgSource').value = PG_LLM_PROMPT;
+      const status = $('pgImportStatus'); status.textContent = 'El navegador bloqueó la copia. El prompt se puso en el cuadro de texto — selecciónalo y cópialo.'; status.className = 'pg-note pg-status-err';
+    });
+  };
+  $('pgImgTestBtn').onclick = () => {
+    const v = $('pgImgTestUrl').value.trim();
+    const box = $('pgImgTestResult'); box.innerHTML = '';
+    if(!v){ box.textContent = 'Pega primero una URL.'; return; }
+    box.textContent = 'Comprobando…';
+    const test = new Image(); const t0 = performance.now();
+    test.onload = () => {
+      box.innerHTML = '';
+      const ok = document.createElement('div');
+      ok.innerHTML = `✅ Carga bien en este navegador (${test.naturalWidth}×${test.naturalHeight}, ${Math.round(performance.now()-t0)}ms). Puedes darle esta URL a la IA.`;
+      const preview = document.createElement('img'); preview.src = v; preview.style.cssText = 'max-height:140px;border-radius:8px;margin-top:8px;display:block';
+      box.append(ok, preview);
+    };
+    test.onerror = () => {
+      box.innerHTML = '❌ Este enlace no cargó en tu navegador. Motivos frecuentes: la dirección caducó o dependía de una sesión (frecuente con enlaces copiados desde resultados de Google Imágenes), la fuente bloquea el hotlinking, o la URL está mal escrita. Prueba de nuevo con "Copiar dirección de la imagen" sobre la imagen a tamaño completo, o usa una fuente pensada para esto (Wikimedia Commons, Unsplash, Pexels, Pixabay).';
+    };
+    test.src = v;
+  };
+  $('pgBackToLibraryBtn').onclick = pgShowLibraryPanel;
+  $('pgSaveCaseBtn').onclick = pgSaveCurrentCase;
+}
+
 function initCommunityUI(){
   $('communityToggleBtn').onclick = () => {
     saveBeforeNavigation(); hideAllScreens(); $('communityView').classList.remove('hidden');
@@ -9622,7 +10301,7 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', saveBeforeNavigation);
 
 function hideAllScreens(){
-  ['landing','folderView','setup','quiz','caseGame','sentenceGame','brainBreak','results','statsView','settingsView','petView','communityView','profSearchView','vocabMatchView'].forEach(id => {
+  ['landing','folderView','setup','quiz','caseGame','sentenceGame','brainBreak','results','statsView','settingsView','petView','communityView','profSearchView','vocabMatchView','photoGameView'].forEach(id => {
     const el = $(id);
     if(el) el.classList.add('hidden');
   });
@@ -14274,12 +14953,14 @@ initAppDataStorage().then(() => {
   // during that window.
   vmVocab = vmLoadLibrary();
   vmSavedSets = vmLoadSavedSets();
+  pgLibrary = pgLoadLibrary();
   showLanding();
 });
 initAccountSettingsUI();
 initCommunityUI();
 initProfSearchUI();
 initVocabMatchUI();
+initPhotoGameUI();
 initCloudSync();
 
 $('homeBtn').onclick = () => {
@@ -16130,7 +16811,8 @@ function initQuestionImageLightbox(){
     petToggleBtn:['🐶 ','Compañero'],
     communityToggleBtn:['🌐 ','Comunidad'],
     profSearchToggleBtn:['🔎 ','Temas'],
-    vocabMatchToggleBtn:['🃏 ','Vocab']
+    vocabMatchToggleBtn:['🃏 ','Vocab'],
+    photoGameToggleBtn:['📷 ','Foto']
   };
   Object.entries(labels).forEach(([id,[icon,text]])=>{
     const el=document.getElementById(id); if(!el) return;
