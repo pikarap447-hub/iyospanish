@@ -4929,12 +4929,6 @@ body:before{
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .tile-border,
   .frame.wide:has(#profSearchView:not(.hidden)) > .tile-border,
   .frame.wide:has(#photoGameView:not(.hidden)) > .tile-border,
-  .frame.wide:has(#vocabMatchView:not(.hidden)) .header-title,
-  .frame.wide:has(#profSearchView:not(.hidden)) .header-title,
-  .frame.wide:has(#photoGameView:not(.hidden)) .header-title,
-  .frame.wide:has(#vocabMatchView:not(.hidden)) .sidebar-nav,
-  .frame.wide:has(#profSearchView:not(.hidden)) .sidebar-nav,
-  .frame.wide:has(#photoGameView:not(.hidden)) .sidebar-nav,
   .frame.wide:has(#vocabMatchView:not(.hidden)) .back-on-photo,
   .frame.wide:has(#profSearchView:not(.hidden)) .back-on-photo,
   .frame.wide:has(#photoGameView:not(.hidden)) .back-on-photo{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
@@ -18324,17 +18318,29 @@ document.addEventListener('DOMContentLoaded',function(){
 
  /* ---- Nav active-state: reflects which top-level screen is showing so
     the pill nav's current position is obvious at a glance. Runs after
-    every screen-switching click already wired below, plus once on load. ---- */
+    every screen-switching click already wired below, plus once on load.
+    Covers every nav button, including the ones that live outside the
+    main hideAllScreens() state machine (Comunidad/Temas/Vocab/Foto) —
+    those were previously never marked active, so their pill highlight
+    silently never appeared when you were on that screen. ---- */
  function updateNavActiveState(){
    const onStats = !document.getElementById('statsView').classList.contains('hidden');
    const onSettings = !document.getElementById('settingsView').classList.contains('hidden');
    const onPet = !document.getElementById('petView').classList.contains('hidden');
-   document.getElementById('homeBtn')?.classList.toggle('active', !onStats && !onSettings && !onPet);
+   const onCommunity = !document.getElementById('communityView').classList.contains('hidden');
+   const onProfSearch = !document.getElementById('profSearchView').classList.contains('hidden');
+   const onVocabMatch = !document.getElementById('vocabMatchView').classList.contains('hidden');
+   const onPhotoGame = !document.getElementById('photoGameView').classList.contains('hidden');
+   document.getElementById('homeBtn')?.classList.toggle('active', !onStats && !onSettings && !onPet && !onCommunity && !onProfSearch && !onVocabMatch && !onPhotoGame);
    document.getElementById('statsToggleBtn')?.classList.toggle('active', onStats);
    document.getElementById('settingsToggleBtn')?.classList.toggle('active', onSettings);
    document.getElementById('petToggleBtn')?.classList.toggle('active', onPet);
+   document.getElementById('communityToggleBtn')?.classList.toggle('active', onCommunity);
+   document.getElementById('profSearchToggleBtn')?.classList.toggle('active', onProfSearch);
+   document.getElementById('vocabMatchToggleBtn')?.classList.toggle('active', onVocabMatch);
+   document.getElementById('photoGameToggleBtn')?.classList.toggle('active', onPhotoGame);
  }
- ['homeBtn','statsToggleBtn','settingsToggleBtn','petToggleBtn'].forEach(id => {
+ ['homeBtn','statsToggleBtn','settingsToggleBtn','petToggleBtn','communityToggleBtn','profSearchToggleBtn','vocabMatchToggleBtn','photoGameToggleBtn','backFromCommunityBtn','backFromProfSearchBtn','backFromVocabMatchBtn','backFromPhotoGameBtn'].forEach(id => {
    document.getElementById(id)?.addEventListener('click', () => setTimeout(updateNavActiveState, 0));
  });
 
