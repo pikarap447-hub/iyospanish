@@ -6498,7 +6498,7 @@ OUTCOME: NEG
 
           <section id="pgLibraryPanel" class="pg-panel">
             <h3 class="pg-panel-h">Importar un caso nuevo</h3>
-            <p class="pg-panel-p">Pega un archivo PHOTO-mode CASE_FORMAT generado por una IA. Copia la dirección real de una foto (p. ej. "Copiar dirección de la imagen" en Google Imágenes), dale esa URL y la foto a la IA junto con el prompt de abajo — así la IA la ve y la describe, y el entrenador la carga directamente desde la web.</p>
+            <p class="pg-panel-p">Pega un archivo PHOTO-mode CASE_FORMAT generado por una IA. Copia la dirección real de una foto (p. ej. "Copiar dirección de la imagen" en Google Imágenes), dale esa URL y la foto a la IA junto con el prompt de abajo — así la IA la ve y la describe, y el entrenador la carga directamente desde la web. Al importar, el caso se guarda automáticamente en "Casos guardados" — no hace falta guardarlo aparte.</p>
 
             <div class="pg-import-card">
               <label class="pg-panel-p" style="font-weight:800;color:var(--text);display:block;margin-bottom:6px" for="pgImgTestUrl">🔗 Probar un enlace antes de crear un caso</label>
@@ -6530,7 +6530,7 @@ NEXT: OPEN
 
             <div class="pg-library-nav">
               <h4>Casos guardados</h4>
-              <p>Guarda un caso importado para volver a jugarlo cuando quieras. Se sincronizan con el resto de tu estudio.</p>
+              <p>Cada caso que importas se guarda aquí automáticamente. Se sincronizan con el resto de tu estudio.</p>
               <div class="pg-set-cards" id="pgSetCards"></div>
             </div>
           </section>
@@ -6547,7 +6547,6 @@ NEXT: OPEN
             <div id="pgTip"></div>
             <div class="pg-actions" style="margin-top:14px">
               <button class="pg-btn" id="pgBackToLibraryBtn">← Volver a mis casos</button>
-              <button class="pg-btn pg-btn-primary" id="pgSaveCaseBtn">💾 Guardar este caso</button>
             </div>
           </section>
         </div>
@@ -8483,7 +8482,10 @@ function p2EnhanceCard(r){
   const div=renderCommunityCardOriginal(r);const actions=div.querySelector('.community-set-actions');
   if(actions){
     const b=(label,fn)=>{const x=document.createElement('button');x.className='community-icon-btn';x.textContent=label;x.onclick=fn;return x;};
-    actions.prepend(b('History',()=>p2Versions(r.id)),b('＋ Collection',()=>p2AddCollection(r.id)),b('♻ Remix',()=>p2Remix(r.id)));
+    // Remix duplicates a deck into the main flashcard Sets collection —
+    // meaningless for a Foto case (no card table to edit), so skip it there.
+    const remixBtn = r.kind === 'photo' ? [] : [b('♻ Remix',()=>p2Remix(r.id))];
+    actions.prepend(b('History',()=>p2Versions(r.id)),b('＋ Collection',()=>p2AddCollection(r.id)),...remixBtn);
   }
   const author=div.querySelector('.community-set-author');if(author){author.style.cursor='pointer';author.onclick=()=>p2OpenProfile(r.owner_id);}
   return div;
@@ -8544,7 +8546,7 @@ function renderCommunityCard(r){
   const cardTypeLabel = r.card_type === 'samplex' ? 'Samplex' : (r.card_type === 'topic' ? 'Topic Cards' : r.card_type);
   const subjColor = r.subject ? subjectColor(r.subject) : null;
   const subjectTag = r.subject ? `<span class="community-set-tag subject-tag" style="background:${subjColor}">${escapeHtml(r.subject)}</span>` : '';
-  const tags = subjectTag + [r.le ? `Nivel ${r.le}` : null, cardTypeLabel, r.topic, r.professor ? `👤 ${r.professor}` : null, r.kind === 'algorithm' ? 'Algorithm' : null].filter(Boolean).slice(0,4).map(t => `<span class="community-set-tag">${escapeHtml(t)}</span>`).join('');
+  const tags = subjectTag + [r.le ? `Nivel ${r.le}` : null, cardTypeLabel, r.topic, r.professor ? `👤 ${r.professor}` : null, r.kind === 'algorithm' ? 'Algorithm' : null, r.kind === 'photo' ? '📷 Foto DELE B2' : null].filter(Boolean).slice(0,4).map(t => `<span class="community-set-tag">${escapeHtml(t)}</span>`).join('');
   const uploadedLabel = r.created_at ? new Date(r.created_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : null;
   // "Edited" only shows once the gap between created_at and updated_at is
   // large enough to be a real, later edit rather than noise from whatever
@@ -8559,7 +8561,7 @@ function renderCommunityCard(r){
     <div class="community-set-main">
       <div class="community-set-title">${escapeHtml(r.title || 'Untitled set')}</div>
       <div class="community-set-author">👤 @${escapeHtml(r.username || 'unknown')}${uploadedLabel ? ` · Uploaded ${uploadedLabel}` : ''}${editedLabel ? ` · <span title="Last edited ${editedLabel}">Edited ${editedLabel}</span>` : ''}</div>
-      <div class="community-set-meta"><span>${Number(r.card_count||0)} cards</span>${tags}</div>
+      <div class="community-set-meta"><span>${r.kind === 'photo' ? 'Práctica de habla' : `${Number(r.card_count||0)} cards`}</span>${tags}</div>
       ${r.description ? `<div class="community-set-desc">${escapeHtml(r.description)}</div>` : ''}
       <div class="community-set-stats">
         <span class="community-set-stat">↓ ${Number(r.import_count||0)} imports</span>
@@ -8694,9 +8696,22 @@ async function openCommunityPreview(id){
   const uploadedLabel = row.created_at ? new Date(row.created_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : null;
   const wasEdited = row.created_at && row.updated_at && (new Date(row.updated_at).getTime() - new Date(row.created_at).getTime() > 60000);
   const editedLabel = wasEdited ? new Date(row.updated_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : null;
-  $('communityPreviewMeta').textContent = `by @${row.username || 'unknown'} · ${Number(row.card_count||0)} cards${row.subject ? ' · '+row.subject : ''}${uploadedLabel ? ' · Uploaded '+uploadedLabel : ''}${editedLabel ? ' · Edited '+editedLabel : ''}`;
+  $('communityPreviewMeta').textContent = `by @${row.username || 'unknown'} · ${row.kind === 'photo' ? 'Práctica de habla (DELE B2)' : Number(row.card_count||0)+' cards'}${row.subject ? ' · '+row.subject : ''}${uploadedLabel ? ' · Uploaded '+uploadedLabel : ''}${editedLabel ? ' · Edited '+editedLabel : ''}`;
   $('communityPreviewStats').innerHTML = `<span class="community-set-stat">↓ ${Number(row.import_count||0)} imports</span><span class="community-set-stat">❤️ ${Number(row.like_count||0)} likes</span><span class="community-set-stat">🔖 ${Number(row.save_count||0)} saves</span>`;
   $('communityPreviewDesc').innerHTML = row.description ? escapeHtml(row.description) : '';
+  $('communityPreviewTagSummary').classList.add('hidden');
+  $('communityPreviewTagSummary').innerHTML = '';
+  $('communityPreviewBackdrop').classList.remove('hidden');
+  $('communityPreviewBackdrop').setAttribute('aria-hidden','false');
+  loadAndRenderComments(id);
+
+  // Foto cases don't have a `cards` array at all (their content is a
+  // CASE_FORMAT script in algo_source) — the card-sample projection below
+  // is meaningless for them, so skip it and show a plain explainer instead.
+  if(row.kind === 'photo'){
+    $('communityPreviewSamples').innerHTML = `<div class="community-empty" style="margin-top:14px;">📷 Caso de práctica de habla para la Tarea 2 del DELE B2 — al importarlo se añade a tu biblioteca de Foto, listo para jugar.</div>`;
+    return;
+  }
   // Metadata rows (Discover/Following) never carry `cards` anymore —
   // fetch metadata only; card content is projected separately below.
   $('communityPreviewSamples').innerHTML = `<div class="community-empty" style="margin-top:14px;">Loading preview…</div>`;
@@ -8895,6 +8910,23 @@ async function importCommunitySet(communitySetId){
   if(!sb || !currentUser) return;
   const { data, error } = await fetchCommunityFullDeck(communitySetId, 'import-fetch');
   if(error || !data){ alert('Could not load that set: ' + (error ? error.message : 'not found')); return; }
+  // Foto cases live in their own library (PHOTO_CASES_KEY), not the main
+  // flashcard Sets collection — importing one as a regular "set" would
+  // create an inert entry nothing in the app knows how to play.
+  if(data.kind === 'photo'){
+    if(!confirm(`Add "${data.title}" to your Foto cases?`)) return;
+    const id = 'pg-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    const now = Date.now();
+    pgLibrary[id] = {id, title: data.title, source: data.algo_source || '', createdAt: now, updatedAt: now};
+    pgSaveLibrary();
+    await sb.rpc('increment_community_import', { p_set_id: communitySetId });
+    const row = communityBrowseCache.find(r => r.id === communitySetId);
+    if(row) row.import_count = Number(row.import_count||0) + 1;
+    closeCommunityPreview();
+    applyCommunitySearchFilter();
+    alert(`Added "${data.title}" to your Foto cases — find it under the 📷 Foto tab.`);
+    return;
+  }
   if(!confirm(`Add "${data.title}" (${data.card_count} cards) to your library?`)) return;
   const sets = loadSets();
   const now = Date.now();
@@ -9805,7 +9837,7 @@ function pgRenderLibrary(){
   const wrap = $('pgSetCards'); if(!wrap) return;
   pgUpdateStatsHeader();
   const entries = Object.values(pgLibrary).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-  if(!entries.length){ wrap.innerHTML = '<div class="pg-empty">Todavía no has guardado ningún caso. Importa uno arriba y pulsa "Guardar este caso" mientras juegas.</div>'; return; }
+  if(!entries.length){ wrap.innerHTML = '<div class="pg-empty">Todavía no has importado ningún caso. Pega uno arriba — se guarda aquí automáticamente en cuanto lo importas.</div>'; return; }
   wrap.innerHTML = '';
   entries.forEach(entry => {
     const card = document.createElement('div'); card.className = 'pg-set-card';
@@ -9814,30 +9846,98 @@ function pgRenderLibrary(){
     const actions = document.createElement('div'); actions.className = 'pg-actions';
     const playBtn = document.createElement('button'); playBtn.className = 'pg-btn pg-btn-primary'; playBtn.textContent = '▶ Jugar';
     playBtn.onclick = () => pgPlayLibraryCase(entry.id);
+    const editBtn = document.createElement('button'); editBtn.className = 'pg-btn'; editBtn.textContent = '✏️ Editar';
+    editBtn.onclick = () => pgEditLibraryCase(entry.id);
+    const pubBtn = document.createElement('button'); pubBtn.className = 'pg-btn';
+    pubBtn.textContent = entry.communityId ? '☁️ Publicado' : '🌐 Publicar';
+    pubBtn.title = entry.communityId ? 'Ya está en Comunidad — pulsa para actualizarlo' : 'Compartir este caso en Comunidad';
+    pubBtn.onclick = () => pgPublishToCommunity(entry.id);
     const delBtn = document.createElement('button'); delBtn.className = 'pg-btn'; delBtn.textContent = '🗑';
     delBtn.onclick = () => { if(confirm(`¿Eliminar "${entry.title||'este caso'}"?`)){ delete pgLibrary[entry.id]; pgSaveLibrary(); } };
-    actions.append(playBtn, delBtn); card.appendChild(actions);
+    actions.append(playBtn, editBtn, pubBtn, delBtn); card.appendChild(actions);
     wrap.appendChild(card);
   });
 }
 
-function pgPlayLibraryCase(id){
+// Edit re-opens a saved case's raw text in the import box without leaving
+// the library tab. `pgEditingId` stages which entry the *next* import
+// should overwrite, since editing is "load text, change it, then click
+// Importar y jugar" rather than an immediate action.
+let pgEditingId = null;
+function pgEditLibraryCase(id){
   const entry = pgLibrary[id]; if(!entry) return;
-  pgCurrentCaseId = id;
+  pgEditingId = id;
   $('pgSource').value = entry.source;
-  pgLoad();
+  const status = $('pgImportStatus');
+  status.innerHTML = `✏️ Editando "${escapeHtml(entry.title||'este caso')}" — cambia lo que quieras y pulsa "Importar y jugar" para actualizarlo (no se creará un caso nuevo). <a href="#" id="pgCancelEditLink" style="color:var(--spanish-red);font-weight:800;text-decoration:underline">Cancelar edición</a>`;
+  status.className = 'pg-note pg-status-info';
+  $('pgCancelEditLink').onclick = (e) => { e.preventDefault(); pgEditingId = null; $('pgSource').value = ''; status.textContent = ''; status.className = 'pg-note'; };
+  $('pgSource').scrollIntoView({behavior:'smooth', block:'center'});
+  $('pgSource').focus();
 }
 
-function pgSaveCurrentCase(){
-  if(!pgCurrentSource){ return; }
+function pgPlayLibraryCase(id){
+  const entry = pgLibrary[id]; if(!entry) return;
+  $('pgSource').value = entry.source;
+  pgLoad(id);
+}
+
+// Saves (or updates, if libraryId is given) the case currently loaded in
+// pgData to the library — called automatically after every successful
+// import, so "importing" and "having it in Mis casos" are the same thing
+// and there's no separate save step to remember mid-session.
+function pgAutoSaveCase(libraryId){
+  if(!pgCurrentSource) return;
   const defaultTitle = (pgData && pgData.header && pgData.header.CASE_TITLE) || 'Caso sin título';
-  const title = prompt('Título para este caso:', defaultTitle);
-  if(title === null) return;
-  const id = pgCurrentCaseId || ('pg-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8));
+  const id = libraryId || ('pg-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8));
   const now = Date.now();
-  pgLibrary[id] = {id, title: title.trim() || defaultTitle, source: pgCurrentSource, createdAt: (pgLibrary[id] && pgLibrary[id].createdAt) || now, updatedAt: now};
+  pgLibrary[id] = {id, title: defaultTitle, source: pgCurrentSource, createdAt: (pgLibrary[id] && pgLibrary[id].createdAt) || now, updatedAt: now};
   pgCurrentCaseId = id;
   pgSaveLibrary();
+}
+
+// Publishes a saved Foto case to Community so other users can browse and
+// import it. Reuses the same community_sets table as flashcard Sets (no
+// new SQL needed) — kind:'photo' plus the algo_source column (already used
+// by the older Case-game mode for its own non-flashcard script text) is
+// enough to carry a full CASE_FORMAT file, with cards left empty since a
+// Foto case has none. Deliberately does NOT touch SETS_KEY/loadSets() —
+// Foto cases stay in their own PHOTO_CASES_KEY library end to end, so
+// nothing here can create an inert entry the rest of the app can't play.
+async function pgPublishToCommunity(id){
+  const entry = pgLibrary[id]; if(!entry) return;
+  const sb = getSupabase();
+  if(!sb || !currentUser){ alert('Sign in first — Ajustes → Cuenta y sincronización.'); return; }
+  if(!communityUsername) await loadCommunityProfile();
+  if(!communityUsername){
+    const chosen = prompt('Elige un nombre de usuario para publicar (lo verán otros usuarios):');
+    if(!chosen) return;
+    const res = await saveCommunityUsername(chosen);
+    if(res.error){ alert(res.error); return; }
+  }
+  const row = {
+    owner_id: currentUser.id, username: communityUsername, title: entry.title || 'Caso sin título',
+    subject: null, card_type: null, topic: null, le: null, professor: null, mode: null,
+    kind: 'photo', cards: [], card_count: 0, algo_source: entry.source, description: null
+  };
+  let wasAlreadyPublished = !!entry.communityId;
+  if(!wasAlreadyPublished){
+    const { data: existing } = await sb.from('community_sets').select('id').eq('owner_id', currentUser.id).eq('title', row.title).eq('kind', 'photo').maybeSingle();
+    if(existing && existing.id && confirm(`Ya tienes un caso de Foto publicado como "${row.title}" — ¿actualizarlo en vez de publicar una copia nueva?`)){
+      entry.communityId = existing.id;
+      wasAlreadyPublished = true;
+    }
+  }
+  const result = wasAlreadyPublished
+    ? await sb.from('community_sets').update(row).eq('id', entry.communityId).eq('owner_id', currentUser.id).select('id').maybeSingle()
+    : await sb.from('community_sets').insert(row).select('id').maybeSingle();
+  if(result.error){ alert('No se pudo publicar: ' + result.error.message); return; }
+  if(!wasAlreadyPublished && result.data && result.data.id) entry.communityId = result.data.id;
+  entry.communityPublishedAt = new Date().toISOString();
+  pgSaveLibrary();
+  invalidateCommunityMineCache();
+  invalidateCommunityFeedCaches();
+  alert(wasAlreadyPublished ? 'Actualizado en Comunidad.' : '¡Publicado en Comunidad!');
 }
 
 // Parses a PHOTO-mode CASE_FORMAT file. Deliberately kept close to the
@@ -9916,13 +10016,14 @@ function pgExtractUrl(raw){
   return v;
 }
 
-function pgLoad(){
+function pgLoad(libraryId){
   const status = $('pgImportStatus');
+  pgCurrentCaseId = libraryId || null;
   try{
     const raw = $('pgSource').value;
     pgData = pgParse(raw); pgScore = 0; pgMaxScore = 0; pgStepNum = 0;
     pgCurrentSource = raw;
-    $('pgScore').textContent = '0/0';
+    pgUpdateScoreDisplay();
     $('pgTitle').textContent = pgData.header.CASE_TITLE || 'DELE FOTO';
     if(status){ status.textContent = ''; status.className = 'pg-note'; }
     pgCaseImage = null;
@@ -9931,6 +10032,7 @@ function pgLoad(){
     const warnBox = $('pgLenWarning');
     if(warns.length){ warnBox.classList.remove('hidden'); warnBox.innerHTML = `⚠ <strong>Aviso:</strong> en ${warns.map(escapeHtml).join(', ')}, una opción es notablemente más larga que las demás — eso puede permitir adivinar la respuesta en vez de evaluarla.`; }
     else { warnBox.classList.add('hidden'); warnBox.innerHTML = ''; }
+    pgAutoSaveCase(pgCurrentCaseId);
     pgShowPlayPanel();
     pgEnter(pgData.start);
   }catch(e){
@@ -10111,8 +10213,9 @@ function initPhotoGameUI(){
   };
   $('pgLibraryTab').onclick = pgShowLibraryPanel;
   $('pgPlayTab').onclick = () => { if(pgData) pgShowPlayPanel(); else pgShowLibraryPanel(); };
-  $('pgImportBtn').onclick = pgLoad;
+  $('pgImportBtn').onclick = () => { const id = pgEditingId; pgEditingId = null; pgLoad(id); };
   $('pgSampleBtn').onclick = () => {
+    pgEditingId = null;
     $('pgSource').value = PG_SAMPLE;
     const status = $('pgImportStatus'); status.textContent = 'Ejemplo cargado — pulsa "Importar y jugar" para empezar.'; status.className = 'pg-note pg-status-info';
   };
@@ -10143,7 +10246,6 @@ function initPhotoGameUI(){
     test.src = v;
   };
   $('pgBackToLibraryBtn').onclick = pgShowLibraryPanel;
-  $('pgSaveCaseBtn').onclick = pgSaveCurrentCase;
 }
 
 function initCommunityUI(){
