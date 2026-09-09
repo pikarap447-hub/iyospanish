@@ -4890,8 +4890,12 @@ body:before{
   .pg-set-card .pg-btn{padding:6px 8px;font-size:11px}
   .pg-empty{padding:18px;text-align:center;color:var(--pg-muted);font-size:13px}
   .pg-score{font-size:13px;font-weight:800;color:var(--text)}
-  .pg-photobar{position:sticky;top:0;background:var(--surface,#fff);z-index:5;padding-top:2px;padding-bottom:10px;margin-bottom:8px;border-bottom:1px solid var(--pg-border);border-radius:14px 14px 0 0}
-  .pg-photo{width:100%;max-height:230px;object-fit:contain;border-radius:14px;background:var(--bg)}
+  .pg-photobar{position:sticky;top:0;background:var(--surface,#fff);z-index:5;padding-top:2px;padding-bottom:10px;margin-bottom:8px;border-bottom:1px solid var(--pg-border);border-radius:14px 14px 0 0;text-align:center}
+  .pg-photo{display:block;margin:0 auto;width:auto;height:auto;max-width:min(100%,640px);max-height:340px;border-radius:14px;background:var(--bg);cursor:zoom-in;transition:opacity .2s ease}
+  .pg-photo.pg-loading{opacity:0}
+  .pg-lightbox{position:fixed;inset:0;background:rgba(30,15,10,.82);display:flex;align-items:center;justify-content:center;z-index:9999;padding:28px;cursor:zoom-out;animation:pgFadeIn .15s ease}
+  .pg-lightbox img{max-width:94vw;max-height:94vh;border-radius:12px;box-shadow:0 24px 64px rgba(0,0,0,.45)}
+  @keyframes pgFadeIn{from{opacity:0}to{opacity:1}}
   .pg-prompt{font-size:18px;font-weight:750;margin:10px 0;color:var(--text)}
   .pg-choice{width:100%;text-align:left;padding:13px 15px;margin:7px 0;border-radius:13px;border:1px solid var(--pg-border);background:var(--surface,#fff);color:var(--text);font:inherit;cursor:pointer;transition:.08s ease}
   .pg-choice:hover{border-color:var(--spanish-red)}
@@ -6484,7 +6488,6 @@ OUTCOME: NEG
             </div>
             <div class="pg-stats">
               <div class="pg-stat"><b id="pgCaseCount">0</b><span>Casos</span></div>
-              <div class="pg-stat"><b id="pgScoreStat">0/0</b><span>Puntuación</span></div>
             </div>
           </div>
 
@@ -9795,8 +9798,8 @@ function pgSaveLibrary(){ appDataSet(PHOTO_CASES_KEY, JSON.stringify(pgLibrary))
 
 function pgUpdateStatsHeader(){
   if($('pgCaseCount')) $('pgCaseCount').textContent = Object.keys(pgLibrary).length;
-  if($('pgScoreStat')) $('pgScoreStat').textContent = `${pgScore}/${pgMaxScore}`;
 }
+function pgUpdateScoreDisplay(){ if($('pgScore')) $('pgScore').textContent = `${pgScore}/${pgMaxScore}`; }
 
 function pgRenderLibrary(){
   const wrap = $('pgSetCards'); if(!wrap) return;
@@ -9907,7 +9910,7 @@ function pgLoad(){
     const raw = $('pgSource').value;
     pgData = pgParse(raw); pgScore = 0; pgMaxScore = 0; pgStepNum = 0;
     pgCurrentSource = raw;
-    $('pgScore').textContent = '0';
+    $('pgScore').textContent = '0/0';
     $('pgTitle').textContent = pgData.header.CASE_TITLE || 'DELE FOTO';
     if(status){ status.textContent = ''; status.className = 'pg-note'; }
     pgCaseImage = null;
@@ -9958,7 +9961,7 @@ function pgRenderPhotoBar(){
   if(!pgCaseImage){ bar.classList.add('hidden'); bar.innerHTML = ''; return; }
   bar.classList.remove('hidden'); bar.innerHTML = '';
   const wrap = document.createElement('div'); wrap.className = 'pg-photobar';
-  const img = document.createElement('img'); img.className = 'pg-photo'; img.alt = 'Foto DELE B2'; img.src = pgCaseImage;
+  const img = document.createElement('img'); img.className = 'pg-photo pg-loading'; img.alt = 'Foto DELE B2 — toca para ampliar'; img.title = 'Toca para ampliar'; img.src = pgCaseImage;
   const broken = document.createElement('div'); broken.className = 'pg-notice hidden';
   broken.innerHTML = '⚠ Este enlace de imagen no cargó. Puede que el enlace esté caducado, sea falso o bloquee el hotlinking.<label class="pg-panel-p" style="display:block;margin:8px 0 4px">Pega un enlace que funcione:</label>';
   const row = document.createElement('div'); row.className = 'row';
@@ -9966,9 +9969,24 @@ function pgRenderPhotoBar(){
   const go = document.createElement('button'); go.className = 'pg-btn'; go.textContent = 'Usar este enlace';
   go.onclick = () => { const v = urlInput.value.trim(); if(!v) return; pgCaseImage = v; pgRenderPhotoBar(); };
   row.append(urlInput, go); broken.appendChild(row);
+  img.onload = () => img.classList.remove('pg-loading');
   img.onerror = () => { img.classList.add('hidden'); broken.classList.remove('hidden'); };
+  // Click to enlarge: helps for the DELE task itself, where noticing small
+  // details in the photo (expressions, background objects) matters.
+  img.onclick = () => pgOpenLightbox(pgCaseImage);
   wrap.append(img, broken); bar.appendChild(wrap);
 }
+
+function pgOpenLightbox(src){
+  const box = document.createElement('div'); box.className = 'pg-lightbox';
+  const img = document.createElement('img'); img.src = src; img.alt = 'Foto DELE B2 ampliada';
+  box.appendChild(img);
+  box.onclick = () => box.remove();
+  const onKey = (e) => { if(e.key === 'Escape'){ box.remove(); document.removeEventListener('keydown', onKey); } };
+  document.addEventListener('keydown', onKey);
+  document.body.appendChild(box);
+}
+
 
 function pgRenderFatal(msg){
   $('pgContent').innerHTML = `<div class="pg-notice"><strong>⚠ Algo no va bien</strong><br>${escapeHtml(msg)}</div>`;
@@ -9992,7 +10010,7 @@ function pgRenderDecision(){
   shuffle(pgCurrent.choices).forEach(c => {
     const b = document.createElement('button'); b.className = 'pg-choice'; b.innerHTML = escapeHtml(c.text);
     b.onclick = () => {
-      pgScore += Number(c.score||0); $('pgScore').textContent = pgScore; pgUpdateStatsHeader();
+      pgScore += Number(c.score||0); pgUpdateScoreDisplay(); pgUpdateStatsHeader();
       $('pgChoices').innerHTML = '';
       const tier = pgTierOf(Number(c.score||0));
       const box = document.createElement('div'); box.className = 'pg-notice'; box.setAttribute('aria-live','polite');
@@ -10024,7 +10042,7 @@ function pgRenderSpeak(){
     }, 1000);
   };
   const done = document.createElement('button'); done.className = 'pg-btn'; done.textContent = 'He terminado →';
-  done.onclick = () => { if(pgTimer){ clearInterval(pgTimer); pgTimer = null; } pgSpeaking = false; pgScore += 3; pgMaxScore += 3; $('pgScore').textContent = pgScore; pgUpdateStatsHeader(); pgEnter(pgCurrent.fields.NEXT); };
+  done.onclick = () => { if(pgTimer){ clearInterval(pgTimer); pgTimer = null; } pgSpeaking = false; pgScore += 3; pgMaxScore += 3; pgUpdateScoreDisplay(); pgUpdateStatsHeader(); pgEnter(pgCurrent.fields.NEXT); };
   controls.append(start, done); $('pgContent').appendChild(controls);
 }
 
@@ -10032,7 +10050,7 @@ function pgRenderFollowup(){
   if(pgCurrent.fields.QUESTION){ const q = document.createElement('div'); q.className = 'pg-prompt'; q.textContent = pgCurrent.fields.QUESTION; $('pgContent').appendChild(q); }
   const p = document.createElement('div'); p.className = 'pg-tip'; p.textContent = pgCurrent.fields.TIP || 'Da tu opinión y justifícala.'; $('pgContent').appendChild(p);
   const ta = document.createElement('textarea'); ta.className = 'pg-textarea pg-speakbox'; ta.placeholder = 'Habla en voz alta. Luego, cuando termines, continúa.'; ta.style.marginTop = '12px'; $('pgContent').appendChild(ta);
-  pgAddButton('Continuar →', () => { pgScore += 2; pgMaxScore += 2; $('pgScore').textContent = pgScore; pgUpdateStatsHeader(); pgEnter(pgCurrent.fields.NEXT); }, true);
+  pgAddButton('Continuar →', () => { pgScore += 2; pgMaxScore += 2; pgUpdateScoreDisplay(); pgUpdateStatsHeader(); pgEnter(pgCurrent.fields.NEXT); }, true);
 }
 
 function pgRenderEnd(){
@@ -10040,9 +10058,18 @@ function pgRenderEnd(){
   let grade = 'Sigue practicando'; if(pct >= 90) grade = 'Excelente'; else if(pct >= 75) grade = 'Bien'; else if(pct >= 60) grade = 'Aceptable';
   $('pgContent').innerHTML = `<div class="pg-notice"><strong>${escapeHtml(pgCurrent.fields.SUMMARY || 'Tarea completada.')}</strong><br><span class="pg-panel-p">Puntuación: ${pgScore} / ${pgMaxScore} (${pct}% — ${grade}). El objetivo real es la fluidez: ver una foto nueva y saber cómo empezar, desarrollar y cerrar tu respuesta sin depender de las opciones.</span></div>`;
   $('pgChoices').innerHTML = '';
-  pgAddButton('Volver a mis casos', pgShowLibraryPanel);
-  pgAddButton('💾 Guardar este caso', pgSaveCurrentCase, true);
+  // "Volver"/"Guardar" already live in the panel's persistent footer below,
+  // so repeating them here would just duplicate buttons on screen. The one
+  // genuinely new thing worth offering at this exact moment is a replay.
+  pgAddButton('🔁 Jugar otra vez', pgRestart, true);
 }
+
+function pgRestart(){
+  if(!pgData) return;
+  pgScore = 0; pgMaxScore = 0; pgStepNum = 0; pgUpdateScoreDisplay(); pgUpdateStatsHeader();
+  pgEnter(pgData.start);
+}
+
 
 function pgFmt(n){ return String(Math.floor(n/60)).padStart(2,'0') + ':' + String(n%60).padStart(2,'0'); }
 
