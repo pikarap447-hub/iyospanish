@@ -9752,7 +9752,7 @@ For each photo create this progression:
 PHOTO/SCENE -> OPEN -> PLACE -> PEOPLE -> PAST -> DIALOGUE -> NEXT -> SPEAK -> FOLLOWUP -> END
 
 PHOTO:
-- IMAGE: I will always give you the real, working image URL as plain text in this conversation (e.g. copied via "Copy image address"), alongside the picture itself so you can see and describe it. Copy that URL into IMAGE: exactly, character for character — don't shorten, "clean up", or re-host it.
+- IMAGE: I will always give you the real, working image URL as plain text in this conversation (e.g. copied via "Copy image address"), alongside the picture itself so you can see and describe it. Copy that URL into IMAGE: exactly, character for character — don't shorten, "clean up", or re-host it. Write it as a bare URL only — plain text starting with http, on its own after "IMAGE: ". Do NOT wrap it in markdown link syntax like [text](url), do NOT wrap it in angle brackets like <url>, and do NOT paste it twice. Just the raw address, once.
 - Only if I do NOT give you a URL as text (i.e. you were only shown the picture as an uploaded/pasted image) should you write exactly: IMAGE: NONE. In that case, do NOT invent a plausible-looking URL (e.g. a stock-photo site link) — a fabricated address will not work. The trainer has no way to show a photo without a real link, so IMAGE: NONE means the learner will be prompted to paste one in manually — always prefer a real URL if you have one.
 - PROMPT: an official-style instruction.
 
@@ -9904,6 +9904,18 @@ function pgLengthWarnings(parsed){
   return flagged;
 }
 
+// LLMs sometimes wrap the IMAGE url in markdown link syntax
+// ([url](url)) or angle brackets (<url>) even when told not to — this
+// pulls the real URL out of those wrappers instead of failing to load.
+function pgExtractUrl(raw){
+  let v = (raw||'').trim();
+  const md = v.match(/^\[([^\]]*)\]\(([^)]+)\)$/);
+  if(md) return md[2].trim();
+  const angle = v.match(/^<(.+)>$/);
+  if(angle) return angle[1].trim();
+  return v;
+}
+
 function pgLoad(){
   const status = $('pgImportStatus');
   try{
@@ -9914,7 +9926,7 @@ function pgLoad(){
     $('pgTitle').textContent = pgData.header.CASE_TITLE || 'DELE FOTO';
     if(status){ status.textContent = ''; status.className = 'pg-note'; }
     pgCaseImage = null;
-    pgData.nodes.forEach(n => { if(!pgCaseImage && n.fields.IMAGE && n.fields.IMAGE.trim().toUpperCase() !== 'NONE') pgCaseImage = n.fields.IMAGE.trim(); });
+    pgData.nodes.forEach(n => { if(!pgCaseImage && n.fields.IMAGE && n.fields.IMAGE.trim().toUpperCase() !== 'NONE') pgCaseImage = pgExtractUrl(n.fields.IMAGE); });
     const warns = pgLengthWarnings(pgData);
     const warnBox = $('pgLenWarning');
     if(warns.length){ warnBox.classList.remove('hidden'); warnBox.innerHTML = `⚠ <strong>Aviso:</strong> en ${warns.map(escapeHtml).join(', ')}, una opción es notablemente más larga que las demás — eso puede permitir adivinar la respuesta en vez de evaluarla.`; }
@@ -9943,7 +9955,7 @@ function pgEnter(id){
       const row = document.createElement('div'); row.className = 'row'; row.style.marginTop = '8px';
       const urlInput = document.createElement('input'); urlInput.type = 'url'; urlInput.className = 'pg-input'; urlInput.placeholder = 'https://...'; urlInput.style.flex = '1'; urlInput.style.minWidth = '200px';
       const go = document.createElement('button'); go.className = 'pg-btn'; go.textContent = 'Usar este enlace';
-      go.onclick = () => { const v = urlInput.value.trim(); if(!v) return; pgCaseImage = v; pgRenderPhotoBar(); attach.classList.add('hidden'); };
+      go.onclick = () => { const v = pgExtractUrl(urlInput.value); if(!v) return; pgCaseImage = v; pgRenderPhotoBar(); attach.classList.add('hidden'); };
       row.append(urlInput, go); attach.appendChild(row);
       $('pgContent').appendChild(attach);
     }
@@ -9967,7 +9979,7 @@ function pgRenderPhotoBar(){
   const row = document.createElement('div'); row.className = 'row';
   const urlInput = document.createElement('input'); urlInput.type = 'url'; urlInput.className = 'pg-input'; urlInput.placeholder = 'https://...'; urlInput.style.flex = '1'; urlInput.style.minWidth = '200px';
   const go = document.createElement('button'); go.className = 'pg-btn'; go.textContent = 'Usar este enlace';
-  go.onclick = () => { const v = urlInput.value.trim(); if(!v) return; pgCaseImage = v; pgRenderPhotoBar(); };
+  go.onclick = () => { const v = pgExtractUrl(urlInput.value); if(!v) return; pgCaseImage = v; pgRenderPhotoBar(); };
   row.append(urlInput, go); broken.appendChild(row);
   img.onload = () => img.classList.remove('pg-loading');
   img.onerror = () => { img.classList.add('hidden'); broken.classList.remove('hidden'); };
@@ -10113,7 +10125,7 @@ function initPhotoGameUI(){
     });
   };
   $('pgImgTestBtn').onclick = () => {
-    const v = $('pgImgTestUrl').value.trim();
+    const v = pgExtractUrl($('pgImgTestUrl').value);
     const box = $('pgImgTestResult'); box.innerHTML = '';
     if(!v){ box.textContent = 'Pega primero una URL.'; return; }
     box.textContent = 'Comprobando…';
