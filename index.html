@@ -4928,35 +4928,44 @@ body:before{
     .frame.wide:has(#vocabMatchView:not(.hidden)) .community-panel,
     .frame.wide:has(#profSearchView:not(.hidden)) .community-panel,
     .frame.wide:has(#photoGameView:not(.hidden)) .community-panel,
+    .frame.wide:has(#dleTrackerView:not(.hidden)) .community-panel,
     .frame.wide:has(#communityView:not(.hidden)) .community-panel{max-width:1400px;width:100%;}
   }
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .tile-border,
   .frame.wide:has(#profSearchView:not(.hidden)) > .tile-border,
   .frame.wide:has(#photoGameView:not(.hidden)) > .tile-border,
+  .frame.wide:has(#dleTrackerView:not(.hidden)) > .tile-border,
   .frame.wide:has(#vocabMatchView:not(.hidden)) .back-on-photo,
   .frame.wide:has(#profSearchView:not(.hidden)) .back-on-photo,
   .frame.wide:has(#photoGameView:not(.hidden)) .back-on-photo{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+  .frame.wide:has(#dleTrackerView:not(.hidden)) .back-on-photo{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
   @media (max-width:720px){
     .frame.wide:has(#vocabMatchView:not(.hidden)) .community-panel,
     .frame.wide:has(#profSearchView:not(.hidden)) .community-panel,
     .frame.wide:has(#photoGameView:not(.hidden)) .community-panel,
+    .frame.wide:has(#dleTrackerView:not(.hidden)) .community-panel,
     .frame.wide:has(#communityView:not(.hidden)) .community-panel{max-width:100%;width:100%;}
   }
   body:has(#vocabMatchView:not(.hidden)) .tile-border,
   body:has(#profSearchView:not(.hidden)) .tile-border,
   body:has(#photoGameView:not(.hidden)) .tile-border{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important;}
+  body:has(#dleTrackerView:not(.hidden)) .tile-border{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .card,
   .frame.wide:has(#profSearchView:not(.hidden)) > .card,
   .frame.wide:has(#photoGameView:not(.hidden)) > .card{background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
+  .frame.wide:has(#dleTrackerView:not(.hidden)) > .card{background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .card > .card-inner,
   .frame.wide:has(#profSearchView:not(.hidden)) > .card > .card-inner,
   .frame.wide:has(#photoGameView:not(.hidden)) > .card > .card-inner{padding-top:0!important;}
+  .frame.wide:has(#dleTrackerView:not(.hidden)) > .card > .card-inner{padding-top:0!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .header,
   .frame.wide:has(#profSearchView:not(.hidden)) > .header,
   .frame.wide:has(#photoGameView:not(.hidden)) > .header{margin-bottom:0!important;}
+  .frame.wide:has(#dleTrackerView:not(.hidden)) > .header{margin-bottom:0!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) .row:has(.back-on-photo),
   .frame.wide:has(#profSearchView:not(.hidden)) .row:has(.back-on-photo),
   .frame.wide:has(#photoGameView:not(.hidden)) .row:has(.back-on-photo){margin-bottom:4px!important;}
+  .frame.wide:has(#dleTrackerView:not(.hidden)) .row:has(.back-on-photo){margin-bottom:4px!important;}
 /* ===== DELE Course Tracker (dl- prefixed, reuses app tokens) ===== */
 .dl-app *{box-sizing:border-box;}
 .dl-header{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:18px;}
@@ -4984,6 +4993,12 @@ body:before{
 .dl-tasks{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1px; background:var(--border);}
 .dl-task{background:var(--surface); padding:13px 16px;}
 .dl-skill-row{display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:6px;}
+.dl-skill-row-clickable{cursor:pointer; user-select:none;}
+.dl-skill-row-clickable:hover .dl-skill{text-decoration:underline;}
+.dl-count-wrap{display:flex; align-items:center; gap:6px;}
+.dl-chevron{font-size:10px; color:var(--text-muted); width:10px; text-align:center;}
+.dl-body{overflow:hidden; max-height:400px; transition:max-height .2s ease, opacity .15s ease; opacity:1;}
+.dl-body-collapsed{max-height:0; opacity:0; pointer-events:none;}
 .dl-skill{font-size:11px; font-weight:800; letter-spacing:.03em; color:var(--primary);}
 .dl-count{font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:20px;}
 .dl-count.not-started{background:var(--border); color:var(--text-muted);}
@@ -10423,6 +10438,7 @@ function dlLoadStore(){
 }
 function dlSaveStore(store){ lsSet(DL_TRACKER_KEY, JSON.stringify(store)); }
 let dlStore = dlLoadStore();
+let dlExpanded = new Set();
 
 function dlActKey(wi, tareaId, act){ return `w${wi}-${tareaId}-a${act}`; }
 function dlIsChecked(wi, tareaId, act, defaultComplete){
@@ -10498,7 +10514,7 @@ function dlRender(){
     const tasksEl = document.createElement("div");
     tasksEl.className = "dl-tasks";
 
-    week.tasks.forEach((t)=>{
+    week.tasks.forEach((t, ti)=>{
       const taskEl = document.createElement("div");
       taskEl.className = "dl-task";
 
@@ -10535,24 +10551,36 @@ function dlRender(){
         return;
       }
 
+      const taskKey = `${wi}-${ti}`;
+      const isExpanded = dlExpanded.has(taskKey);
+
       const row = document.createElement("div");
-      row.className = "dl-skill-row";
+      row.className = "dl-skill-row dl-skill-row-clickable";
+      row.addEventListener("click", ()=>{
+        if(dlExpanded.has(taskKey)) dlExpanded.delete(taskKey); else dlExpanded.add(taskKey);
+        dlRender();
+      });
       taskEl.appendChild(row);
+
+      const body = document.createElement("div");
+      body.className = "dl-body" + (isExpanded ? "" : " dl-body-collapsed");
 
       let taskTotal = 0, taskDone = 0;
       if(t.groups2){
         t.groups2.forEach(g=>{
-          const r = dlRenderGroup(taskEl, wi, g.tareaId, g.label, g.due, g.defaultComplete);
+          const r = dlRenderGroup(body, wi, g.tareaId, g.label, g.due, g.defaultComplete);
           taskTotal += r.total; taskDone += r.done;
         });
       } else {
-        const r = dlRenderGroup(taskEl, wi, t.tareaId, t.label, t.due, t.defaultComplete);
+        const r = dlRenderGroup(body, wi, t.tareaId, t.label, t.due, t.defaultComplete);
         taskTotal += r.total; taskDone += r.done;
       }
+      taskEl.appendChild(body);
       grandTotal += taskTotal; grandDone += taskDone;
 
       const cls = dlStatusClass(taskDone, taskTotal);
-      row.innerHTML = `<span class="dl-skill">${t.skill}</span><span class="dl-count ${cls}">${taskDone}/${taskTotal}</span>`;
+      const chevron = isExpanded ? "▾" : "▸";
+      row.innerHTML = `<span class="dl-skill">${t.skill}</span><span class="dl-count-wrap"><span class="dl-count ${cls}">${taskDone}/${taskTotal}</span><span class="dl-chevron">${chevron}</span></span>`;
 
       tasksEl.appendChild(taskEl);
     });
