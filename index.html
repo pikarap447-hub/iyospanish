@@ -4957,6 +4957,62 @@ body:before{
   .frame.wide:has(#vocabMatchView:not(.hidden)) .row:has(.back-on-photo),
   .frame.wide:has(#profSearchView:not(.hidden)) .row:has(.back-on-photo),
   .frame.wide:has(#photoGameView:not(.hidden)) .row:has(.back-on-photo){margin-bottom:4px!important;}
+/* ===== DELE Course Tracker (dl- prefixed, reuses app tokens) ===== */
+.dl-app *{box-sizing:border-box;}
+.dl-header{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:18px;}
+.dl-eyebrow{font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--primary);}
+.dl-h1{font-family:var(--font-display); font-weight:900; font-size:clamp(22px,4vw,30px); margin:2px 0 4px; letter-spacing:-.02em; color:var(--text);}
+.dl-dates{font-size:12.5px; color:var(--text-muted);}
+.dl-stamp{font-size:12px; text-align:right; color:var(--primary); border:1.5px solid var(--primary); border-radius:var(--radius-sm); padding:8px 12px; white-space:nowrap;}
+.dl-stamp b{display:block; font-family:var(--font-display); font-weight:900; font-size:20px; line-height:1; margin-bottom:2px;}
+.dl-examline{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; background:var(--bg); border:1px solid var(--border); border-left:3px solid var(--primary); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:20px; font-size:13.5px;}
+.dl-examline-left{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.dl-examline b{font-family:var(--font-display);}
+.dl-countdown{font-size:11.5px; font-weight:800; color:var(--primary); background:var(--primary-soft); border-radius:20px; padding:3px 10px;}
+.dl-course-link{font-size:12px; font-weight:800; color:var(--primary); text-decoration:none; border:1px solid var(--primary); border-radius:20px; padding:5px 12px; white-space:nowrap;}
+.dl-course-link:hover{background:var(--primary); color:#fff;}
+.dl-overall{margin-bottom:22px;}
+.dl-overall-row{display:flex; justify-content:space-between; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:6px;}
+.dl-overall-track{height:8px; background:var(--border); border-radius:20px; overflow:hidden;}
+.dl-overall-fill{height:100%; background:var(--primary); border-radius:20px; transition:width .4s ease;}
+.dl-week{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:14px; box-shadow:var(--shadow-sm); overflow:hidden;}
+.dl-week-head{display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:8px;}
+.dl-week-num{font-size:11px; font-weight:800; letter-spacing:.05em; color:var(--accent);}
+.dl-week-title{font-family:var(--font-display); font-weight:800; font-size:16px; margin:2px 0 0;}
+.dl-week-range{font-size:12px; color:var(--text-muted); text-align:right;}
+.dl-flag{display:inline-block; font-size:10.5px; font-weight:700; color:var(--primary); background:var(--primary-soft); border-radius:20px; padding:3px 8px; margin-top:4px;}
+.dl-tasks{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1px; background:var(--border);}
+.dl-task{background:var(--surface); padding:13px 16px;}
+.dl-skill-row{display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:6px;}
+.dl-skill{font-size:11px; font-weight:800; letter-spacing:.03em; color:var(--primary);}
+.dl-count{font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:20px;}
+.dl-count.not-started{background:var(--border); color:var(--text-muted);}
+.dl-count.in-progress{background:color-mix(in srgb, var(--gold) 18%, var(--surface)); color:var(--gold);}
+.dl-count.complete{background:var(--green-bg); color:var(--green);}
+.dl-desc{font-size:13px; line-height:1.4; margin-bottom:8px; color:var(--text);}
+.dl-desc.empty{color:var(--text-muted); font-style:italic; margin-bottom:0;}
+.dl-group{margin-bottom:8px;}
+.dl-group:last-child{margin-bottom:0;}
+.dl-glabel{font-size:10px; font-weight:700; color:var(--text-muted); margin-bottom:5px;}
+.dl-chips{display:flex; flex-wrap:wrap; gap:5px;}
+.dl-chip{width:23px; height:23px; border-radius:50%; border:1.5px solid var(--border); background:var(--surface); color:var(--text-muted); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+.dl-chip.checked{background:var(--green); border-color:var(--green); color:#fff;}
+.dl-chip.due{border-width:2px; border-color:var(--primary); font-weight:800;}
+.dl-chip.due:not(.checked){background:var(--primary-soft); color:var(--primary);}
+.dl-toggle-pill{font-family:inherit; font-size:12px; font-weight:800; border:none; border-radius:20px; padding:6px 12px; cursor:pointer;}
+.dl-toggle-pill.not-started{background:var(--border); color:var(--text-muted);}
+.dl-toggle-pill.complete{background:var(--green-bg); color:var(--green);}
+.dl-notes{margin-top:26px; border-top:2px solid var(--text); padding-top:16px;}
+.dl-notes h3{font-family:var(--font-display); font-weight:800; font-size:16px; margin:0 0 12px; color:var(--text);}
+.dl-note{display:flex; gap:12px; padding:12px 0; border-bottom:1px dashed var(--border);}
+.dl-note:last-child{border-bottom:none;}
+.dl-note-mark{font-weight:800; color:var(--accent);}
+.dl-note p{margin:0; font-size:13px; line-height:1.5; color:var(--text);}
+.dl-note b{color:var(--primary);}
+.dl-footer-note{text-align:center; margin-top:22px; font-size:11px; color:var(--text-muted);}
+.dl-footer-note button{font-size:11px; background:none; border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--text-muted); padding:5px 10px; cursor:pointer; margin-top:8px; font-family:inherit;}
+.dl-footer-note button:hover{border-color:var(--primary); color:var(--primary);}
+@media (max-width:600px){ .dl-tasks{grid-template-columns:1fr;} }
 </style>
 
 </head>
@@ -4991,6 +5047,7 @@ body:before{
       <button class="btn-ghost stats-toggle" id="profSearchToggleBtn" title="Buscar tarjetas por tema" aria-label="Buscar por tema">🔎 <span>Temas</span></button>
       <button class="btn-ghost stats-toggle" id="vocabMatchToggleBtn" title="Emparejar vocabulario" aria-label="Emparejar vocabulario">🃏 <span>Vocabulario</span></button>
       <button class="btn-ghost stats-toggle" id="photoGameToggleBtn" title="Foto → habla (DELE B2 · Tarea 2)" aria-label="Foto → habla">📷 <span>Foto</span></button>
+      <button class="btn-ghost stats-toggle" id="dleTrackerToggleBtn" title="DELE Course Tracker" aria-label="Curso">🗓️ <span>Curso</span></button>
     </nav>
   </div>
 
@@ -6474,6 +6531,66 @@ OUTCOME: NEG
         </div>
       </div>
 
+      <!-- ===== DELE Course Weekly Tracker ===== -->
+      <div id="dleTrackerView" class="hidden">
+        <div class="row" style="margin-bottom:14px;">
+          <button class="btn-ghost back-on-photo" id="backFromDleTrackerBtn">← Volver</button>
+        </div>
+        <div class="dl-app community-panel">
+
+          <div class="dl-header">
+            <div>
+              <div class="dl-eyebrow">Curso preparatorio · DELE</div>
+              <h2 class="dl-h1">Weekly Tracker</h2>
+              <div class="dl-dates">Sep 14 — Oct 10, 2026</div>
+            </div>
+            <div class="dl-stamp"><b id="dlStampPct">0%</b>complete</div>
+          </div>
+
+          <div class="dl-examline">
+            <div class="dl-examline-left">
+              <span>✎</span>
+              <span>Exam day — <b>Nov 14, 2026</b></span>
+              <span class="dl-countdown" id="dlCountdown"></span>
+            </div>
+            <a class="dl-course-link" href="https://formacion.icervantes.org/course/view.php?id=52856" target="_blank" rel="noopener">Open course ↗</a>
+          </div>
+
+          <div class="dl-overall">
+            <div class="dl-overall-row">
+              <span id="dlOverallLabel">0 of 0 activities complete</span>
+              <span id="dlOverallPct">0%</span>
+            </div>
+            <div class="dl-overall-track"><div class="dl-overall-fill" id="dlOverallFill" style="width:0%"></div></div>
+          </div>
+
+          <div id="dlWeeks"></div>
+
+          <div class="dl-footer-note" style="margin-top:0; margin-bottom:18px; text-align:left;">
+            <span class="dl-chip due" style="display:inline-flex; vertical-align:middle;">4</span>
+            &nbsp;= due to email this week for EIE/EIO — every numbered activity still needs to be completed, this just marks which ones go out now.
+          </div>
+
+          <div class="dl-notes">
+            <h3>Important Notes &amp; Reminders</h3>
+            <div class="dl-note">
+              <span class="dl-note-mark">①</span>
+              <p><b>Videotutorías (2 hours total).</b> Session 1 falls between Week 3 and Week 4 (Sept 28 – Oct 10). Session 2 is during Week 5. Contact your tutor to agree on the exact date and time for each.</p>
+            </div>
+            <div class="dl-note">
+              <span class="dl-note-mark">②</span>
+              <p><b>Task submissions — EIE &amp; EIO.</b> These must be submitted by email during the specific week they're scheduled — not held over to a later week.</p>
+            </div>
+          </div>
+
+          <div class="dl-footer-note">
+            Tap a numbered activity to mark it done. Progress saves with the rest of your study data.
+            <br><button id="dlResetBtn">Reset all progress</button>
+          </div>
+
+        </div>
+      </div>
+
       <!-- ===== DELE B2 Photo Task (Foto → habla), ported from a standalone tool ===== -->
       <div id="photoGameView" class="hidden">
         <div class="row" style="margin-bottom:14px;">
@@ -6752,7 +6869,7 @@ const GLOBAL_KEY = 'esp2Review_global_v1';
 // appDataCache system) but still get synced. Literal strings here on
 // purpose — PET_KEY/'esp2ReviewExams' are declared deep inside other functions,
 // so this avoids any risk of referencing them before that line runs.
-const LOCAL_SYNC_KEYS = [GLOBAL_KEY, 'esp2ReviewVirtualPet_v2', 'esp2ReviewExams'];
+const LOCAL_SYNC_KEYS = [GLOBAL_KEY, 'esp2ReviewVirtualPet_v2', 'esp2ReviewExams', 'esp2Review_deleTracker_v1'];
 // Set true only while writing a value that just came FROM the cloud, so
 // that write doesn't turn around and re-queue itself for upload.
 let suppressLocalSync = false;
@@ -6792,6 +6909,11 @@ const VOCAB_KEY = 'esp2Review_vocabLibrary_v1';
 // so it rides the existing IndexedDB cache + cloud sync + backup/restore
 // system for free instead of needing its own plumbing.
 const PHOTO_CASES_KEY = 'esp2Review_photoCases_v1';
+// DELE Course Weekly Tracker's per-activity checkmarks. Lives directly in
+// localStorage (not IndexedDB) and rides LOCAL_SYNC_KEYS, same convention
+// as the virtual pet and calendar/exams — small JSON blob, no per-set
+// merge logic needed.
+const DL_TRACKER_KEY = 'esp2Review_deleTracker_v1';
 const VOCAB_SETS_KEY = 'esp2Review_vocabSets_v1';
 const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY, VOCAB_KEY, VOCAB_SETS_KEY, PHOTO_CASES_KEY];
 // Cloud sync Milestone 2 scope: everything in APP_DATA_KEYS (stats,
@@ -10198,6 +10320,288 @@ function pgShowPlayPanel(){
   $('pgPlayPanel').classList.remove('hidden'); $('pgLibraryPanel').classList.add('hidden');
 }
 
+// ================= DELE Course Weekly Tracker (dl- prefixed) =================
+function dlRange(n){ return Array.from({length:n}, (_,i)=>i+1); }
+
+// Each TAREA is defined once (its full activity count is always necessary,
+// even if only some activities are due for email in a given week) and is
+// referenced by id from one or more week entries below, so progress on a
+// TAREA that spans multiple weeks (e.g. EIE TAREA 1: week 1 then week 2)
+// is shared rather than tracked separately per week.
+const DL_TAREAS = {
+  CL1:{total:8}, CL2:{total:8}, CL3:{total:8}, CL4:{total:8},
+  CA1:{total:8}, CA2:{total:8}, CA3:{total:8}, CA4:{total:8}, CA5:{total:8},
+  EIE1:{total:10}, EIE2:{total:10},
+  EIO1:{total:10}, EIO2:{total:10}, EIO3:{total:10},
+};
+
+const DL_DATA = [
+  {
+    num:"WEEK 1", label:"Mon – Sun", range:"Sept 14 – Sept 20",
+    tasks:[
+      {skill:"CL", tareaId:"CL1", label:"TAREA 1", defaultComplete:true},
+      {skill:"CA", tareaId:"CA1", label:"TAREA 1", defaultComplete:true},
+      {skill:"EIE · Email", tareaId:"EIE1", label:"TAREA 1", due:[4,7]},
+      {skill:"EIO · Email", tareaId:"EIO1", label:"TAREA 1", due:[4,7,10]},
+    ]
+  },
+  {
+    num:"WEEK 2", label:"Mon – Sun", range:"Sept 21 – Sept 27",
+    tasks:[
+      {skill:"CL", tareaId:"CL2", label:"TAREA 2"},
+      {skill:"CA", tareaId:"CA2", label:"TAREA 2"},
+      {skill:"EIE · Email", tareaId:"EIE1", label:"TAREA 1", due:[10]},
+      {skill:"EIO · Email", tareaId:"EIO2", label:"TAREA 2", due:[4,7,10]},
+    ]
+  },
+  {
+    num:"WEEK 3", label:"Mon – Sun", range:"Sept 28 – Oct 4", flag:"Videotutoría window opens",
+    tasks:[
+      {skill:"CL", tareaId:"CL3", label:"TAREA 3"},
+      {skill:"CA", tareaId:"CA3", label:"TAREA 3"},
+      {skill:"EIE · Email", tareaId:"EIE2", label:"TAREA 2", due:[4,7]},
+      {skill:"EIO · Email", tareaId:"EIO3", label:"TAREA 3", due:[4,7,10]},
+    ]
+  },
+  {
+    num:"WEEK 4", label:"Mon – Sat", range:"Oct 5 – Oct 10", flag:"Videotutoría window closes",
+    tasks:[
+      {skill:"CL", tareaId:"CL4", label:"TAREA 4"},
+      {skill:"CA", groups2:[{tareaId:"CA4", label:"TAREA 4"}, {tareaId:"CA5", label:"TAREA 5"}]},
+      {skill:"EIE · Email", tareaId:"EIE2", label:"TAREA 2", due:[10]},
+      {skill:"EIO · Email", none:true},
+    ]
+  },
+  {
+    num:"WEEK 5", label:"Sun onwards", range:"Oct 11 onwards · Exams", flag:"2nd videotutoría",
+    tasks:[
+      {skill:"CL", singleToggle:true, tareaId:"SIM1", singleLabel:"Practique un examen — 1h de videotutoría"},
+      {skill:"CA", none:true},
+      {skill:"EIE · Email", none:true},
+      {skill:"EIO · Email", none:true},
+    ]
+  },
+];
+
+function dlFirstWeekForTarea(tareaId){
+  for(let wi=0; wi<DL_DATA.length; wi++){
+    for(const t of DL_DATA[wi].tasks){
+      if(t.tareaId === tareaId) return wi;
+      if(t.groups2 && t.groups2.some(g => g.tareaId === tareaId)) return wi;
+    }
+  }
+  return 0;
+}
+// One-time migration: an earlier version keyed progress by tareaId alone,
+// which meant a TAREA spanning two weeks (e.g. EIE TAREA 1: due 4/7 in
+// week 1, due 10 in week 2) showed identical checkmarks in both week
+// cards — checking an activity in week 1 also lit it up in week 2. Fixed
+// by keying per-week instead; this carries any already-saved progress
+// over to that TAREA's first week so it isn't lost in the switch.
+function dlMigrateOldKeys(store){
+  let changed = false;
+  Object.keys(store).forEach(key=>{
+    const m = key.match(/^([A-Za-z0-9]+)-a(\d+)$/);
+    if(!m) return;
+    const [, tareaId, act] = m;
+    if(!DL_TAREAS[tareaId]) return;
+    const wi = dlFirstWeekForTarea(tareaId);
+    const newKey = `w${wi}-${tareaId}-a${act}`;
+    if(!store.hasOwnProperty(newKey)) store[newKey] = store[key];
+    delete store[key];
+    changed = true;
+  });
+  return changed;
+}
+
+function dlLoadStore(){
+  let store;
+  try{ store = JSON.parse(lsGet(DL_TRACKER_KEY)) || {}; }
+  catch(e){ store = {}; }
+  if(dlMigrateOldKeys(store)) lsSet(DL_TRACKER_KEY, JSON.stringify(store));
+  return store;
+}
+function dlSaveStore(store){ lsSet(DL_TRACKER_KEY, JSON.stringify(store)); }
+let dlStore = dlLoadStore();
+
+function dlActKey(wi, tareaId, act){ return `w${wi}-${tareaId}-a${act}`; }
+function dlIsChecked(wi, tareaId, act, defaultComplete){
+  const key = dlActKey(wi, tareaId, act);
+  if(dlStore.hasOwnProperty(key)) return dlStore[key];
+  return !!defaultComplete;
+}
+function dlSetChecked(wi, tareaId, act, val){
+  dlStore[dlActKey(wi, tareaId, act)] = val;
+  dlSaveStore(dlStore);
+}
+function dlStatusClass(done, total){
+  if(total === 0 || done === 0) return "not-started";
+  if(done === total) return "complete";
+  return "in-progress";
+}
+
+function dlRenderGroup(taskEl, wi, tareaId, label, due, defaultComplete){
+  const def = DL_TAREAS[tareaId];
+  const total = def.total;
+  const acts = dlRange(total);
+  let done = 0;
+  acts.forEach(act => { if(dlIsChecked(wi, tareaId, act, defaultComplete)) done++; });
+
+  const groupEl = document.createElement("div");
+  groupEl.className = "dl-group";
+  if(label){
+    const lbl = document.createElement("div");
+    lbl.className = "dl-glabel";
+    lbl.textContent = label + (due && due.length ? ` · email: ${due.join(", ")}` : "");
+    groupEl.appendChild(lbl);
+  }
+  const chips = document.createElement("div");
+  chips.className = "dl-chips";
+  acts.forEach(act=>{
+    const checked = dlIsChecked(wi, tareaId, act, defaultComplete);
+    const isDue = !!(due && due.includes(act));
+    const chip = document.createElement("div");
+    chip.className = "dl-chip" + (checked ? " checked" : "") + (isDue ? " due" : "");
+    chip.textContent = act;
+    chip.title = "ACT " + act + (isDue ? " — email this week" : "");
+    chip.addEventListener("click", ()=>{ dlSetChecked(wi, tareaId, act, !checked); dlRender(); });
+    chips.appendChild(chip);
+  });
+  groupEl.appendChild(chips);
+  taskEl.appendChild(groupEl);
+  return {done, total};
+}
+
+function dlRender(){
+  const weeksEl = document.getElementById("dlWeeks");
+  if(!weeksEl) return;
+  weeksEl.innerHTML = "";
+  let grandTotal = 0, grandDone = 0;
+
+  DL_DATA.forEach((week, wi)=>{
+    const card = document.createElement("div");
+    card.className = "dl-week";
+
+    const head = document.createElement("div");
+    head.className = "dl-week-head";
+    head.innerHTML = `
+      <div>
+        <div class="dl-week-num">${week.num} &nbsp;·&nbsp; ${week.label}</div>
+        <h2 class="dl-week-title">${week.range.split("·")[0].trim()}</h2>
+      </div>
+      <div class="dl-week-range">
+        ${week.range.includes("·") ? week.range.split("·")[1].trim() : ""}
+        ${week.flag ? `<div class="dl-flag">${week.flag}</div>` : ""}
+      </div>`;
+    card.appendChild(head);
+
+    const tasksEl = document.createElement("div");
+    tasksEl.className = "dl-tasks";
+
+    week.tasks.forEach((t)=>{
+      const taskEl = document.createElement("div");
+      taskEl.className = "dl-task";
+
+      if(t.none){
+        const row = document.createElement("div");
+        row.className = "dl-skill-row";
+        row.innerHTML = `<span class="dl-skill">${t.skill}</span>`;
+        taskEl.appendChild(row);
+        const empty = document.createElement("div");
+        empty.className = "dl-desc empty";
+        empty.textContent = "No task scheduled";
+        taskEl.appendChild(empty);
+        tasksEl.appendChild(taskEl);
+        return;
+      }
+
+      if(t.singleToggle){
+        const checked = dlIsChecked(wi, t.tareaId, 1, false);
+        grandTotal += 1; if(checked) grandDone += 1;
+        const row = document.createElement("div");
+        row.className = "dl-skill-row";
+        row.innerHTML = `<span class="dl-skill">${t.skill}</span><span class="dl-count ${checked ? "complete" : "not-started"}">${checked ? 1 : 0}/1</span>`;
+        taskEl.appendChild(row);
+        const desc = document.createElement("div");
+        desc.className = "dl-desc";
+        desc.textContent = t.singleLabel;
+        taskEl.appendChild(desc);
+        const btn = document.createElement("button");
+        btn.className = "dl-toggle-pill " + (checked ? "complete" : "not-started");
+        btn.textContent = checked ? "Complete" : "Not Started";
+        btn.addEventListener("click", ()=>{ dlSetChecked(wi, t.tareaId, 1, !checked); dlRender(); });
+        taskEl.appendChild(btn);
+        tasksEl.appendChild(taskEl);
+        return;
+      }
+
+      const row = document.createElement("div");
+      row.className = "dl-skill-row";
+      taskEl.appendChild(row);
+
+      let taskTotal = 0, taskDone = 0;
+      if(t.groups2){
+        t.groups2.forEach(g=>{
+          const r = dlRenderGroup(taskEl, wi, g.tareaId, g.label, g.due, g.defaultComplete);
+          taskTotal += r.total; taskDone += r.done;
+        });
+      } else {
+        const r = dlRenderGroup(taskEl, wi, t.tareaId, t.label, t.due, t.defaultComplete);
+        taskTotal += r.total; taskDone += r.done;
+      }
+      grandTotal += taskTotal; grandDone += taskDone;
+
+      const cls = dlStatusClass(taskDone, taskTotal);
+      row.innerHTML = `<span class="dl-skill">${t.skill}</span><span class="dl-count ${cls}">${taskDone}/${taskTotal}</span>`;
+
+      tasksEl.appendChild(taskEl);
+    });
+
+    card.appendChild(tasksEl);
+    weeksEl.appendChild(card);
+  });
+
+  const pct = grandTotal ? Math.round((grandDone/grandTotal)*100) : 0;
+  const fill = document.getElementById("dlOverallFill");
+  const pctEl = document.getElementById("dlOverallPct");
+  const labelEl = document.getElementById("dlOverallLabel");
+  const stampEl = document.getElementById("dlStampPct");
+  if(fill) fill.style.width = pct + "%";
+  if(pctEl) pctEl.textContent = pct + "%";
+  if(labelEl) labelEl.textContent = `${grandDone} of ${grandTotal} activities complete`;
+  if(stampEl) stampEl.textContent = pct + "%";
+}
+
+function dlRenderCountdown(){
+  const el = document.getElementById("dlCountdown");
+  if(!el) return;
+  const examDate = new Date(2026, 10, 14); // Nov 14, 2026
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diffDays = Math.round((examDate - today) / 86400000);
+  if(diffDays > 0) el.textContent = diffDays + (diffDays === 1 ? " day left" : " days left");
+  else if(diffDays === 0) el.textContent = "today";
+  else el.textContent = "exam has passed";
+}
+
+function initDleTrackerUI(){
+  $('dleTrackerToggleBtn').onclick = () => {
+    saveBeforeNavigation(); hideAllScreens(); $('dleTrackerView').classList.remove('hidden');
+    dlStore = dlLoadStore();
+    dlRender();
+    dlRenderCountdown();
+  };
+  $('backFromDleTrackerBtn').onclick = () => {
+    $('dleTrackerView').classList.add('hidden'); showLanding();
+  };
+  $('dlResetBtn').onclick = () => {
+    if(confirm("Reset all tracked progress? This can't be undone.")){
+      dlStore = {};
+      dlSaveStore(dlStore);
+      dlRender();
+    }
+  };
+}
+
 function initPhotoGameUI(){
   $('photoGameToggleBtn').onclick = () => {
     // Same async-load-race refresh as Vocab Match above — read the
@@ -10436,7 +10840,7 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', saveBeforeNavigation);
 
 function hideAllScreens(){
-  ['landing','folderView','setup','quiz','caseGame','sentenceGame','brainBreak','results','statsView','settingsView','petView','communityView','profSearchView','vocabMatchView','photoGameView'].forEach(id => {
+  ['landing','folderView','setup','quiz','caseGame','sentenceGame','brainBreak','results','statsView','settingsView','petView','communityView','profSearchView','vocabMatchView','photoGameView','dleTrackerView'].forEach(id => {
     const el = $(id);
     if(el) el.classList.add('hidden');
   });
@@ -15096,6 +15500,7 @@ initCommunityUI();
 initProfSearchUI();
 initVocabMatchUI();
 initPhotoGameUI();
+initDleTrackerUI();
 initCloudSync();
 
 $('homeBtn').onclick = () => {
@@ -18472,7 +18877,8 @@ document.addEventListener('DOMContentLoaded',function(){
    const onProfSearch = !document.getElementById('profSearchView').classList.contains('hidden');
    const onVocabMatch = !document.getElementById('vocabMatchView').classList.contains('hidden');
    const onPhotoGame = !document.getElementById('photoGameView').classList.contains('hidden');
-   document.getElementById('homeBtn')?.classList.toggle('active', !onStats && !onSettings && !onPet && !onCommunity && !onProfSearch && !onVocabMatch && !onPhotoGame);
+   const onDleTracker = !document.getElementById('dleTrackerView').classList.contains('hidden');
+   document.getElementById('homeBtn')?.classList.toggle('active', !onStats && !onSettings && !onPet && !onCommunity && !onProfSearch && !onVocabMatch && !onPhotoGame && !onDleTracker);
    document.getElementById('statsToggleBtn')?.classList.toggle('active', onStats);
    document.getElementById('settingsToggleBtn')?.classList.toggle('active', onSettings);
    document.getElementById('petToggleBtn')?.classList.toggle('active', onPet);
@@ -18480,8 +18886,9 @@ document.addEventListener('DOMContentLoaded',function(){
    document.getElementById('profSearchToggleBtn')?.classList.toggle('active', onProfSearch);
    document.getElementById('vocabMatchToggleBtn')?.classList.toggle('active', onVocabMatch);
    document.getElementById('photoGameToggleBtn')?.classList.toggle('active', onPhotoGame);
+   document.getElementById('dleTrackerToggleBtn')?.classList.toggle('active', onDleTracker);
  }
- ['homeBtn','statsToggleBtn','settingsToggleBtn','petToggleBtn','communityToggleBtn','profSearchToggleBtn','vocabMatchToggleBtn','photoGameToggleBtn','backFromCommunityBtn','backFromProfSearchBtn','backFromVocabMatchBtn','backFromPhotoGameBtn'].forEach(id => {
+ ['homeBtn','statsToggleBtn','settingsToggleBtn','petToggleBtn','communityToggleBtn','profSearchToggleBtn','vocabMatchToggleBtn','photoGameToggleBtn','dleTrackerToggleBtn','backFromCommunityBtn','backFromProfSearchBtn','backFromVocabMatchBtn','backFromPhotoGameBtn','backFromDleTrackerBtn'].forEach(id => {
    document.getElementById(id)?.addEventListener('click', () => setTimeout(updateNavActiveState, 0));
  });
 
