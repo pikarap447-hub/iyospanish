@@ -18276,14 +18276,15 @@ document.addEventListener('keydown', e => {
   // 8BitDo Micro) that would otherwise only be able to click whatever
   // already has focus, with no way to move focus around a menu at all.
   const DIR_ACTIONS = ['navUp','navDown','navLeft','navRight'];
-  const SHORTCUT_ACTIONS = ['back','home','flag'];
+  const SHORTCUT_ACTIONS = ['back','home','flag','cycleNext','cyclePrev'];
   const OPTIONAL_ACTIONS = [...DIR_ACTIONS, ...SHORTCUT_ACTIONS];
   const ALL_ACTIONS = [...QUIZ_ACTIONS, ...NAV_ACTIONS, ...OPTIONAL_ACTIONS];
   const ACTION_LABELS = {
     optionA:'Option A', optionB:'Option B', optionC:'Option C', optionD:'Option D',
     confirm:'Confirm / select',
     navUp:'Navigate ↑', navDown:'Navigate ↓', navLeft:'Navigate ←', navRight:'Navigate →',
-    back:'Back', home:'Home', flag:'Flag / mark for review'
+    back:'Back', home:'Home', flag:'Flag / mark for review',
+    cycleNext:'Next option explanation (after answering)', cyclePrev:'Previous option explanation (after answering)'
   };
   const GROUPS = [
     {label:'Quiz answers', actions:QUIZ_ACTIONS},
@@ -18331,6 +18332,21 @@ document.addEventListener('keydown', e => {
     return Array.from(new Set([...QUIZ_ACTIONS.map(a => gpMap[a]), gpMap.confirm, 9]));
   }
 
+  // After answering, step through options A-D (wrapping) so each one's
+  // explanation shows, exactly as if it had been clicked.
+  function cycleOptionReview(dir){
+    const opts = Array.from(document.querySelectorAll('#optionsList .opt'));
+    if(!opts.length) return;
+    let cur = opts.findIndex(o => o.classList.contains('reviewing'));
+    let next;
+    if(cur < 0) next = dir > 0 ? 0 : opts.length - 1;
+    else next = (cur + dir + opts.length) % opts.length;
+    const btn = opts[next];
+    btn.click();
+    btn.focus({preventScroll:true});
+    btn.scrollIntoView({block:'nearest'});
+  }
+
   const DPAD_TO_OPTION = {12:0, 13:1, 14:2, 15:3}; // up / down / left / right, not user-remapped
 
   function handleGamepadPress(i){
@@ -18354,6 +18370,8 @@ document.addEventListener('keydown', e => {
     }
     const quiz = $('quiz');
     if(quiz && !quiz.classList.contains('hidden')){
+      if(answered && gpMap.cycleNext !== undefined && i === gpMap.cycleNext){ cycleOptionReview(1); return; }
+      if(answered && gpMap.cyclePrev !== undefined && i === gpMap.cyclePrev){ cycleOptionReview(-1); return; }
       if(!answered){
         const idx = FACE_TO_OPTION[i] !== undefined ? FACE_TO_OPTION[i] : DPAD_TO_OPTION[i];
         if(idx !== undefined){
