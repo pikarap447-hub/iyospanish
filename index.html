@@ -4929,43 +4929,209 @@ body:before{
     .frame.wide:has(#profSearchView:not(.hidden)) .community-panel,
     .frame.wide:has(#photoGameView:not(.hidden)) .community-panel,
     .frame.wide:has(#dleTrackerView:not(.hidden)) .community-panel,
+    .frame.wide:has(#readingView:not(.hidden)) .community-panel,
     .frame.wide:has(#communityView:not(.hidden)) .community-panel{max-width:1400px;width:100%;}
   }
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .tile-border,
   .frame.wide:has(#profSearchView:not(.hidden)) > .tile-border,
   .frame.wide:has(#photoGameView:not(.hidden)) > .tile-border,
   .frame.wide:has(#dleTrackerView:not(.hidden)) > .tile-border,
+  .frame.wide:has(#readingView:not(.hidden)) > .tile-border,
   .frame.wide:has(#vocabMatchView:not(.hidden)) .back-on-photo,
   .frame.wide:has(#profSearchView:not(.hidden)) .back-on-photo,
   .frame.wide:has(#photoGameView:not(.hidden)) .back-on-photo{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
   .frame.wide:has(#dleTrackerView:not(.hidden)) .back-on-photo{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+  .frame.wide:has(#readingView:not(.hidden)) .back-on-photo{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
   @media (max-width:720px){
     .frame.wide:has(#vocabMatchView:not(.hidden)) .community-panel,
     .frame.wide:has(#profSearchView:not(.hidden)) .community-panel,
     .frame.wide:has(#photoGameView:not(.hidden)) .community-panel,
     .frame.wide:has(#dleTrackerView:not(.hidden)) .community-panel,
+    .frame.wide:has(#readingView:not(.hidden)) .community-panel,
     .frame.wide:has(#communityView:not(.hidden)) .community-panel{max-width:100%;width:100%;}
   }
   body:has(#vocabMatchView:not(.hidden)) .tile-border,
   body:has(#profSearchView:not(.hidden)) .tile-border,
   body:has(#photoGameView:not(.hidden)) .tile-border{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important;}
   body:has(#dleTrackerView:not(.hidden)) .tile-border{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important;}
+  body:has(#readingView:not(.hidden)) .tile-border{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .card,
   .frame.wide:has(#profSearchView:not(.hidden)) > .card,
   .frame.wide:has(#photoGameView:not(.hidden)) > .card{background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
   .frame.wide:has(#dleTrackerView:not(.hidden)) > .card{background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
+  .frame.wide:has(#readingView:not(.hidden)) > .card{background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .card > .card-inner,
   .frame.wide:has(#profSearchView:not(.hidden)) > .card > .card-inner,
   .frame.wide:has(#photoGameView:not(.hidden)) > .card > .card-inner{padding-top:0!important;}
   .frame.wide:has(#dleTrackerView:not(.hidden)) > .card > .card-inner{padding-top:0!important;}
+  .frame.wide:has(#readingView:not(.hidden)) > .card > .card-inner{padding-top:0!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) > .header,
   .frame.wide:has(#profSearchView:not(.hidden)) > .header,
   .frame.wide:has(#photoGameView:not(.hidden)) > .header{margin-bottom:0!important;}
   .frame.wide:has(#dleTrackerView:not(.hidden)) > .header{margin-bottom:0!important;}
+  .frame.wide:has(#readingView:not(.hidden)) > .header{margin-bottom:0!important;}
   .frame.wide:has(#vocabMatchView:not(.hidden)) .row:has(.back-on-photo),
   .frame.wide:has(#profSearchView:not(.hidden)) .row:has(.back-on-photo),
   .frame.wide:has(#photoGameView:not(.hidden)) .row:has(.back-on-photo){margin-bottom:4px!important;}
   .frame.wide:has(#dleTrackerView:not(.hidden)) .row:has(.back-on-photo){margin-bottom:4px!important;}
+  .frame.wide:has(#readingView:not(.hidden)) .row:has(.back-on-photo){margin-bottom:4px!important;}
+  /* ===== DELE B2 Comprensión de lectura simulator (rl- prefixed; builds on the pg- tokens) ===== */
+  .rl-app *{box-sizing:border-box}
+  .rl-app select.pg-input{padding:8px 10px}
+  .rl-config{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .rl-config label{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700}
+  .rl-check input{width:18px;height:18px;accent-color:var(--spanish-red)}
+  .rl-resume{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;border:1.5px solid var(--spanish-red);background:var(--pg-midbg);border-radius:14px;padding:12px 14px;margin-bottom:14px}
+  .rl-exam-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px;margin-bottom:6px}
+  .rl-exam{border:1px solid var(--pg-border);border-radius:15px;background:var(--surface);padding:14px}
+  .rl-exam.bad{border-color:var(--pg-weak)}
+  .rl-exam-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .rl-exam-top strong{font-size:15px;line-height:1.3}
+  .rl-exam-score{text-align:right;display:flex;flex-direction:column;font-size:11px;color:var(--pg-muted);white-space:nowrap}
+  .rl-exam-score b{font-size:20px;color:var(--text);line-height:1}
+  .rl-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+  .rl-chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--bg);color:var(--text)}
+  .rl-drills{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:9px}
+  .rl-mini{padding:5px 10px!important;font-size:12px!important}
+  .rl-gen{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .rl-gen label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700}
+  .rl-grow{flex:1;min-width:220px}
+  .rl-trend{position:relative;display:flex;align-items:flex-end;gap:4px;height:84px;margin:8px 0 12px;border-bottom:1px solid var(--pg-border)}
+  .rl-trend-line{position:absolute;left:0;right:0;border-top:1px dashed var(--pg-mid);pointer-events:none}
+  .rl-trend-line span{position:absolute;right:0;top:-15px;font-size:10px;color:var(--pg-mid);font-weight:800}
+  .rl-bar-col{flex:1;height:100%;display:flex;align-items:flex-end;max-width:36px}
+  .rl-b{width:100%;border-radius:4px 4px 0 0;background:var(--pg-weak)}
+  .rl-b.ok{background:var(--pg-strong)}
+  .rl-history{display:grid;gap:5px}
+  .rl-hrow{display:grid;grid-template-columns:110px 1fr 90px;gap:8px;align-items:center;text-align:left;border:1px solid var(--pg-border);background:var(--surface);color:var(--text);border-radius:10px;padding:8px 10px;font:inherit;font-size:13px;cursor:pointer}
+  .rl-hrow:hover{border-color:var(--spanish-red)}
+  .rl-hmeta{font-size:12px;color:var(--pg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* briefing */
+  .rl-brief{max-width:640px;margin:10px auto;border:1px solid var(--pg-border);border-radius:18px;background:var(--surface);padding:22px}
+  .rl-brief-p{font-size:16px;line-height:1.7;margin:10px 0 14px}
+  .rl-brief-list{display:grid;gap:6px;margin-bottom:12px}
+  .rl-brief-list div{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 10px;background:var(--bg);border-radius:10px;font-size:13px}
+
+  /* exam bar */
+  .rl-bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--pg-border);border-radius:14px;padding:10px 12px 12px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  .rl-bar-l{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .rl-bar-r{display:flex;gap:7px;margin-left:auto;flex-wrap:wrap}
+  .rl-bar .pg-btn{padding:7px 11px}
+  .rl-timer{font-variant-numeric:tabular-nums;font-size:28px;font-weight:900;letter-spacing:-.02em;line-height:1;min-width:84px}
+  .rl-timer.warn{color:var(--pg-mid)}
+  .rl-timer.danger{color:var(--pg-weak);animation:rlPulse 1s ease-in-out infinite}
+  @keyframes rlPulse{50%{opacity:.55}}
+  .rl-pace{font-variant-numeric:tabular-nums}
+  .rl-pace:empty{display:none}
+  .rl-pace.late{background:var(--pg-weakbg);color:var(--pg-weak)}
+  .rl-progress{position:absolute;left:12px;right:12px;bottom:4px;height:4px;border-radius:99px;background:var(--bg);overflow:hidden}
+  .rl-progress div{height:100%;width:0;background:var(--spanish-red);transition:width .25s linear}
+  .rl-ttabs{display:flex;gap:5px}
+  .rl-ttab{border:1px solid var(--pg-border);background:var(--surface);color:var(--text);border-radius:10px;padding:5px 12px;font-weight:850;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.15;font-size:14px}
+  .rl-ttab small{font-size:10px;font-weight:700;color:var(--pg-muted)}
+  .rl-ttab.on{background:var(--spanish-red);color:#fff;border-color:var(--spanish-red)}
+  .rl-ttab.on small{color:rgba(255,255,255,.85)}
+  .rl-ttab.full:not(.on){border-color:var(--pg-strong)}
+
+  /* split reading layout */
+  .rl-split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:14px;align-items:start}
+  .rl-pane{border:1px solid var(--pg-border);border-radius:14px;background:var(--surface);padding:14px 16px}
+  .rl-text-pane{overflow:auto}
+  .rl-pane-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
+  .rl-fs{display:flex;gap:4px}
+  .rl-instr{font-size:13px;color:var(--pg-muted);margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--pg-border)}
+  .rl-textblock{margin-bottom:16px}
+  .rl-text-label{font-size:13px;margin-bottom:4px;color:var(--spanish-red)}
+  .rl-reading{font-family:Georgia,'Iowan Old Style','Palatino Linotype',Palatino,serif;font-size:var(--rl-fs,17px);line-height:1.72;max-width:70ch;color:var(--text)}
+  .rl-reading p{margin:0 0 .85em}
+  .rl-reading i{font-style:italic}
+  .rl-gap{display:inline-flex;align-items:baseline;gap:5px;border:1.5px dashed var(--spanish-red);background:var(--bg);color:var(--text);border-radius:8px;padding:0 7px;margin:0 2px;font:inherit;font-family:system-ui,sans-serif;font-size:.82em;cursor:pointer;vertical-align:baseline}
+  .rl-gap .rl-gn{font-weight:900;color:var(--spanish-red)}
+  .rl-gap.filled{border-style:solid;background:var(--pg-midbg)}
+  .rl-gap.active{box-shadow:0 0 0 3px var(--pg-midbg);border-color:var(--text)}
+  .rl-gap.ok{border-color:var(--pg-strong);background:var(--pg-strongbg)}
+  .rl-gap.bad{border-color:var(--pg-weak);background:var(--pg-weakbg)}
+  .rl-q-pane{overflow:auto}
+  .rl-pane-sub{font-size:12px;font-weight:850;color:var(--pg-muted);margin:2px 0 8px}
+  .rl-frags{margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--pg-border)}
+  .rl-frag{display:flex;gap:9px;align-items:flex-start;padding:7px 9px;border:1px solid var(--pg-border);border-radius:10px;margin:5px 0;font-size:13.5px;line-height:1.45}
+  .rl-frag b{color:var(--spanish-red);min-width:1.1em}
+  .rl-frag em{margin-left:auto;font-style:normal;font-weight:850;color:var(--pg-mid);white-space:nowrap}
+  .rl-frag.used{opacity:.55}
+  .rl-item{padding:10px 8px;border-radius:12px;border-bottom:1px solid var(--pg-border)}
+  .rl-item.active{background:var(--bg);box-shadow:inset 3px 0 0 var(--spanish-red)}
+  .rl-item-row{display:flex;gap:10px;align-items:flex-start}
+  .rl-item-main{flex:1;min-width:0}
+  .rl-qnum{position:relative;flex:none;display:grid;place-items:center;width:32px;min-width:32px;height:32px;padding:0;margin:0;line-height:1;border-radius:9px;border:1px solid var(--pg-border);background:var(--surface);color:var(--text);font-weight:900;cursor:pointer;font-size:13px}
+  .rl-qnum.flag{background:var(--pg-midbg);border-color:var(--pg-mid)}
+  .rl-qnum i{position:absolute;top:-7px;right:-5px;font-style:normal;font-size:11px;color:var(--pg-mid)}
+  .rl-stem{font-weight:700;line-height:1.45;margin:4px 0 6px}
+  .rl-opt{display:flex;gap:9px;width:100%;text-align:left;padding:9px 12px;margin:5px 0;border-radius:11px;border:1px solid var(--pg-border);background:var(--surface);color:var(--text);font:inherit;font-size:14px;line-height:1.4;cursor:pointer}
+  .rl-opt .k{font-weight:900;color:var(--spanish-red);min-width:1.4em}
+  .rl-opt:hover:not(:disabled){border-color:var(--spanish-red)}
+  .rl-opt.sel,.rl-pill.sel{border-color:var(--spanish-red);background:var(--pg-midbg)}
+  .rl-opt.ok,.rl-pill.ok{border-color:var(--pg-strong);background:var(--pg-strongbg)}
+  .rl-opt.bad,.rl-pill.bad{border-color:var(--pg-weak);background:var(--pg-weakbg)}
+  .rl-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .rl-pill{display:flex;flex-direction:column;align-items:center;min-width:52px;padding:6px 10px;border-radius:10px;border:1px solid var(--pg-border);background:var(--surface);color:var(--text);font:inherit;font-size:13px;cursor:pointer;line-height:1.2}
+  .rl-pill small{font-size:10px;color:var(--pg-muted);font-weight:700}
+  .rl-pill-s{min-width:40px;padding:7px 10px}
+  .rl-pill-w{flex-direction:row;gap:5px;align-items:baseline;padding:7px 11px}
+  .rl-pill-w b{color:var(--spanish-red)}
+  .rl-pill:hover:not(:disabled){border-color:var(--spanish-red)}
+  .rl-pill:disabled,.rl-opt:disabled{cursor:default}
+  .rl-fb{margin-top:8px;font-size:13px}
+  .rl-fb.good{border-left-color:var(--pg-strong)}
+  .rl-fb.wrong{border-left-color:var(--pg-weak)}
+  .rl-fb div{margin-top:4px;color:var(--pg-muted)}
+  .rl-nav{justify-content:space-between;margin-top:12px}
+
+  /* overlays */
+  .rl-overlay{position:fixed;inset:0;z-index:9998;background:rgba(30,15,10,.94);display:flex;align-items:center;justify-content:center;padding:16px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .rl-overlay-card{background:var(--surface);color:var(--text);border-radius:18px;padding:22px;max-width:420px;width:100%;text-align:center}
+  .rl-sheet-card{max-width:560px;text-align:left;max-height:86vh;overflow:auto}
+  .rl-sheet-head{display:flex;justify-content:space-between;align-items:center}
+  .rl-sheet-head h3{margin:0}
+  .rl-sheet-t{font-size:12px;font-weight:850;color:var(--spanish-red);margin:14px 0 6px}
+  .rl-sheet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px}
+  .rl-cell{position:relative;display:flex;flex-direction:column;align-items:center;padding:6px 4px;border:1px solid var(--pg-border);border-radius:10px;background:var(--surface);color:var(--text);cursor:pointer;font:inherit;line-height:1.2}
+  .rl-cell b{font-size:12px;color:var(--pg-muted)}
+  .rl-cell span{font-size:15px;font-weight:900}
+  .rl-cell.has{background:var(--pg-midbg)}
+  .rl-cell.ok{background:var(--pg-strongbg);border-color:var(--pg-strong)}
+  .rl-cell.bad{background:var(--pg-weakbg);border-color:var(--pg-weak)}
+  .rl-cell i{position:absolute;top:-6px;right:-3px;font-style:normal;color:var(--pg-mid);font-size:11px}
+
+  /* results */
+  .rl-result{max-width:760px;margin:6px auto}
+  .rl-score-row{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin:12px 0 18px}
+  .rl-bigscore b{font-size:64px;font-weight:900;letter-spacing:-.04em;line-height:1}
+  .rl-bigscore span{font-size:24px;color:var(--pg-muted);margin-left:4px}
+  .rl-pct{font-size:28px;font-weight:900}
+  .rl-pct.ok{color:var(--pg-strong)} .rl-pct.low{color:var(--pg-weak)}
+  .rl-res-table{display:grid;gap:8px;margin-bottom:12px}
+  .rl-res-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(80px,1fr) 150px;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--pg-border);border-radius:12px;background:var(--surface);font-size:13px}
+  .rl-res-bar{height:10px;background:var(--bg);border-radius:99px;overflow:hidden}
+  .rl-res-bar div{height:100%;border-radius:99px}
+  .rl-res-bar .ok{background:var(--pg-strong)} .rl-res-bar .low{background:var(--pg-weak)}
+  .rl-res-num{text-align:right;display:flex;flex-direction:column}
+  .rl-res-num b{font-size:16px}
+  @media(max-width:899px){
+    .rl-split{grid-template-columns:1fr}
+    .rl-text-pane,.rl-q-pane{max-height:none!important}
+    .rl-bar-r{margin-left:0}
+    .rl-hrow{grid-template-columns:1fr;gap:2px}
+    .rl-res-row{grid-template-columns:1fr}
+    .rl-res-num{text-align:left}
+  }
+
+  .rl-source{font-size:12px;color:var(--pg-muted);font-style:italic;margin:-6px 0 14px}
+  .rl-source a{color:inherit;text-decoration:underline;word-break:break-all}
+  .rl-hint{margin-top:12px;font-size:12px;color:var(--pg-muted);line-height:2}
+  .rl-hint kbd{display:inline-block;min-width:22px;padding:1px 6px;margin:0 2px;border:1px solid var(--pg-border);border-bottom-width:2px;border-radius:6px;background:var(--surface);color:var(--text);font:700 11px system-ui,sans-serif;text-align:center}
+  .rl-gen .rl-check{align-self:center}
+
 /* ===== DELE Course Tracker (dl- prefixed, reuses app tokens) ===== */
 .dl-app *{box-sizing:border-box;}
 .dl-header{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:18px;}
@@ -5062,6 +5228,7 @@ body:before{
       <button class="btn-ghost stats-toggle" id="profSearchToggleBtn" title="Buscar tarjetas por tema" aria-label="Buscar por tema">🔎 <span>Temas</span></button>
       <button class="btn-ghost stats-toggle" id="vocabMatchToggleBtn" title="Emparejar vocabulario" aria-label="Emparejar vocabulario">🃏 <span>Vocabulario</span></button>
       <button class="btn-ghost stats-toggle" id="photoGameToggleBtn" title="Foto → habla (DELE B2 · Tarea 2)" aria-label="Foto → habla">📷 <span>Foto</span></button>
+      <button class="btn-ghost stats-toggle" id="readingToggleBtn" title="Comprensión de lectura (DELE B2 · Prueba 1)" aria-label="Lectura">📖 <span>Lectura</span></button>
       <button class="btn-ghost stats-toggle" id="dleTrackerToggleBtn" title="DELE Course Tracker" aria-label="Curso">🗓️ <span>Curso</span></button>
     </nav>
   </div>
@@ -6606,6 +6773,99 @@ OUTCOME: NEG
         </div>
       </div>
 
+
+      <!-- ===== DELE B2 Comprensión de lectura — simulacros cronometrados ===== -->
+      <div id="readingView" class="hidden">
+        <div class="row" style="margin-bottom:14px;">
+          <button class="btn-ghost back-on-photo" id="backFromReadingBtn">← Volver</button>
+        </div>
+        <div class="pg-app rl-app community-panel">
+
+          <div id="rlLibraryScreen">
+            <div class="pg-header">
+              <div>
+                <div class="pg-eyebrow">DELE B2 · Prueba 1</div>
+                <h2 class="pg-h1">Lectura · simulacros</h2>
+                <div class="pg-subtitle">Texto en pantalla, reloj real y hoja de respuestas. Importa material generado por una IA a partir de los exámenes del Instituto Cervantes y repite hasta que el ritmo sea automático.</div>
+              </div>
+              <div class="pg-stats">
+                <div class="pg-stat"><b id="rlStatToday">0</b><span>Hoy</span></div>
+                <div class="pg-stat"><b id="rlStatSims">0</b><span>Intentos</span></div>
+                <div class="pg-stat"><b id="rlStatAvg">—</b><span>Media (5)</span></div>
+                <div class="pg-stat"><b id="rlStatBest">—</b><span>Mejor</span></div>
+              </div>
+            </div>
+
+            <div id="rlResume" class="rl-resume hidden"></div>
+
+            <div class="pg-import-card rl-config">
+              <label>Ritmo del reloj
+                <select id="rlPace" class="pg-input">
+                  <option value="1">Normal (100 %)</option>
+                  <option value="0.85">Rápido (85 %)</option>
+                  <option value="0.7">Brutal (70 %)</option>
+                </select>
+              </label>
+              <label class="rl-check"><input type="checkbox" id="rlImmediate"> Corrección inmediata en Práctica</label>
+              <span class="pg-note">El ritmo acorta el tiempo total; úsalo para entrenar con margen extra.</span>
+            </div>
+
+            <h3 class="pg-panel-h">Mis simulacros <span class="pg-note" style="font-weight:600">(<span id="rlExamCount">0</span>)</span></h3>
+            <div id="rlExamList" class="rl-exam-list"></div>
+
+            <div class="pg-library-nav">
+              <h4>Progreso</h4>
+              <p>Últimos intentos (la línea marca el 60 %). Toca uno para revisar sus errores.</p>
+              <div id="rlTrend"></div>
+              <div id="rlHistory" class="rl-history"></div>
+              <div class="pg-actions"><button class="pg-btn rl-mini hidden" id="rlClearHistBtn">Borrar historial</button></div>
+            </div>
+
+            <h3 class="pg-panel-h" style="margin-top:22px">Importar simulacros</h3>
+            <p class="pg-panel-p">1) Copia un prompt. 2) Pégalo en una IA <b>y adjunta el PDF o material oficial del Instituto Cervantes</b>. 3) Pega aquí lo que devuelva. Puedes pegar varios exámenes de golpe.</p>
+            <div class="pg-import-card">
+              <div class="rl-gen">
+                <label>Cantidad <input type="number" id="rlGenCount" class="pg-input" value="3" min="1" max="20" style="width:76px"></label>
+                <label class="rl-check"><input type="checkbox" id="rlGenReal" checked> Usar artículos reales actuales (si la IA puede navegar)</label>
+                <label class="rl-grow">Temas o foco (opcional) <input type="text" id="rlGenFocus" class="pg-input" placeholder="p. ej. más subjuntivo en la Tarea 4, textos de ciencia…"></label>
+              </div>
+              <div class="pg-actions">
+                <button class="pg-btn pg-btn-primary" id="rlCopyGenBtn">📋 Prompt: crear simulacros nuevos</button>
+                <button class="pg-btn" id="rlCopyConvBtn">📋 Prompt: convertir un examen oficial</button>
+              </div>
+            </div>
+            <textarea id="rlSource" class="pg-textarea" style="min-height:220px" placeholder="EXAM_TITLE: DELE B2 · Simulacro 1 · ciencia
+LEVEL: B2
+TIME_MINUTES: 70
+
+=== TAREA 1 ===
+TYPE: MC
+..."></textarea>
+            <div id="rlLiveCount" class="pg-note" style="margin-top:6px"></div>
+            <div class="pg-actions">
+              <button class="pg-btn pg-btn-primary" id="rlImportBtn">Importar</button>
+              <button class="pg-btn" id="rlSampleBtn">Cargar muestra del formato</button>
+              <button class="pg-btn" id="rlClearBtn">Vaciar</button>
+              <button class="pg-btn hidden" id="rlRestoreSeedBtn">↺ Restaurar exámenes modelo</button>
+            </div>
+            <div id="rlImportStatus" class="pg-note"></div>
+          </div>
+
+          <div id="rlBriefScreen" class="hidden"></div>
+          <div id="rlExamScreen" class="hidden"></div>
+          <div id="rlResultScreen" class="hidden"></div>
+        </div>
+
+        <div id="rlPauseOv" class="rl-overlay hidden">
+          <div class="rl-overlay-card"><h3>⏸ En pausa</h3><p class="pg-note">El reloj está detenido y el texto oculto. Solo disponible en Práctica.</p>
+            <button class="pg-btn pg-btn-primary" data-rl="unpause">Reanudar</button></div>
+        </div>
+        <div id="rlSheet" class="rl-overlay hidden">
+          <div class="rl-overlay-card rl-sheet-card"><div class="rl-sheet-head"><h3>Hoja de respuestas</h3><button class="pg-btn rl-mini" data-rl="close-sheet">Cerrar</button></div>
+            <div id="rlSheetBody"></div></div>
+        </div>
+      </div>
+
       <!-- ===== DELE B2 Photo Task (Foto → habla), ported from a standalone tool ===== -->
       <div id="photoGameView" class="hidden">
         <div class="row" style="margin-bottom:14px;">
@@ -6693,7 +6953,7 @@ NEXT: OPEN
    baked into the page, so if Settings shows an OLD value, that's proof the
    browser is serving a stale cached copy rather than the real thing — use
    the "Force refresh" button in Settings to break out of it. */
-const APP_VERSION = '2026-09-05 Spanish UI pass v1';
+const APP_VERSION = '2026-10-15 Lectura simulator v2';
 
 /* ===== JS-01b GLOBAL ERROR LOGGING =====
    Nothing anywhere in this file previously caught truly unexpected errors
@@ -6930,7 +7190,15 @@ const PHOTO_CASES_KEY = 'esp2Review_photoCases_v1';
 // merge logic needed.
 const DL_TRACKER_KEY = 'esp2Review_deleTracker_v1';
 const VOCAB_SETS_KEY = 'esp2Review_vocabSets_v1';
-const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY, VOCAB_KEY, VOCAB_SETS_KEY, PHOTO_CASES_KEY];
+// DELE B2 Comprensión de lectura simulator: exam library (object keyed by id),
+// attempt history (array), plus device-local localStorage keys (running
+// session + prefs) that deliberately don't sync.
+const RL_EXAMS_KEY = 'esp2Review_readingExams_v1';
+const RL_ATTEMPTS_KEY = 'esp2Review_readingAttempts_v1';
+const RL_SESSION_KEY = 'esp2Review_readingSession_v1';
+const RL_PREFS_KEY = 'esp2Review_readingPrefs_v1';
+const RL_SEED_FLAG = 'esp2Review_readingSeed_v1';
+const APP_DATA_KEYS = [SETS_KEY, STATS_KEY, SESSIONS_KEY, CASE_PROGRESS_KEY, SENTENCE_PROGRESS_KEY, POMODORO_KEY, ATTEMPTS_KEY, LEARNING_KEY, INTERVENTIONS_KEY, VOCAB_KEY, VOCAB_SETS_KEY, PHOTO_CASES_KEY, RL_EXAMS_KEY, RL_ATTEMPTS_KEY];
 // Cloud sync Milestone 2 scope: everything in APP_DATA_KEYS (stats,
 // sessions, case progress, pomodoro, attempts, learning/mastery,
 // interventions) plus LOCAL_SYNC_KEYS (streak, virtual pet, calendar/exams)
@@ -7395,6 +7663,10 @@ const mergeStrategies = {
   // updatedAt on save — mergeKeyedById's newer-wins logic is the correct
   // fit here (same convention as SETS_KEY/CASE_PROGRESS_KEY above).
   [PHOTO_CASES_KEY]: (local, cloud) => mergeKeyedById(local, cloud, 'id'),
+  // Reading simulator: exam library is keyed-by-id with updatedAt (newer wins);
+  // attempt history is an append-only array with unique ids.
+  [RL_EXAMS_KEY]: (local, cloud) => mergeKeyedById(local, cloud, 'id'),
+  [RL_ATTEMPTS_KEY]: (local, cloud) => mergeArrayById(local, cloud, 'id').slice(-400),
   [STATS_KEY]: (local, cloud) => {
     const merged = Object.assign({}, cloud || {});
     Object.keys(local || {}).forEach(bucketId => {
@@ -10630,6 +10902,801 @@ function initDleTrackerUI(){
   };
 }
 
+/* ===== DELE B2 · COMPRENSIÓN DE LECTURA SIMULATOR (rl- prefixed) =====
+   Library of importable exams (RL_EXAMS_KEY, keyed by id, mergeKeyedById sync),
+   attempt history (RL_ATTEMPTS_KEY, array, mergeArrayById sync), and a
+   localStorage-only in-progress session + prefs (device-local on purpose:
+   a running clock shouldn't follow you to another device).
+   Exam = READING_FORMAT text (see RL_PROMPT_*), re-parsed with rlParseOne(). */
+const RL_WEIGHTS = {MC:2.5, MATCH:2, FRAGMENTS:3.5, CLOZE:1};   // pacing minutes per item (sums to ~70 for a full B2)
+const RL_TYPE_LABEL = {MC:'Opción múltiple', MATCH:'Correspondencia', FRAGMENTS:'Fragmentos', CLOZE:'Huecos'};
+const RL_SEED_ID = 'rl-dele-b2-2013-p1';
+const RL_SEED2_ID = 'rl-dele-b2-modelo0-2012';
+const RL_SEED2_FLAG = 'esp2Review_readingSeed2_v1';
+const RL_SEED_TEXT = "EXAM_TITLE: DELE B2 · Modelo 2013 · Prueba 1 (Comprensión de lectura)\nLEVEL: B2\nTIME_MINUTES: 70\nNOTE: Claves deducidas por IA a partir del PDF (no son las oficiales): si alguna te parece dudosa, compárala con las claves de Cervantes.\n\n=== TAREA 1 ===\nTYPE: MC\nTITLE: Turismo espacial\nINSTRUCTIONS: Usted va a leer un texto sobre el turismo espacial. Después debe contestar a las preguntas. Seleccione la opción correcta (a / b / c).\n[TEXT]\n¿Cuánto estaría dispuesto a pagar por vivir la aventura del espacio? Una excursión espacial puede costar 180.000 euros por persona, y el viaje durará unas dos horas, entre ascenso y descenso, incluida la experiencia de flotar como en microgravedad. La empresa estadounidense *Virgin Galactic* afirma superar las 600 reservas para sus vuelos en la nave *SpaceShipTwo*, que está terminando de probar. Los vuelos, que ascenderán a 100 kilómetros de altura, serán inaugurados por su propietario, Richard Branson, presumiblemente este año.\n\nLa alternativa europea llega de la mano de la empresa suiza *Swiss Space Systems* (S-3), que apunta hacia la explotación turística del espacio con un puerto espacial situado en las Islas Canarias. La aspiración de esta empresa es ofrecer la puesta en órbita de satélites con un avión comercial modificado en vez de con un cohete. Si todo sale bien, adaptarán el sistema para embarcar pasajeros y llevarlos hasta los 100 kilómetros de altura. En la filial española de S-3 entienden que, de momento, la empresa estadounidense *Virgin Galactic* va abriendo mercado.\n\nAdemás, este año en S-3 podrían empezar los vuelos parabólicos, una práctica que venía siendo casi exclusiva del entrenamiento de los astronautas profesionales. Se trata de volar en un avión comercial Airbus-300 al que se han eliminado butacas de la parte central. Los afortunados que lo puedan costear flotarán durante un minuto en cada subida y bajada brusca del avión. Desde S3 han declarado: «Como ingeniería, hemos calculado que en la fecha prevista habremos reforzado estructuralmente el avión para poder realizar los vuelos».\n\nLa empresa S3 ha elegido las islas Canarias para su proyecto por la posición geográfica, pues permite tener un acceso al espacio a través del Atlántico con un pasillo aéreo despejado para los lanzamientos sin necesidad de sobrevolar zonas pobladas. En la decisión ha influido también la experiencia española en programas que son aplicables al proyecto de S3, sobre todo para la parte de vuelo atmosférico, una tecnología puntera difícil de encontrar en otra parte del mundo.\n\nEl coste del proyecto de S-3 asciende a 200 millones de euros y S-3 España, que cuenta con el apoyo de las autoridades canarias, contribuye con una inversión de 60 millones. Además hay colaboradores académicos de universidades de Europa y América y la Agencia Europea del Espacio (ESA) es consultora de esta iniciativa.\n\nAunque cien kilómetros de ascenso es mucho, está muy por debajo de la Estación Espacial Internacional, que está a más de 400 kilómetros de altura. Allí se experimentó la presencia de turistas que iban, permanecían siete días y volvían en una de las cápsulas *Soyuz* de la *Agencia Espacial Rusa*. Dejó de ofertarse porque había escasez de naves para los astronautas profesionales. Últimamente, hay iniciativas para explotarla comercialmente convirtiéndola parcialmente en hotel, pero aún deben concretarse.\n[/TEXT]\nQ: En el texto se informa de que la nave SpaceShipTwo...\na) tendrá espacio para unas 600 personas.\nb) será estrenada por Richard Branson.\nc) se mantendrá dos horas a 100 km de altura.\nANSWER: b\nWHY: Los vuelos «serán inaugurados por su propietario, Richard Branson». Las 600 son reservas, y las dos horas son la duración total del viaje.\nQ: Según el texto, actualmente la prioridad de S-3 es...\na) construir el puerto espacial canario.\nb) adelantarse a los estadounidenses.\nc) desarrollar el sistema de lanzamiento de satélites.\nANSWER: c\nWHY: Su aspiración es poner satélites en órbita con un avión modificado; llevar pasajeros solo vendrá «si todo sale bien».\nQ: Los vuelos parabólicos en el Airbus A-300 se utilizarán para realizar...\na) viajes turísticos.\nb) pruebas de ingeniería.\nc) formación de los astronautas.\nANSWER: a\nWHY: Era una práctica de los astronautas, pero ahora «los afortunados que lo puedan costear» flotarán: es turismo.\nQ: En el texto se dice que la empresa S3 ha elegido Canarias debido a...\na) su estratégica localización.\nb) sus condiciones atmosféricas.\nc) la conjunción de rutas aéreas.\nANSWER: a\nWHY: La eligieron «por la posición geográfica»; el pasillo aéreo es despejado, no una conjunción de rutas.\nQ: Sesenta millones es la aportación al proyecto...\na) del gobierno canario.\nb) de la filial española de S3.\nc) de la Agencia Europea del Espacio.\nANSWER: b\nWHY: S-3 España, que cuenta con el apoyo de las autoridades canarias, contribuye con 60 millones.\nQ: Los viajes turísticos a la Estación Espacial Internacional se suspendieron por problemas con...\na) la distancia.\nb) el transporte.\nc) el alojamiento.\nANSWER: b\nWHY: Dejó de ofertarse porque había escasez de naves (transporte) para los astronautas profesionales.\n\n=== TAREA 2 ===\nTYPE: MATCH\nTITLE: El libro que más me influyó en la infancia\nINSTRUCTIONS: Usted va a leer cuatro textos en los que cuatro personas cuentan cuál fue el libro que más les influyó en su infancia. Relacione las preguntas con los textos (A, B, C o D).\n[TEXT A | PABLO]\nCuando les digan que lo audiovisual es enemigo de la lectura, no hagan caso. A través del oído y de las imágenes se puede llegar a descubrir la literatura. Así fue en mi caso. *La isla del tesoro*, mi relato preferido desde los siete años hasta hoy, lo escuché primero en disco antes de leerlo. Y en uno de los tebeos que devoraba semanalmente con apetito insaciable, me encontré con el cuento *El corazón delator*, que sirvió de base a mi pasión de lector. Pero no conviertan esas obras en fetiches de valor universal: si yo tuviese hoy aquella edad, seguro que me iniciaría en la literatura a través de algún juego de videoconsola. Solo una cosa es segura: los libros que nos enganchan en la infancia son los que nos gustan a nosotros, no a los educadores, porque leer es un vicio maravilloso, no una virtuosa necesidad formativa.\n[/TEXT]\n[TEXT B | ÁNGEL]\nLa serie de novelas que me enganchó a la ficción fue la de Tarzán. Debí de leerla con siete u ocho años. Cuando mi madre me apagaba la luz, yo encendía la linterna debajo de las sábanas para seguir leyendo, o bien esperaba hasta que sus pasos se alejaban y oía el televisor. Entonces salía sigilosamente al pasillo y me encerraba en el baño con mi libro. Hasta donde me alcanza la memoria, la primera imagen narrativa fuerte que guardo de la serie es cuando la mona que va a adoptar a Tarzán lo encuentra y lo coge en brazos. Si la marca del buen narrador es ser capaz de encarnar un personaje o una emoción en una acción o una actitud que se grabe para siempre en los espíritus, está claro que, conmigo, el autor lo consiguió. Desde entonces, no he dejado de leer.\n[/TEXT]\n[TEXT C | JORGE]\nHubo un libro en mi infancia que me produjo una vivísima impresión. Empecé a leerlo el día de mi primera comunión, a los siete años. Con los altibajos típicos de un acontecimiento excitante en el que puedes pasar muy fácilmente del júbilo exacerbado a la rabieta total, a media tarde escapé disgustado del bullicio del banquete familiar, me encerré en mi cuarto y me puse a leer un libro que me había traído un pariente. Se trataba de una versión extensa, en tapa dura, de *La isla misteriosa*, de Julio Verne. Seguí leyendo, sorprendido, intrigado, expectante y confuso, y cuando al cabo de un rato llamaron a la puerta del cuarto reclamando mi presencia, el disgusto se había desvanecido por completo, y solo tenía ganas de seguir con la lectura, pues la historia me había atrapado desde el principio. Ese fue mi primer y muy inesperado encuentro con la literatura.\n[/TEXT]\n[TEXT D | RAÚL]\nEl primer libro que dejó un rastro indeleble en mí fue, sin el menor asomo de duda, *El cartero del Rey*, de Tagore. Tuve una madre con la sana costumbre de leerme en voz alta cuando yo era muy chico, y ese fue el libro que, aún recuerdo, me encantaba que me leyera una y otra vez cuando yo apenas había aprendido a leer. Todavía permanece, por otro lado, vívida en mí, la impresión que me causó la lectura de *La vuelta al mundo en 80 días*. Creo que su lectura marcó mi carácter viajero. Desde entonces supe que había un universo vasto y maravilloso que me aguardaba y en el que merecía la pena inmiscuirse. La lectura supuso, para el niño solitario y cerrado que yo era antes, la vía por la que podía conectarme con el mundo.\n[/TEXT]\nQ: ¿Quién dice que su primer libro se lo regaló un familiar?\nANSWER: C\nWHY: Jorge: «un libro que me había traído un pariente».\nQ: ¿Quién dice que se inició en la literatura con una colección?\nANSWER: B\nWHY: Ángel: «la serie de novelas» de Tarzán (una colección de libros).\nQ: ¿Quién dice que de pequeño solía leer a escondidas?\nANSWER: B\nWHY: Ángel leía con la linterna bajo las sábanas o encerrado en el baño.\nQ: ¿Quién dice que el libro que más le influyó lo escuchó muchas veces?\nANSWER: D\nWHY: Raúl: su madre le leía *El cartero del Rey* «una y otra vez». Pablo escuchó su libro en disco, pero no dice que fuera muchas veces.\nQ: ¿Quién se aficionó a la literatura en medio de una celebración?\nANSWER: C\nWHY: Jorge empezó a leer el día de su primera comunión, durante el banquete.\nQ: ¿Quién dice que era un niño introvertido?\nANSWER: D\nWHY: Raúl: «el niño solitario y cerrado que yo era antes».\nQ: ¿Quién dice que el primer libro que leyó le enganchó desde las primeras páginas?\nANSWER: C\nWHY: Jorge: «la historia me había atrapado desde el principio».\nQ: ¿Quién recuerda vivamente una escena de su historia favorita?\nANSWER: B\nWHY: Ángel recuerda la imagen de la mona que encuentra a Tarzán y lo coge en brazos.\nQ: ¿Quién estaba enfadado cuando empezó a leer su primer libro?\nANSWER: C\nWHY: Jorge escapó «disgustado» del banquete y se encerró a leer.\nQ: ¿Quién se aficionó a la lectura a través de un cómic?\nANSWER: A\nWHY: Pablo: en uno de los tebeos (cómics) encontró el cuento que fue la base de su pasión de lector.\n\n=== TAREA 3 ===\nTYPE: FRAGMENTS\nTITLE: Fundéu, la «academia de los periodistas»\nINSTRUCTIONS: Lea el siguiente texto, del que se han extraído seis fragmentos. A continuación lea los ocho fragmentos propuestos (A - H) y decida en qué lugar del texto hay que colocar cada uno de ellos. Hay dos fragmentos que no tiene que elegir.\n[TEXT]\nEl lenguaje es un instrumento esencial del periodismo y el periodismo es un vehículo indispensable de la lengua. Por su difusión, más amplia e inmediata que la de la literatura, los medios de comunicación son los transmisores más eficaces de los usos lingüísticos y uno de los elementos que más influye en la constante formación del idioma. Una responsabilidad compartida ahora por miles de personas, cuyo mensaje tiene gran eco en las redes sociales. [[17]].\n\nLa Fundación del Español Urgente (Fundéu) es una organización que inició su actividad en 2005. [[18]]. La fundación cuenta con la ayuda de la Real Academia Española (RAE) cuyo director es, a su vez, el presidente de la Fundéu.\n\nUn equipo de filólogos y periodistas revisa los medios de comunicación y resuelve las dudas que surgen sobre el uso diario de la lengua. [[19]]. Sin embargo, su método de trabajo le da autoridad para recomendar el buen uso con una mayor agilidad que la RAE.\n\nEl equipo de Fundéu resuelve todos los días consultas a través de diversos canales: desde el correo hasta el teléfono, pasando, cómo no, por las redes sociales. [[20]]. También se examina la prensa en busca de las palabras y expresiones que la actualidad pone de moda, porque las palabras tienen sus momentos de «fama» en función de las necesidades informativas. [[21]]. En ella, se debaten los temas más complejos para determinar una resolución acordada entre todos, que después se publica en su página web.\n\n[[22]]. Es, precisamente, ahí donde Fundéu sirve de enlace con la Real Academia Española, como fuente de información sobre nuevos términos o usos lingüísticos y como campo de pruebas para valorar la conveniencia de hacer correcciones o incorporaciones en las obras académicas.\n[/TEXT]\nFRAGMENT A: Conscientes de que el mal uso del lenguaje desautoriza el contenido, solicitan ayuda sobre temas lingüísticos.\nFRAGMENT B: Las dudas no solo provienen de profesionales cuya herramienta de trabajo es la lengua, sino también de particulares que tienen interés por su uso.\nFRAGMENT C: En los años setenta, el objetivo fue la redacción de un manual de estilo para periodistas que dio origen al Departamento de Español Urgente.\nFRAGMENT D: A diferencia de la RAE, la Fundéu no ofrece normas definitivas sobre lo que es correcto y lo que no.\nFRAGMENT E: Su objetivo es desarrollar el buen uso del español en los medios y sirve de guía lingüística a todos los hablantes, tanto en España como en Hispanoamérica.\nFRAGMENT F: Las cuentas de RAE y Fundéu en las redes sociales tienen gran seguimiento, provocan intensos debates e incluso tienen imitadores.\nFRAGMENT G: Algunas cuestiones no quedan resueltas en la redacción y son analizadas por el Consejo Asesor, que se reúne semanalmente.\nFRAGMENT H: Los términos que provocan más dudas son estudiados en la reunión matinal de la redacción.\nGAP 17: A\nWHY: Sigue a «responsabilidad compartida por miles de personas»: esas personas, conscientes de que el mal uso desautoriza el contenido, piden ayuda.\nGAP 18: E\nWHY: Habla de la organización que inició su actividad en 2005 y su objetivo. El fragmento C (años setenta) contradice la fecha.\nGAP 19: D\nWHY: Lo contrasta con «Sin embargo, su método de trabajo le da autoridad…»: no da normas definitivas como la RAE.\nGAP 20: B\nWHY: Tras los canales de consulta (correo, teléfono, redes), explica quién hace las consultas: profesionales y particulares.\nGAP 21: H\nWHY: «En ella» se refiere a la reunión (femenino): la reunión matinal de la redacción, donde se debaten los temas complejos.\nGAP 22: G\nWHY: «Ahí» remite al Consejo Asesor, que analiza lo no resuelto en la redacción y sirve de enlace con la RAE.\n\n=== TAREA 4 ===\nTYPE: CLOZE\nTITLE: Mis cartas\nINSTRUCTIONS: Lea el texto y rellene los huecos con la opción correcta (a / b / c).\n[TEXT]\nCualquiera podría pensar que hay métodos más rápidos y sencillos para emitir las quejas a la administración, pero yo estoy convencido [[23]] que las cartas son el más adecuado. Al recibir una carta, el conserje se siente justificado y, cuando [[24]] la carta sobre la mesa del despacho del director, es un hombre que participa en una cadena aparentemente útil. Trasladar la carta desde la conserjería al despacho del director le [[25]] ponerse de pie, caminar unos metros, golpear la puerta del despacho, decir «Con permiso» y depositar la carta entre el calendario y el pisapapeles. Por lo demás, el director del servicio, al leer una carta, [[26]] sea una carta de protesta, siente alguna clase de satisfacción: el servicio deja de ser abstracto, de pronto [[27]] en algo material y tangible.\n\nPor ejemplo, el director de la compañía eléctrica. Como la electricidad es algo inmaterial y, en cierto modo, abstracto, sobre [[28]] generalmente no nos acordamos [[29]] que un corte de luz provoca que volvamos al viejo sistema de las velas, es comprensible que el director general de la compañía [[30]] como el distribuidor de alguna clase de bien espiritual.\n\nEscribí al director general de la compañía de la luz a causa del contador. El contador que contaba los pasos imaginarios de la electricidad giraba como una peonza y los números rojos y blancos saltaban como conejos. No usé estas expresiones en mi carta, porque [[31]] habrían sido consideradas excesivamente literarias. El director general fue muy gentil: me envió a un inspector. Era un hombrecito de aspecto asombrado e inquieto. Traía una maletita negra bajo el brazo, [[32]] sacó una linterna de metal y una pinza que me parecieron extraordinariamente grandes [[33]] un hombre tan pequeño. Con seguridad, él sentía lo mismo, porque su manejo [[34]] resultaba bastante complicado. Cortamos la luz y nos dirigimos hacia la caja de contadores, que está en el oscuro recibidor de mi apartamento, adosada a la pared, a una considerable altura. [[35]] un paisaje de los Alpes suizos sobre la tapa, para que le [[36]] un toque de exotismo al recibidor. De modo que cuando alguien entra en mi casa, divisa solo las colinas nevadas sobre un fondo azul y no tiene por qué pensar en electricidad y botones.\n[/TEXT]\nGAP 23: en | de | a => b\nWHY: Estar convencido DE algo.\nGAP 24: haya puesto | pone | ponga => c\nWHY: «Cuando» + acción futura/hipotética → subjuntivo: cuando ponga la carta.\nGAP 25: exige | obliga | impulsa => a\nWHY: «Exigir» va directamente con infinitivo (le exige ponerse); «obligar» e «impulsar» necesitarían «a».\nGAP 26: como si | puesto que | aunque => c\nWHY: «Aunque sea una carta de protesta»: valor concesivo con subjuntivo.\nGAP 27: se vuelve | se convierte | se pone => b\nWHY: Convertirse EN algo material y tangible.\nGAP 28: el que | la que | lo que => b\nWHY: Antecedente «la electricidad»: sobre la que no nos acordamos.\nGAP 29: antes de | tan pronto | hasta => c\nWHY: «No nos acordamos hasta que…»: límite temporal con «que».\nGAP 30: se siente | se sienta | se sentirá => b\nWHY: «Es comprensible que» exige subjuntivo.\nGAP 31: a lo mejor | puede que | es normal que => a\nWHY: «A lo mejor» + indicativo/condicional (habrían sido); las otras exigen subjuntivo.\nGAP 32: de que | de cuya | de la que => c\nWHY: De la maletita sacó… → «de la que sacó».\nGAP 33: a | para | por => b\nWHY: «Grandes para un hombre tan pequeño»: comparación de adecuación.\nGAP 34: lo | se | le => c\nWHY: «Su manejo le resultaba complicado» (a él): complemento indirecto.\nGAP 35: Cubrí | Coloqué | Oculté => b\nWHY: «Coloqué un paisaje sobre la tapa»; cubrir/ocultar exigirían la tapa como complemento directo.\nGAP 36: diera | daría | dé => a\nWHY: «Para que» + subjuntivo imperfecto por la secuencia con «coloqué».\n";
+const RL_SEED2_TEXT = "EXAM_TITLE: DELE B2 · Modelo 0 oficial (2012) · Prueba 1 (Comprensión de lectura)\nLEVEL: B2\nTIME_MINUTES: 70\nNOTE: Modelo de examen oficial del Instituto Cervantes (Examen 00, versión 1) con sus claves oficiales.\n\n=== TAREA 1 ===\nTYPE: MC\nTITLE: Basura electrónica\nSOURCE: Adaptado de www.lanacion.com.ar. Argentina\nINSTRUCTIONS: Usted va a leer un texto sobre la basura electrónica. Después, debe contestar a las preguntas. Seleccione la respuesta correcta (a / b / c).\n[TEXT]\n*Débora Slotnisky*\n\nEn su informe, de marzo de este año, *Minería y basura electrónica*, Greenpeace Argentina calcula que el 50% de los residuos de aparatos eléctricos y electrónicos se abandonan en hogares y oficinas, que el 40% se entierra o se amontona en basurales y que solo un 10% se procesa como residuos. Si se suman heladeras, microondas, televisores y videos, se estima que los argentinos desechan unos 6 kg de este tipo de aparatos por habitante cada año. «Esto representa un derroche de recursos que podrían recuperarse, además de una alta fuente de contaminación», destaca el documento.\n\nDada la magnitud del problema, Greenpeace está impulsando una ley nacional de gestión de residuos de aparatos eléctricos y electrónicos que, según Consuelo Bilbao, coordinadora de Greenpeace Argentina, «obligaría a los fabricantes a hacerse cargo de los residuos de sus propios productos. Además, estipularía la creación de un sistema de gestión de la basura electrónica que permitiría a los consumidores deshacerse de sus aparatos, de manera segura, una vez finalizada su vida útil».\n\nMientras se resuelve el futuro de la ley impulsada por Greenpeace, es importante saber que muchos de los aparatos desechados se pueden reutilizar, restaurar o reciclar. Por ejemplo, Te Reciclo es una organización que recolecta productos electrónicos a domicilio y retira aquellos que encuentra tirados en la calle con la intención de repararlos y venderlos después a muy bajo costo. «Especialmente insistimos en que trabajamos puerta a puerta, sin cargo alguno, porque ni las empresas ni los particulares quieren trasladar estos equipos de un lugar a otro», explica Ravettini, miembro del proyecto.\n\nLa Fundación Equidad es otra ONG que acepta donaciones de todo tipo de equipos sin importar el modelo o su estado. En su taller de reciclaje estos residuos se transforman en computadoras listas para ser donadas a escuelas públicas de todo el país. En este taller también se forma, en el área del tratamiento de la basura tecnológica, a personas excluidas del mercado laboral.\n\nEntre los aparatos electrónicos más utilizados, los teléfonos celulares son los que poseen la tasa más alta de recuperación: más del 90% de un celular puede ser reciclado. Ya hay operadoras que recolectan las baterías, uno de los componentes más contaminantes. Por ejemplo, Personal recibe baterías usadas en sus agencias y las clasifica en reutilizables y no reutilizables. Además, esta empresa organiza eventos en los que entrega un regalo sorpresa por cada batería que recibe.\n\nSe estima que los aparatos tecnológicos están formados por un 25% de componentes reutilizables, un 72% de reciclables y un 3% de elementos tóxicos. Computadoras, celulares, televisores, entre otros muchos objetos cotidianos abandonados en cualquier rincón, pueden tener un mejor destino. Solo considerando los tres metales más valiosos presentes en un celular (oro, plata y cobre), si tenemos en cuenta que este año han sido descartados 10 millones de aparatos en la Argentina, se calcula que se han perdido, este año, 15 millones de dólares.\n[/TEXT]\nQ: Según el informe publicado por la organización Greenpeace, en Argentina…\na) el 50% de la población guarda aparatos eléctricos viejos.\nb) un 40% de los desechos tecnológicos recibe tratamiento.\nc) cada persona genera 6 kg de residuos electrónicos al año.\nANSWER: c\nWHY: Los argentinos desechan unos 6 kg de aparatos por habitante cada año. El 50% es de residuos abandonados, no de personas, y el 40% se entierra o se amontona.\nQ: Según el texto, la ley impulsada por Greenpeace Argentina…\na) impone sanciones a los fabricantes de tecnología.\nb) implica la creación de empresas de reciclaje.\nc) aún no ha sido aprobada.\nANSWER: c\nWHY: «Mientras se resuelve el futuro de la ley…»: todavía no se ha aprobado. Obligaría a los fabricantes a gestionar sus residuos, pero no habla de sanciones.\nQ: En el texto se dice que la organización Te Reciclo…\na) arregla aparatos electrónicos en desuso.\nb) cobra por retirar los aparatos tecnológicos.\nc) estudia el tratamiento de la basura tecnológica.\nANSWER: a\nWHY: Recolecta aparatos con la intención de repararlos y venderlos. El servicio puerta a puerta es sin cargo.\nQ: El texto nos informa de que en el taller de reciclaje de la Fundación Equidad…\na) se recolectan computadoras viejas de centros educativos.\nb) se reparan sin coste alguno equipos averiados.\nc) se ofrece formación a desempleados.\nANSWER: c\nWHY: Se forma a «personas excluidas del mercado laboral». Las computadoras se donan a escuelas, no se recogen de ellas.\nQ: Según el texto, existen algunas compañías de telefonía celular que…\na) se encargan del 90% del reciclaje del celular.\nb) recogen baterías desechadas.\nc) compran baterías en desuso.\nANSWER: b\nWHY: Hay operadoras que recolectan las baterías (por ejemplo, Personal las recibe en sus agencias). El 90% es lo que se puede reciclar de un celular.\nQ: La autora del texto dice que en Argentina la basura electrónica…\na) es cada vez más abundante.\nb) se amontona en cualquier lugar.\nc) supone pérdidas económicas.\nANSWER: c\nWHY: Calcula que este año se han perdido 15 millones de dólares en metales valiosos de los celulares descartados.\n\n=== TAREA 2 ===\nTYPE: MATCH\nTITLE: Cómo publiqué mi primer libro\nSOURCE: Adaptado de http://cultura.elpais.com. España\nINSTRUCTIONS: Usted va a leer cuatro textos en los que cuatro escritores recuerdan cómo publicaron su primer libro. Relacione las preguntas con los textos (A, B, C o D).\n[TEXT A | RAFAEL]\nEra un periodista joven e inexperto cuando, en 1995, entregué mi primera novela a la editorial Planeta. Se llamaba *Invierno en la torre*, y el diario *El Mercurio* publicó una reseña que se llamaba «A patadas con las palabras» y decía que la condena para el autor era pasar cinco años y un día sin escribir.\n\nEn un programa de televisión donde había críticos y escritores preguntaron: «¿Cuál es el peor escritor de Chile?», y una señorita dijo: «Rafael Gumucio». Me quedé bloqueado, pero decidí no tirar la toalla y al año siguiente escribí *Memorias prematuras*, y dije: «Bueno, si está mal, es el final de todo».\n\nPero hubo críticas halagüeñas y ahí empezó mi carrera real. Pensar que publicar un libro te transforma en escritor es lo mismo que pensar que cuando eres padre por primera vez te transformas en padre. Es algo que vas a tener que demostrarte a ti mismo todos los días.\n[/TEXT]\n[TEXT B | ALBERTO]\nConseguí mi primer contrato porque el escritor Antonio Skármeta, a cuyo taller asistía, le habló con admiración de un texto mío a un editor de Planeta. El editor me citó en un café y me hizo firmar un contrato en una servilleta. Fue como existir antes de existir. Tardé tanto en escribir esa novela que antes escribí un cuento, *Sobredosis*, con el que me presenté a un premio. Es muy importante cómo se lanza un escritor y en ese sentido yo siento que sobreviví a pesar de todo. La fiesta de lanzamiento se hizo en una discoteca, con actrices y gente famosa. Aunque en un programa de televisión la crítica fue atroz, el libro se agotó en cuatro días. Si bien me importaba no ser aceptado, tampoco me destrozó porque yo quería ser director de cine. Y entonces me envalentonaba, y pensaba: «¿Quieren pelear? Vamos a pelear».\n[/TEXT]\n[TEXT C | MARIANA]\nMi familia creía que yo merecía el Nobel, y para demostrarles que estaban equivocados junté diez cuentos, los presenté a un certamen y resulta que gané. Después le dejé el manuscrito de mi primera novela a un colega de trabajo que conocía al editor de Planeta. Al tiempo, recibí un correo electrónico diciendo que me iban a publicar. Se llamó *El núcleo del disturbio*, se publicó en 2002, y salieron algunas reseñas buenas. Pero fue devastador. Para el lanzamiento del libro me llevaron a un programa de televisión y un periodista me preguntó si yo estaba con la línea de los escritores autorreferenciales o narrativistas, y yo no tenía idea de qué era eso, entonces di una respuesta muy ignorante: «Bueno, me gustan las dos». Durante mucho tiempo ese libro me dio vergüenza. El segundo es de 2009, para que veas el tamaño del trauma.\n[/TEXT]\n[TEXT D | RICARDO]\nEn 1998 trabajaba como profesor de filosofía y me habían destinado a un instituto de Oviedo. Una noche en que tenía una hora libre, subí a mi departamento y me encontré a Benito García Noriega ojeando unos papeles. Eran unas galeradas del *Viaje sentimental* de Laurence Sterne. Descubrimos dos cosas: que él, aparte de catedrático de Filosofía, era el dueño y editor de KRK, y que yo, aparte de un profesor interino del sistema público, había escrito una novela que había presentado a un premio. Benito me pidió que le mandara el manuscrito. Se lo dejé un viernes por la tarde y el sábado por la mañana me llamó entusiasmado. En febrero de 1999, KRK publicó *La filosofía en invierno*. El libro pasó desapercibido. Hoy no solo ha conocido una segunda edición en KRK, sino que ha sido traducido al francés, lo cual no deja de causarme asombro.\n[/TEXT]\nQ: ¿Quién dice que antes de que escribiera su primera novela ya sabía que se la iban a publicar?\nANSWER: B\nWHY: Alberto firmó el contrato antes de escribir la novela («existir antes de existir»).\nQ: ¿Quién dice que su primera novela la editó un compañero de trabajo?\nANSWER: D\nWHY: Ricardo se encontró con Benito, colega y catedrático de su instituto, que resultó ser el editor de KRK y publicó su novela.\nQ: ¿Quién dice que un periódico publicó una mala crítica de su primer libro?\nANSWER: A\nWHY: Rafael: el diario El Mercurio publicó una reseña negativa.\nQ: ¿Quién dice que para promocionar su novela se organizó un evento?\nANSWER: B\nWHY: Alberto: la fiesta de lanzamiento en una discoteca.\nQ: ¿Quién dice que tardó mucho en escribir su segunda novela?\nANSWER: C\nWHY: Mariana: la primera es de 2002 y la segunda de 2009.\nQ: ¿Quién dice que antes de publicar su primera novela ya había recibido un premio?\nANSWER: C\nWHY: Mariana presentó diez cuentos a un certamen y ganó. Alberto solo se presentó a un premio, sin decir que lo ganara.\nQ: ¿Quién dice que su segunda novela tuvo mejores críticas que la primera?\nANSWER: A\nWHY: Rafael: con su segundo libro «hubo críticas halagüeñas».\nQ: ¿Quién dice que su primera novela tuvo escasa repercusión?\nANSWER: D\nWHY: Ricardo: «El libro pasó desapercibido».\nQ: ¿Quién dice que para promocionar su primer libro fue a un programa de televisión?\nANSWER: C\nWHY: Mariana: para el lanzamiento la llevaron a un programa de televisión.\nQ: ¿Quién dice que su primer libro se vendió muy bien?\nANSWER: B\nWHY: Alberto: «el libro se agotó en cuatro días».\n\n=== TAREA 3 ===\nTYPE: FRAGMENTS\nTITLE: Los videojuegos como arte (David Cuen)\nSOURCE: Adaptado de www.bbc.co.uk\nINSTRUCTIONS: Lea el siguiente texto, del que se han extraído seis fragmentos. A continuación lea los ocho fragmentos propuestos (A-H) y decida en qué lugar del texto hay que colocar cada uno de ellos. Hay dos fragmentos que no tiene que elegir.\n[TEXT]\nDe cada diez veces que aparece una noticia relacionada con un videojuego en un medio de comunicación, nueve son para decir algo malo. Casi con toda seguridad hablarán de su violencia, discutirán su papel educativo o destacarán las ganancias millonarias que genera esta maléfica industria. [[17]]\n\nPero a pesar de que todavía somos muy pocos los que consideramos que los videojuegos son una forma de arte, al menos nuestra opinión ya empieza a ser conocida en distintos ambientes.\n\n[[18]] En primer lugar, tienen mucho que ver con el arte narrativo; muchos videojuegos cuentan una historia de principio a fin utilizando una gran variedad de técnicas y procedimientos narrativos. En segundo lugar, también tienen relación con las artes visuales. [[19]] Y, por último, también parece evidente su relación con la música: la música que aparece en algunos videojuegos y la calidad de la edición de sonido no tienen nada que envidiar a lo que solemos encontrar en el cine.\n\n[[20]] Por ejemplo, la Academia Británica de las Artes Cinematográficas y de la Televisión (BAFTA, por sus siglas en inglés) premia cada año a los mejores videojuegos y otorga premios, entre otros, a la mejor música original, al uso de audio de mayor calidad o a las mayores innovaciones tecnológicas. A pesar de estos datos, quienes consideran que los videojuegos nunca serán un arte argumentan que la experiencia del entretenimiento digital jamás podrá compararse con la del cine. [[21]]\n\nEs evidente que no todos los videojuegos pueden ser considerados obras de arte, pero me parece que los últimos avances en este medio son tan espectaculares que algunos deberían ser reconocidos unánimemente como arte. Al igual que un libro lleva al lector a un mundo solo alcanzable por el poder de su imaginación o que una película entretiene y a la vez origina una reflexión, un videojuego abre la puerta a un mundo virtual en el que se produce una interacción casi mágica entre la historia y el jugador.\n\n[[22]] Para un jugador como yo los videojuegos son un arte, aunque la mayoría siga considerándolos una pérdida de tiempo.\n[/TEXT]\nFRAGMENT A: Los diseñadores de juegos recrean, a veces con mucho «arte», épocas, costumbres y elementos de la vida real o de la ficción.\nFRAGMENT B: Esta posibilidad de interactuar es lo que diferencia a los videojuegos de otras artes.\nFRAGMENT C: Y es que en escasísimas ocasiones el entretenimiento digital es tratado como un arte, como una expresión cultural propia de nuestro tiempo.\nFRAGMENT D: Sin embargo, su teoría es que los videojuegos son una forma de arte que debe ser valorada como tal.\nFRAGMENT E: Por fortuna es en el mundo del cine donde ya se empieza a reconocer la dimensión artística de los videojuegos.\nFRAGMENT F: En cambio, algunos de ellos cuentan una historia de principio a fin, con un hilo narrativo muy definido.\nFRAGMENT G: Para ellos, la mayoría de los jugadores de videojuegos lo único que hace es jugar, perder el tiempo jugando.\nFRAGMENT H: Sin entrar a discutir si son arte o no, lo que nadie puede negar es que los videojuegos contienen elementos de otras artes.\nGAP 17: C\nWHY: Retoma «nueve [noticias] son para decir algo malo»: «Y es que» explica que casi nunca se trata el videojuego como arte.\nGAP 18: H\nWHY: Introduce la enumeración «En primer lugar… En segundo lugar… Por último…» de los elementos de otras artes.\nGAP 19: A\nWHY: Sigue a «artes visuales»: los diseñadores recrean épocas y elementos con «arte».\nGAP 20: E\nWHY: Abre el párrafo del cine y el «Por ejemplo» del premio BAFTA, que reconoce la dimensión artística.\nGAP 21: G\nWHY: «Para ellos» remite a quienes dicen que nunca serán arte; cierra su argumento.\nGAP 22: B\nWHY: «Esta posibilidad de interactuar» recoge la «interacción casi mágica» del párrafo anterior.\n\n=== TAREA 4 ===\nTYPE: CLOZE\nTITLE: Cómo me deshice de quinientos libros (Augusto Monterroso)\nSOURCE: Adaptado de Cuentos. Augusto Monterroso. Guatemala\nINSTRUCTIONS: Lea el texto y rellene los huecos con la opción correcta (a / b / c).\n[TEXT]\nHace varios años leí un ensayo de no recuerdo qué autor inglés en el que este contaba las dificultades que se le presentaron para deshacerse de un paquete de libros que por [[23]] motivo quería conservar en su biblioteca. Ahora bien, en el curso de mi existencia he podido observar que entre los intelectuales es corriente oír la queja de que los libros terminan [[24]] sacarlos de sus casas. Yo no he estado, y probablemente no lo estaré jamás, en este último extremo; pero nunca [[25]] imaginar que algún día me encontraría en el del ensayista inglés y que tendría que luchar por desprenderme de quinientos volúmenes.\n\nTrataré [[26]] contar mi experiencia. De pasada diré que es probable que esta historia [[27]] a muchos. No importa. La verdad es que en determinado momento de su vida, o uno conoce demasiada gente (escritores), o a uno lo conoce demasiada gente (escritores), o uno se da cuenta de que [[28]] ha tocado vivir en una época en que se editan demasiados libros. Llega el momento en que tus amigos escritores te regalan tantos libros (aparte de los que generosamente te pasan para leer [[29]] inéditos) que necesitarías dedicar todos los días del año para enterarte de sus interpretaciones del mundo y de la vida. El hecho es que desde hace veinte años mi afición por la lectura se vino [[30]] con el hábito de comprar libros.\n\nPor ese tiempo, di en la torpeza de visitar las librerías de viejo. Cuando uno empieza a sentir la atracción [[31]] esos establecimientos llenos de polvo, el placer que proporcionan los libros ha empezado a degenerar en la manía de comprarlos, y esta a su vez en la vanidad de adquirir algunos raros para asombrar a los amigos o a los simples conocidos.\n\n¿Cómo tiene lugar este proceso? Un día uno [[32]] tranquilo leyendo en su casa cuando llega un amigo y le dice: «¡Cuántos libros tienes!». Eso le suena a uno como si el amigo le [[33]]: «¡Qué inteligente eres!», y el mal está hecho. Lo demás, ya se sabe. [[34]] pone uno a contar los libros por cientos, luego por miles, y a sentirse cada vez más inteligente. Como a medida que pasan los años ([[35]] se sea un verdadero infeliz idealista) uno cuenta con más posibilidades económicas, uno ha recorrido más librerías y, naturalmente, uno se [[36]] en escritor, uno posee tal cantidad de libros que ya no sólo eres inteligente: en el fondo eres un genio.\n\nAsí es la vanidad esta de poseer muchos libros.\n[/TEXT]\nGAP 23: cualquier | ningún | ninguno => b\nWHY: «Por ningún motivo»: ninguno se apocopa a «ningún» ante sustantivo masculino.\nGAP 24: por | para | en => a\nWHY: «Terminar por + infinitivo»: acabar haciendo algo.\nGAP 25: hubiera podido | habré podido | pudiera => a\nWHY: «Nunca hubiera podido imaginar que algún día me encontraría…»: hipótesis irreal del pasado.\nGAP 26: a | en | de => c\nWHY: «Tratar de + infinitivo»: intentar hacer algo.\nGAP 27: irritaría | irrita | irrite => c\nWHY: «Es probable que» exige subjuntivo.\nGAP 28: le | se | lo => a\nWHY: «Le ha tocado vivir»: complemento indirecto del verbo tocar.\nGAP 29: pero | aún | ya => b\nWHY: «Aún inéditos»: todavía no publicados.\nGAP 30: contaminar | contaminando | contaminado => b\nWHY: «Se vino contaminando»: venir + gerundio expresa un proceso gradual.\nGAP 31: para | con | por => c\nWHY: «La atracción por algo».\nGAP 32: es | se pone | está => c\nWHY: «Está tranquilo leyendo»: estado temporal con gerundio.\nGAP 33: diría | dijera | decía => b\nWHY: «Como si» exige imperfecto de subjuntivo: como si el amigo le dijera.\nGAP 34: Se | Le | Lo => a\nWHY: «Se pone uno a contar»: ponerse a + infinitivo, con «se» reflexivo.\nGAP 35: de ahí que | salvo si | a menos que => c\nWHY: «A menos que se sea»: condición negativa con subjuntivo.\nGAP 36: ha vuelto | ha convertido | ha hecho => b\nWHY: «Uno se ha convertido en escritor»: convertirse en + sustantivo.\n";
+
+const RL_FORMAT_SPEC = `FORMATO DE SALIDA (READING_FORMAT v1). Una aplicación lo leerá automáticamente, así que síguelo al pie de la letra.
+- Entrega el resultado dentro de UN solo bloque de código (entre tres acentos graves, como un bloque de código), sin texto antes, entre exámenes ni después.
+- Un bloque puede contener varios exámenes: cada uno empieza con su propia línea EXAM_TITLE.
+- Las líneas que van entre paréntesis en la plantilla de abajo son notas para ti: NO las copies.
+- Escribe cada párrafo de un texto en UNA sola línea (sin saltos de línea dentro del párrafo) y deja una línea en blanco entre párrafos.
+
+EXAM_TITLE: título corto del simulacro
+LEVEL: B2
+TIME_MINUTES: 70
+
+=== TAREA 1 ===
+TYPE: MC
+TITLE: título del texto
+SOURCE: Adaptado de www.ejemplo.com. País   (línea opcional de fuente, como en el examen real)
+INSTRUCTIONS: instrucción al candidato (en español)
+[TEXT]
+Párrafo 1 en UNA sola línea.
+
+Párrafo 2 en UNA sola línea (deja una línea en blanco entre párrafos). Usa *cursiva* para títulos de obras o nombres propios en cursiva.
+[/TEXT]
+Q: enunciado de la pregunta 1
+a) opción
+b) opción
+c) opción
+ANSWER: b
+WHY: explicación breve de por qué es la correcta (cita o paráfrasis del texto)
+(6 preguntas Q en total)
+
+=== TAREA 2 ===
+TYPE: MATCH
+TITLE: título
+INSTRUCTIONS: ...
+[TEXT A | NOMBRE]
+texto A en una línea
+[/TEXT]
+[TEXT B | NOMBRE]
+...
+[/TEXT]
+(4 textos A-D; cada uno con su etiqueta y el nombre de su autor tras la barra |)
+Q: ¿Quién dice que ...?
+ANSWER: C
+WHY: ...
+(10 preguntas Q; la respuesta es la letra del texto)
+
+=== TAREA 3 ===
+TYPE: FRAGMENTS
+TITLE: título
+INSTRUCTIONS: ...
+[TEXT]
+... texto con seis huecos marcados exactamente así: [[17]] ... [[18]] ... (usa números consecutivos)
+[/TEXT]
+FRAGMENT A: frase completa que podría encajar
+FRAGMENT B: ...
+(8 fragmentos A-H: 6 correctos + 2 distractores)
+GAP 17: A
+WHY: ...
+(una línea GAP por hueco; la respuesta es la letra del fragmento)
+
+=== TAREA 4 ===
+TYPE: CLOZE
+TITLE: título
+INSTRUCTIONS: ...
+[TEXT]
+... texto con 14 huecos marcados [[23]] ... [[36]] ...
+[/TEXT]
+GAP 23: en | de | a => b
+WHY: ...
+(una línea GAP por hueco: las tres opciones separadas por | en orden a, b, c; después => y la letra correcta)
+
+REGLAS DE FORMATO: una etiqueta por línea, tal cual (TYPE, TITLE, SOURCE, INSTRUCTIONS, Q, ANSWER, WHY, GAP, FRAGMENT). Las preguntas se escriben «Q: enunciado» SIN numerar (la aplicación numera sola, en orden). Nada de listas con guiones, tablas, negritas ni numeración extra. Cada tarea es opcional: entrega solo las que se pidan. WHY siempre en español. Cada examen debe estar COMPLETO: nunca cortes una tarea a la mitad; si no caben todos los exámenes en una respuesta, entrega solo los que quepan enteros y dime cuántos faltan para que te escriba «continúa».`;
+
+const RL_REAL_BLOCK = `TEXTOS BASADOS EN ARTÍCULOS REALES Y ACTUALES
+Hoy es __TODAY__. En el examen real los textos son auténticos y están adaptados al nivel («Adaptado de www.lanacion.com.ar. Argentina»). Haz lo mismo:
+- Si puedes buscar en internet: localiza artículos, reportajes, columnas o entrevistas publicados en los últimos 12 meses en medios en español de España y de Latinoamérica (p. ej. El País, La Vanguardia, BBC Mundo, La Nación, Clarín, El Tiempo, El Universal, El Mercurio). Elige temas variados y de interés general (sociedad, ciencia, cultura, medio ambiente, economía cotidiana, viajes, tecnología).
+- ADAPTA cada texto, no lo copies: reescríbelo y recórtalo hasta la longitud pedida, simplificando lo necesario para B2. No reproduzcas más de una o dos frases seguidas del original. Los datos, cifras y declaraciones deben ser los reales del artículo; no los inventes ni los cambies.
+- En cada tarea basada en un artículo, añade la línea SOURCE: Adaptado de <medio o dominio>, <título del artículo>, <fecha>. <País>
+- Si NO puedes navegar, o no encuentras un artículo adecuado para una tarea, escribe un texto original y pon SOURCE: Texto original (ficticio). Jamás inventes URLs, medios, citas ni datos «reales». Un mismo examen puede mezclar tareas basadas en artículos reales y tareas originales.
+- Tarea 2: los cuatro testimonios pueden proceder de un mismo reportaje o de cuatro fuentes. Tarea 4: elige un texto que permita probar gramática, no solo vocabulario.`;
+
+const RL_ORIGINAL_BLOCK = `TEXTOS ORIGINALES
+Escribe textos NUEVOS. No copies frases del material adjunto ni de ninguna fuente. Cambia temas, personajes y datos. No presentes como reales datos, citas ni cifras sobre personas, empresas o instituciones reales: inventa entidades creíbles. En cada tarea pon SOURCE: Texto original (ficticio).`;
+
+const RL_PROMPT_GENERATE = `Eres un creador de simulacros para la prueba de COMPRENSIÓN DE LECTURA del DELE B2 (Instituto Cervantes).
+
+Te adjunto material oficial del Instituto Cervantes. Estúdialo a fondo y después crea exámenes NUEVOS que se sientan idénticos al examen real.
+
+1) QUÉ ANALIZAR EN EL MATERIAL ADJUNTO
+- La estructura exacta. Si el material adjunto difiere de lo que sigue, manda el material adjunto y usa el TYPE más cercano. Por defecto: Tarea 1 = 1 texto + 6 preguntas a/b/c; Tarea 2 = 4 textos cortos + 10 preguntas de correspondencia; Tarea 3 = 1 texto con 6 huecos + 8 fragmentos (2 sobran); Tarea 4 = 1 texto con 14 huecos a/b/c. Total: 36 ítems, 70 minutos, 1750-1950 palabras de texto en total.
+- Registro, temas, longitud y fuentes (prensa, divulgación, columnas, entrevistas, literatura). Las variedades del español deben alternar (España, México, Argentina, Chile, Colombia…).
+- El diseño de los distractores: casi correctos, con palabras del texto pero sentido incorrecto, información parcial, generalizaciones.
+
+2) DE DÓNDE SALEN LOS TEXTOS
+__SOURCES__
+
+3) CÓMO CONSTRUIR CADA TAREA
+- Tarea 1: las preguntas siguen el orden del texto; las opciones tienen longitud parecida; la respuesta correcta es una paráfrasis del texto y toda la opción debe ser correcta. Reparte a/b/c (no más de dos respuestas iguales seguidas). Texto de 450-600 palabras.
+- Tarea 2: cuatro textos de 110-170 palabras. Cada pregunta se resuelve con un único texto, pero con paráfrasis, nunca con las mismas palabras. Cada texto contesta a 2-3 preguntas. Las preguntas no siguen el orden de los textos.
+- Tarea 3: texto de 350-450 palabras con 6 huecos [[17]]…[[22]]. Cada fragmento solo encaja en un hueco gracias a pronombres, conectores, referentes («ahí», «en ella», «sin embargo») o a la coherencia temática. Los dos distractores deben tentar pero contradecir algo del texto. Los huecos van al final de una frase o al inicio de un párrafo.
+- Tarea 4: texto de 300-380 palabras con 14 huecos [[23]]…[[36]]. Gramática y léxico B2: preposiciones y régimen verbal, indicativo/subjuntivo, relativos, pronombres (le/lo/se), conectores, tiempos verbales, colocaciones. Las tres opciones deben ser plausibles; solo una correcta.
+- WHY: una explicación breve y exacta de cada respuesta (en T4 nombra la regla gramatical).
+- Antes de entregar, revisa uno por uno cada ANSWER: debe ser inequívoca y verificable en el texto.
+
+4) CANTIDAD Y TÍTULOS
+Crea __COUNT__ exámenes completos (4 tareas, 36 ítems, TIME_MINUTES: 70), con temas distintos entre sí. Títulos: «DELE B2 · Simulacro n · tema».
+__FOCUS__
+
+${RL_FORMAT_SPEC}`;
+
+const RL_PROMPT_CONVERT = `Eres un transcriptor para un entrenador de DELE B2 · Comprensión de lectura.
+
+Te adjunto un examen oficial (PDF, imágenes o texto). Conviértelo FIELMENTE al formato de abajo, para mi uso de estudio personal: respeta el texto original, el número de ítems y el orden de las opciones. No resumas, no corrijas y no modernices el texto.
+
+- Si el PDF son imágenes escaneadas, léelas con cuidado y comprueba al final que el número de preguntas y de huecos coincide con el original.
+- Ordena las preguntas por su número oficial, aunque en el cuadernillo aparezcan desordenadas.
+- La línea de fuente del original, del tipo «(Adaptado de www.… País)», va en SOURCE: sin los paréntesis.
+- Si el documento incluye las claves oficiales, úsalas en ANSWER. Si NO las incluye, resuelve el examen tú mismo con mucho cuidado y, justo debajo de LEVEL, escribe: NOTE: Claves deducidas por IA, no oficiales.
+- Escribe en WHY una explicación breve de cada respuesta.
+- Convierte los huecos numerados del original (por ejemplo «17. ______») en marcadores [[17]], usando los números reales de las preguntas, y quita el espacio de la raya.
+- Tarea 2: la etiqueta de cada texto lleva el nombre del autor, p. ej. [TEXT A | PABLO].
+- Si el cuadernillo incluye otras pruebas (comprensión auditiva, expresión escrita u oral), ignóralas: transcribe solo la comprensión de lectura. Si solo trae algunas tareas, transcribe solo esas.
+- No incluyas la hoja de respuestas ni numeración global de preguntas: la aplicación numera sola.
+
+${RL_FORMAT_SPEC}`;
+
+const RL_SAMPLE_TEXT = `EXAM_TITLE: Muestra mínima del formato
+LEVEL: B2
+TIME_MINUTES: 8
+
+=== TAREA 1 ===
+TYPE: MC
+TITLE: Una bicicleta prestada
+INSTRUCTIONS: Lea el texto y seleccione la opción correcta.
+[TEXT]
+Cada mañana, Marta tomaba prestada la bicicleta de su vecino sin que él lo supiera, hasta que un día lo encontró esperándola con el manillar reparado.
+[/TEXT]
+Q: Marta usaba la bicicleta...
+a) con permiso de su vecino.
+b) sin que su vecino lo supiera.
+c) solo los domingos.
+ANSWER: b
+WHY: «sin que él lo supiera».
+
+=== TAREA 4 ===
+TYPE: CLOZE
+TITLE: Frases con huecos
+INSTRUCTIONS: Rellene los huecos.
+[TEXT]
+Estoy seguro [[1]] que vendrá, aunque [[2]] tarde.
+[/TEXT]
+GAP 1: de | en | por => a
+WHY: Estar seguro de algo.
+GAP 2: llega | llegue | llegará => b
+WHY: Aunque + subjuntivo (concesiva hipotética).`;
+
+/* ---------- storage ---------- */
+function rlLoadLibrary(){ try{ return JSON.parse(appDataCache[RL_EXAMS_KEY]||'null')||{}; }catch(e){ return {}; } }
+function rlLoadAttempts(){ try{ const a = JSON.parse(appDataCache[RL_ATTEMPTS_KEY]||'null'); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function rlSaveLibrary(){ appDataSet(RL_EXAMS_KEY, JSON.stringify(rlLibrary)); }
+function rlSaveAttempts(){ if(rlAttempts.length>400) rlAttempts = rlAttempts.slice(-400); appDataSet(RL_ATTEMPTS_KEY, JSON.stringify(rlAttempts)); }
+function rlLsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function rlLsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function rlLoadSess(){ try{ const s = JSON.parse(rlLsGet(RL_SESSION_KEY)||'null'); return (s && s.examId) ? s : null; }catch(e){ return null; } }
+function rlSaveSess(){ if(rlSess) rlLsSet(RL_SESSION_KEY, JSON.stringify(rlSess)); }
+function rlClearSess(){ rlSess = null; try{ localStorage.removeItem(RL_SESSION_KEY); }catch(e){} }
+function rlPrefs(){ let p = {}; try{ p = JSON.parse(rlLsGet(RL_PREFS_KEY)||'{}')||{}; }catch(e){}
+  return Object.assign({pace:1, immediate:false, fs:17}, p); }
+function rlSetPref(k,v){ const p = rlPrefs(); p[k]=v; rlLsSet(RL_PREFS_KEY, JSON.stringify(p)); }
+
+let rlLibrary = rlLoadLibrary();
+let rlAttempts = rlLoadAttempts();
+let rlSubmitting = false;
+let rlSess = null, rlTimer = null, rlScreen = 'library', rlReview = null, rlResultAttempt = null, rlEditingId = null, rlLastPersist = 0;
+const rlParsedCache = {};
+
+/* ---------- helpers ---------- */
+const rlEsc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const rlUid = p => p+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
+function rlFmt(sec){ sec = Math.max(0, Math.round(sec)); const h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), s = sec%60;
+  return (h? h+':'+String(m).padStart(2,'0') : m)+':'+String(s).padStart(2,'0'); }
+function rlNormType(s){
+  const t = String(s||'').toUpperCase().replace(/[^A-Z]/g,'');
+  if(/^(MC|MULTIPLE|MULTIPLECHOICE|OPCIONMULTIPLE|SELECCIONMULTIPLE)/.test(t)) return 'MC';
+  if(/^(MATCH|MATCHING|CORRESPONDENCIA|RELACIONAR)/.test(t)) return 'MATCH';
+  if(/^(FRAGMENT|GAPPED|FRAGMENTOS|FRAGMENTS)/.test(t)) return 'FRAGMENTS';
+  if(/^(CLOZE|HUECOS|GAPFILL|COMPLETAR)/.test(t)) return 'CLOZE';
+  return '';
+}
+
+/* ---------- parser ---------- */
+function rlSplitExams(src){
+  const lines = String(src||'').replace(/\r\n?/g,'\n').replace(/^\uFEFF/,'').split('\n');
+  const isTitle = l => /^\s*[*#\s]*EXAM_TITLE\s*:/i.test(l);
+  if(!lines.some(isTitle)) return [lines.join('\n')];
+  const chunks = []; let cur = null, inText = false;
+  for(const l of lines){
+    if(/^\s*\[TEXT\b/i.test(l)) inText = true; else if(/^\s*\[\/TEXT\]/i.test(l)) inText = false;
+    if(!inText && isTitle(l)){ cur = []; chunks.push(cur); }
+    if(cur) cur.push(l);
+  }
+  return chunks.map(c => c.join('\n'));
+}
+
+function rlParseOne(src){
+  const errors = [], warnings = [];
+  const raw = String(src||'').replace(/\r\n?/g,'\n').replace(/^\uFEFF/,'').split('\n').filter(l => !/^\s*```/.test(l));
+  const exam = {title:'', level:'B2', timeMinutes:0, note:'', tareas:[]};
+  let cur = null, last = null, txt = null, m;
+  const norm = s => s.trim().replace(/\*\*/g,'').replace(/^#+\s*/,'').trim();
+  const finishText = () => { if(txt){ txt.body = txt.lines.join('\n').replace(/^\n+|\n+$/g,''); delete txt.lines; if(cur) cur.texts.push(txt); txt = null; } };
+  for(const line of raw){
+    if(txt){ if(/^\s*\[\/TEXT\]\s*$/i.test(line)) finishText(); else txt.lines.push(line); continue; }
+    const t = norm(line); if(!t) continue;
+    if((m = t.match(/^=*\s*TAREA\s*[:\s]?\s*(\d+)\s*=*$/i))){
+      cur = {n:+m[1], type:'', title:'', source:'', instructions:'', timeHint:0, texts:[], items:[], fragments:[]}; exam.tareas.push(cur); last = null; continue; }
+    if(!cur){
+      if((m = t.match(/^EXAM_TITLE\s*:\s*(.*)$/i))) exam.title = m[1].trim();
+      else if((m = t.match(/^LEVEL\s*:\s*(.*)$/i))) exam.level = m[1].trim() || 'B2';
+      else if((m = t.match(/^TIME_MINUTES\s*:\s*(\d+)/i))) exam.timeMinutes = +m[1];
+      else if((m = t.match(/^NOTE\s*:\s*(.*)$/i))) exam.note = m[1].trim();
+      continue;
+    }
+    if((m = t.match(/^\[TEXT(?:\s+([A-Za-z0-9]+))?(?:\s*[|:\-–—]\s*([^\]]*))?\]$/i))){
+      txt = {label:(m[1]||'').toUpperCase(), name:(m[2]||'').trim(), lines:[]}; continue; }
+    if((m = t.match(/^TYPE\s*:\s*(.+)$/i))){ cur.type = rlNormType(m[1]); if(!cur.type) errors.push(`Tarea ${cur.n}: TYPE desconocido «${m[1].trim()}» (usa MC, MATCH, FRAGMENTS o CLOZE).`); continue; }
+    if((m = t.match(/^TITLE\s*:\s*(.*)$/i))){ cur.title = m[1].trim(); continue; }
+    if((m = t.match(/^INSTRUCTIONS\s*:\s*(.*)$/i))){ cur.instructions = m[1].trim(); continue; }
+    if((m = t.match(/^TIME_HINT\s*:\s*(\d+)/i))){ cur.timeHint = +m[1]; continue; }
+    if((m = t.match(/^(?:SOURCE|FUENTE)\s*:\s*(.*)$/i))){ cur.source = m[1].trim().replace(/^\(|\)$/g,''); continue; }
+    if((m = t.match(/^FRAGMENT\s+([A-Za-z])\s*[:.)]\s*(.+)$/i))){ cur.fragments.push({key:m[1].toUpperCase(), text:m[2].trim()}); continue; }
+    if((m = t.match(/^GAP\s*(\d+)\s*:\s*(.+)$/i))){ last = {kind:'gap', label:m[1], rawAns:m[2].trim(), why:''}; cur.items.push(last); continue; }
+    if((m = t.match(/^Q\s*\d*\s*[:.)]\s*(.+)$/i)) || (cur.type!=='CLOZE' && cur.type!=='FRAGMENTS' && (m = t.match(/^\d+\s*[.)]\s+(.+)$/)))){ last = {kind:'q', stem:m[1].trim(), options:[], answer:'', why:''}; cur.items.push(last); continue; }
+    if((m = t.match(/^ANSWER\s*:\s*(.+)$/i))){ if(last && last.kind==='q') last.answer = m[1].trim().replace(/[^A-Za-z]/g,'').slice(0,1); else warnings.push(`Tarea ${cur.n}: ANSWER sin pregunta Q anterior.`); continue; }
+    if((m = t.match(/^(?:WHY|EXPLAIN|EXPLICACI[OÓ]N)\s*:\s*(.+)$/i))){ if(last) last.why = m[1].trim(); continue; }
+    if(last && last.kind==='q' && (m = t.match(/^([A-Za-z])\s*[).]\s+(.+)$/))){ last.options.push({key:m[1].toLowerCase(), text:m[2].trim()}); continue; }
+    warnings.push(`Tarea ${cur.n}: línea ignorada «${t.slice(0,50)}${t.length>50?'…':''}»`);
+  }
+  if(txt){ errors.push(`Tarea ${cur?cur.n:'?'}: falta [/TEXT] de cierre.`); finishText(); }
+
+  if(!exam.tareas.length) errors.push('No se encontró ninguna «=== TAREA n ===».');
+  exam.tareas.forEach(t => rlFinalizeTarea(t, errors, warnings));
+
+  let num = 0, wsum = 0;
+  exam.tareas.forEach((t, ti) => {
+    t.idx = ti;
+    t.items.forEach((it, ii) => { it.id = 'i'+(ti+1)+'_'+(ii+1); it.num = ++num; });
+    t.weight = (RL_WEIGHTS[t.type] || 2) * t.items.length; wsum += t.weight;
+  });
+  exam.total = num;
+  if(!num && exam.tareas.length) errors.push('No hay ninguna pregunta válida.');
+  if(!exam.timeMinutes) exam.timeMinutes = Math.max(1, Math.round(wsum));
+  if(!exam.title){ exam.title = 'Simulacro sin título'; warnings.push('Falta EXAM_TITLE: se usará «Simulacro sin título».'); }
+  return {exam, errors, warnings};
+}
+
+function rlFinalizeTarea(t, errors, warnings){
+  const E = s => errors.push(`Tarea ${t.n}: ${s}`);
+  if(!t.type){
+    t.type = t.fragments.length ? 'FRAGMENTS' : t.items.some(i=>i.kind==='gap') ? 'CLOZE' : t.texts.filter(x=>x.label).length > 1 ? 'MATCH' : 'MC';
+    warnings.push(`Tarea ${t.n}: falta TYPE, se interpreta como ${t.type}.`);
+  }
+  if(!t.title) t.title = 'Tarea '+t.n;
+  const gapType = t.type==='FRAGMENTS' || t.type==='CLOZE';
+  const wrongKind = t.items.filter(i => (i.kind==='gap') !== gapType);
+  if(wrongKind.length){ E(`hay líneas ${gapType?'Q':'GAP'} que no corresponden a un tipo ${t.type}.`); t.items = t.items.filter(i => (i.kind==='gap') === gapType); }
+  if(!t.texts.length) warnings.push(`Tarea ${t.n}: no tiene [TEXT].`);
+
+  if(t.type==='MC'){
+    t.items.forEach((it, i) => { it.answer = it.answer.toLowerCase();
+      if(it.options.length<2) E(`pregunta ${i+1} tiene menos de 2 opciones.`);
+      else if(!it.options.some(o=>o.key===it.answer)) E(`pregunta ${i+1}: ANSWER «${it.answer||'—'}» no coincide con ninguna opción.`);
+      if(it.options.length===2 || it.options.length>4) warnings.push(`Tarea ${t.n}, pregunta ${i+1}: tiene ${it.options.length} opciones (el DELE usa 3).`); });
+  } else if(t.type==='MATCH'){
+    const opts = t.texts.filter(x=>x.label).map(x=>({key:x.label, text:x.name||('Texto '+x.label)}));
+    if(opts.length<2) E('necesita al menos 2 textos con etiqueta, p. ej. [TEXT A | PABLO].');
+    t.items.forEach((it, i) => { it.answer = it.answer.toUpperCase(); it.options = opts;
+      if(!opts.some(o=>o.key===it.answer)) E(`pregunta ${i+1}: ANSWER «${it.answer||'—'}» no es ninguna letra de texto.`); });
+  } else {
+    const body = t.texts.map(x=>x.body).join('\n');
+    const markers = []; body.replace(/\[\[(\d+)\]\]/g, (a, n) => { markers.push(n); return a; });
+    const labels = t.items.map(i=>i.label);
+    markers.forEach(n => { if(!labels.includes(n)) E(`el hueco [[${n}]] del texto no tiene línea GAP ${n}.`); });
+    labels.forEach(n => { if(!markers.includes(n)) E(`GAP ${n} no aparece como [[${n}]] en el texto.`); });
+    t.items.sort((a,b) => markers.indexOf(a.label) - markers.indexOf(b.label));
+    if(t.type==='FRAGMENTS'){
+      if(t.fragments.length<2) E('necesita líneas FRAGMENT A:, FRAGMENT B:…');
+      const used = {};
+      t.items.forEach(it => {
+        const mm = it.rawAns.match(/([A-Za-z])\W*$/); it.answer = mm ? mm[1].toUpperCase() : '';
+        it.options = t.fragments;
+        if(!t.fragments.some(f=>f.key===it.answer)) E(`GAP ${it.label}: la letra «${it.answer||'—'}» no es ningún fragmento.`);
+        else if(used[it.answer]) warnings.push(`Tarea ${t.n}: el fragmento ${it.answer} se usa en dos huecos.`);
+        used[it.answer] = 1; });
+    } else {
+      t.items.forEach(it => {
+        const parts = it.rawAns.split(/=>|->|→|⇒/); const letter = (parts.length>1 ? parts[parts.length-1] : '').trim().toLowerCase().replace(/[^a-z]/g,'').slice(0,1);
+        const opts = parts[0].split('|').map(s=>s.trim()).filter(Boolean);
+        it.options = opts.map((x,i)=>({key:String.fromCharCode(97+i), text:x})); it.answer = letter;
+        if(opts.length<2) E(`GAP ${it.label}: separa las opciones con | (ej. «en | de | a => b»).`);
+        else if(!letter || letter.charCodeAt(0)-97 >= opts.length) E(`GAP ${it.label}: falta «=> letra» válida.`); });
+    }
+  }
+}
+
+function rlGetParsed(id){
+  const e = rlLibrary[id]; if(!e) return null;
+  const k = id+':'+(e.updatedAt||0)+':'+(e.source||'').length;
+  if(!rlParsedCache[k]){ Object.keys(rlParsedCache).forEach(x => { if(x.indexOf(id+':')===0) delete rlParsedCache[x]; }); rlParsedCache[k] = rlParseOne(e.source); }
+  return rlParsedCache[k];
+}
+
+/* ---------- pacing ---------- */
+function rlTareaPaceSecs(exam, t){
+  if(t.timeHint) return t.timeHint*60;
+  const wsum = exam.tareas.reduce((a,x)=>a+x.weight,0) || 1;
+  return exam.timeMinutes*60 * t.weight / wsum;
+}
+
+/* ---------- import ---------- */
+function rlStatus(html, cls){ const el = $('rlImportStatus'); el.innerHTML = html; el.className = 'pg-note ' + (cls||''); }
+function rlLivePreview(){
+  const src = $('rlSource').value; const box = $('rlLiveCount');
+  if(!src.trim()){ box.textContent = ''; box.className = 'pg-note'; return; }
+  const chunks = rlSplitExams(src); let ok = 0, bad = 0, items = 0, tareas = 0;
+  chunks.forEach(c => { const r = rlParseOne(c); if(r.errors.length) bad++; else { ok++; items += r.exam.total; tareas += r.exam.tareas.length; } });
+  box.textContent = `${ok} examen${ok===1?'':'es'} válido${ok===1?'':'s'} · ${tareas} tareas · ${items} preguntas` + (bad ? ` · ${bad} con errores` : '');
+  box.className = 'pg-note ' + (bad ? 'pg-status-err' : 'pg-status-ok');
+}
+function rlImport(){
+  const src = $('rlSource').value;
+  if(!src.trim()){ rlStatus('Pega primero el texto generado por la IA.', 'pg-status-err'); return; }
+  const chunks = rlSplitExams(src); const msgs = []; let added = 0, updated = 0, dup = 0, failed = 0, items = 0;
+  chunks.forEach((c, i) => {
+    const r = rlParseOne(c); const label = chunks.length>1 ? `Examen ${i+1}${r.exam.title?' («'+rlEsc(r.exam.title)+'»)':''}: ` : '';
+    if(r.errors.length){ failed++; r.errors.slice(0,6).forEach(e => msgs.push(label + rlEsc(e))); if(r.errors.length>6) msgs.push(label+`…y ${r.errors.length-6} errores más.`); return; }
+    r.warnings.slice(0,3).forEach(w => msgs.push('⚠ '+label+rlEsc(w)));
+    const now = Date.now();
+    if(rlEditingId && chunks.length===1 && rlLibrary[rlEditingId]){
+      const old = rlLibrary[rlEditingId]; rlLibrary[rlEditingId] = {id:old.id, title:r.exam.title, level:r.exam.level, source:c, createdAt:old.createdAt||now, updatedAt:now}; updated++; items += r.exam.total; return; }
+    if(Object.values(rlLibrary).some(x => x.source === c)){ dup++; return; }
+    const id = rlUid('rl'); rlLibrary[id] = {id, title:r.exam.title, level:r.exam.level, source:c, createdAt:now, updatedAt:now}; added++; items += r.exam.total;
+  });
+  if(added || updated){ rlSaveLibrary(); rlRenderLibrary(); }
+  const parts = [];
+  if(added) parts.push(`✓ ${added} examen${added===1?'':'es'} importado${added===1?'':'s'} (${items} preguntas)`);
+  if(updated) parts.push('✓ examen actualizado');
+  if(dup) parts.push(`${dup} ya existía${dup===1?'':'n'}`);
+  if(failed) parts.push(`${failed} con errores — corrige y vuelve a importar`);
+  rlStatus(parts.join(' · ') + (msgs.length ? '<br>'+msgs.join('<br>') : ''), failed && !added && !updated ? 'pg-status-err' : 'pg-status-ok');
+  if((added || updated) && !failed){ $('rlSource').value = ''; rlEditingId = null; $('rlLiveCount').textContent = ''; }
+}
+function rlBuildPrompt(kind){
+  const today = new Date().toLocaleDateString('es-ES', {day:'numeric', month:'long', year:'numeric'});
+  if(kind==='convert') return RL_PROMPT_CONVERT;
+  const n = Math.max(1, Math.min(20, parseInt($('rlGenCount').value,10) || 3));
+  const focus = $('rlGenFocus').value.trim();
+  const real = $('rlGenReal').checked;
+  return RL_PROMPT_GENERATE
+    .replace('__SOURCES__', () => (real ? RL_REAL_BLOCK : RL_ORIGINAL_BLOCK).replace(/__TODAY__/g, today))
+    .replace('__COUNT__', String(n))
+    .replace('__FOCUS__', () => focus ? 'FOCO / TEMAS PREFERIDOS: '+focus : '');
+}
+function rlCopyPrompt(kind){
+  const p = rlBuildPrompt(kind);
+  vmCopyToClipboard(p).then(() => rlStatus('✓ Prompt copiado. Pégalo en un chat de IA <b>y adjunta el PDF/material de Cervantes</b>; luego pega aquí la respuesta.', 'pg-status-ok'))
+    .catch(() => { $('rlSource').value = p; rlLivePreview(); rlStatus('El navegador bloqueó la copia. El prompt se puso en el cuadro de texto — selecciónalo y cópialo (luego bórralo antes de importar).', 'pg-status-err'); });
+}
+
+/* ---------- library screen ---------- */
+function rlAttemptsFor(id){ return rlAttempts.filter(a => a.examId === id); }
+function rlShowScreen(name){
+  rlScreen = name;
+  ['Library','Brief','Exam','Result'].forEach(n => $('rl'+n+'Screen').classList.toggle('hidden', n.toLowerCase() !== name));
+  window.scrollTo({top:0});
+}
+function rlRenderLibrary(){
+  // stats
+  const all = rlAttempts, full = all.filter(a => a.scope==='all');
+  const last5 = all.slice(-5); const avg = last5.length ? Math.round(last5.reduce((s,a)=>s+a.pct,0)/last5.length) : null;
+  const best = all.length ? Math.max(...all.map(a=>a.pct)) : null;
+  const today = new Date().toDateString(); const todayN = all.filter(a => new Date(a.at).toDateString()===today).length;
+  $('rlStatSims').textContent = all.length; $('rlStatAvg').textContent = avg==null ? '—' : avg+'%';
+  $('rlStatBest').textContent = best==null ? '—' : best+'%'; $('rlStatToday').textContent = todayN;
+  $('rlExamCount').textContent = Object.keys(rlLibrary).length;
+  // prefs
+  const pf = rlPrefs(); $('rlPace').value = String(pf.pace); $('rlImmediate').checked = !!pf.immediate;
+  // resume banner
+  const s = rlSess || rlLoadSess(); const rb = $('rlResume');
+  if(s && s.phase==='run' && rlLibrary[s.examId]){
+    const p = rlGetParsed(s.examId); const nAns = Object.keys(s.answers||{}).length;
+    rb.classList.remove('hidden');
+    rb.innerHTML = `<div><b>${s.mode==='sim'?'Simulacro':'Práctica'} en curso</b> — ${rlEsc(p&&p.exam?p.exam.title:'')}<div class="pg-note">${nAns} respuestas guardadas${s.mode==='sim'?' · el reloj sigue corriendo':' · en pausa'}.</div></div>
+      <div class="pg-actions" style="margin:0"><button class="pg-btn pg-btn-primary" data-rl="resume">Continuar</button><button class="pg-btn" data-rl="discard">Descartar</button></div>`;
+  } else rb.classList.add('hidden');
+  // exams
+  const ids = Object.keys(rlLibrary).sort((a,b) => (rlLibrary[b].updatedAt||0) - (rlLibrary[a].updatedAt||0));
+  const box = $('rlExamList');
+  if(!ids.length){ box.innerHTML = '<div class="pg-empty">Aún no tienes simulacros. Importa uno abajo, o restaura el examen modelo.</div>'; }
+  else box.innerHTML = ids.map(id => {
+    const e = rlLibrary[id], p = rlGetParsed(id), at = rlAttemptsFor(id);
+    if(!p || p.errors.length) return `<div class="rl-exam bad"><strong>${rlEsc(e.title||'Sin título')}</strong><div class="pg-note pg-status-err">Formato inválido: ${rlEsc((p&&p.errors[0])||'')}</div>
+      <div class="pg-actions"><button class="pg-btn" data-rl="edit" data-id="${id}">✏️ Editar</button><button class="pg-btn" data-rl="del" data-id="${id}">🗑</button></div></div>`;
+    const ex = p.exam; const lastA = at[at.length-1]; const bestA = at.length ? Math.max(...at.map(a=>a.pct)) : null;
+    const chips = ex.tareas.map(t => `<span class="rl-chip" title="${rlEsc(t.title)}">T${t.n} · ${RL_TYPE_LABEL[t.type]} · ${t.items.length}</span>`).join('');
+    const drills = ex.tareas.length > 1 ? `<div class="rl-drills"><span class="pg-note">Solo una tarea:</span>${ex.tareas.map(t => `<button class="pg-btn rl-mini" data-rl="start" data-mode="sim" data-id="${id}" data-scope="${t.idx}" title="Simulacro solo de la Tarea ${t.n}">T${t.n}</button>`).join('')}</div>` : '';
+    return `<div class="rl-exam">
+      <div class="rl-exam-top"><div><strong>${rlEsc(ex.title)}</strong><div class="pg-note">${rlEsc(ex.level)} · ${ex.tareas.length} tarea${ex.tareas.length===1?'':'s'} · ${ex.total} preguntas · ${ex.timeMinutes} min</div></div>
+        <div class="rl-exam-score">${lastA?`<b>${lastA.pct}%</b><span>último</span>`:'<span>sin intentos</span>'}${bestA!=null&&at.length>1?`<span>mejor ${bestA}%</span>`:''}</div></div>
+      <div class="rl-chips">${chips}</div>
+      ${ex.note?`<div class="pg-note" style="margin-top:6px">ℹ️ ${rlEsc(ex.note)}</div>`:''}
+      <div class="pg-actions">
+        <button class="pg-btn pg-btn-primary" data-rl="start" data-mode="sim" data-id="${id}" data-scope="all">▶ Simulacro</button>
+        <button class="pg-btn" data-rl="start" data-mode="practice" data-id="${id}" data-scope="all">✍️ Práctica</button>
+        <button class="pg-btn" data-rl="edit" data-id="${id}" title="Editar texto fuente">✏️</button>
+        <button class="pg-btn" data-rl="del" data-id="${id}" title="Eliminar">🗑</button>
+      </div>${drills}</div>`;
+  }).join('');
+  // seed restore visibility
+  $('rlRestoreSeedBtn').classList.toggle('hidden', !!rlLibrary[RL_SEED_ID] && !!rlLibrary[RL_SEED2_ID]);
+  // trend + history
+  const tr = $('rlTrend'); const recent = all.slice(-16);
+  if(!recent.length){ tr.innerHTML = '<div class="pg-empty">Tus resultados aparecerán aquí.</div>'; }
+  else tr.innerHTML = `<div class="rl-trend"><div class="rl-trend-line" style="bottom:60%"><span>60%</span></div>${recent.map(a => `<div class="rl-bar-col" title="${rlEsc(a.examTitle)} · ${a.pct}%"><div class="rl-b ${a.pct>=60?'ok':'low'}" style="height:${Math.max(3,a.pct)}%"></div></div>`).join('')}</div>`;
+  const hist = $('rlHistory'); const hs = all.slice(-12).reverse();
+  hist.innerHTML = hs.length ? hs.map(a => `<button class="rl-hrow" data-rl="open-attempt" data-id="${a.id}"><span><b>${a.pct}%</b> · ${a.correct}/${a.total}</span><span class="rl-hmeta">${rlEsc(a.examTitle)} · ${a.mode==='sim'?'Simulacro':'Práctica'}${a.scope==='all'?'':' T'+a.scopeN} · ${rlFmt(a.secs)}</span><span class="rl-hmeta">${new Date(a.at).toLocaleDateString()}</span></button>`).join('') : '';
+  $('rlClearHistBtn').classList.toggle('hidden', !all.length);
+}
+
+/* ---------- session control ---------- */
+function rlStart(examId, scope, mode){
+  const p = rlGetParsed(examId); if(!p || p.errors.length){ alert('Este examen tiene errores de formato. Edítalo primero.'); return; }
+  if(rlSess && rlSess.phase==='run' && !confirm('Ya tienes una sesión en curso. ¿Descartarla y empezar esta?')) return;
+  const ex = p.exam, pf = rlPrefs();
+  const idxs = scope==='all' ? ex.tareas.map(t=>t.idx) : [Number(scope)];
+  const limitSec = scope==='all' ? Math.round(ex.timeMinutes*60*pf.pace) : Math.round(rlTareaPaceSecs(ex, ex.tareas[Number(scope)])*pf.pace);
+  rlReview = null;
+  rlSess = {examId, mode, scope:scope==='all'?'all':Number(scope), idxs, limitSec, factor:pf.pace, immediate: mode==='practice' && !!pf.immediate,
+    phase:'brief', startedAt:0, pausedAt:0, pausedTotal:0, lastTick:0, cur:idxs[0], answers:{}, flags:{}, tareaSecs:{}, active:null};
+  rlSaveSess(); rlRenderBrief(); rlShowScreen('brief');
+}
+function rlRenderBrief(){
+  const s = rlSess, ex = rlGetParsed(s.examId).exam, ts = s.idxs.map(i=>ex.tareas[i]);
+  const nItems = ts.reduce((a,t)=>a+t.items.length,0);
+  $('rlBriefScreen').innerHTML = `<div class="rl-brief">
+    <div class="pg-eyebrow">${s.mode==='sim'?'Simulacro':'Práctica'} · ${rlEsc(ex.level)}</div>
+    <h2 class="pg-h1">${rlEsc(ex.title)}</h2>
+    <p class="rl-brief-p">Esta prueba contiene <b>${ts.length===1?'una tarea':ts.length+' tareas'}</b>. Usted debe responder a <b>${nItems} preguntas</b>.<br>Duración: <b>${Math.round(s.limitSec/60)} minutos</b>${s.factor!==1?` <span class="pg-note">(ritmo ×${s.factor} aplicado)</span>`:''}.<br>Marque sus opciones únicamente en la Hoja de respuestas.</p>
+    <div class="rl-brief-list">${ts.map(t => `<div><b>Tarea ${t.n}</b> · ${rlEsc(t.title)}<span class="pg-note">${RL_TYPE_LABEL[t.type]} · ${t.items.length} preguntas · meta ${Math.round(rlTareaPaceSecs(ex,t)*(s.scope==='all'?s.factor:1)/60)} min</span></div>`).join('')}</div>
+    <p class="pg-note">${s.mode==='sim' ? 'Modo examen: reloj estricto, sin pausa ni correcciones; al acabar el tiempo se entrega solo.' : 'Modo práctica: puedes pausar'+(s.immediate?' y verás la corrección al responder.':'; la corrección llega al final.')} Atajos: A/B/C… responden la pregunta activa, ↑↓ cambian de pregunta, M marca para revisar, [ ] cambian de tarea.</p>
+    <div class="pg-actions"><button class="pg-btn pg-btn-primary" data-rl="begin">Comenzar</button><button class="pg-btn" data-rl="cancel-brief">← Cancelar</button></div></div>`;
+}
+function rlBegin(){
+  const s = rlSess; if(!s) return;
+  s.phase = 'run'; s.startedAt = Date.now(); s.lastTick = s.startedAt; s.pausedAt = 0; s.pausedTotal = 0;
+  rlSaveSess(); rlRenderExam(); rlShowScreen('exam'); rlStartTimer(); document.addEventListener('keydown', rlOnKey);
+}
+function rlResume(){
+  const s = rlSess || rlLoadSess(); if(!s || !rlLibrary[s.examId]) return;
+  rlSess = s; rlReview = null;
+  if(s.phase==='brief'){ rlRenderBrief(); rlShowScreen('brief'); return; }
+  const now = Date.now();
+  if(s.pausedAt){ s.pausedTotal += now - s.pausedAt; s.pausedAt = 0; }
+  s.lastTick = now;
+  if(s.mode==='sim' && rlElapsed(s) >= s.limitSec){ rlSubmit(true); return; }
+  rlRenderExam(); rlShowScreen('exam'); rlStartTimer(); document.addEventListener('keydown', rlOnKey);
+}
+function rlElapsed(s){ return ((s.pausedAt || Date.now()) - s.startedAt - s.pausedTotal)/1000; }
+function rlStartTimer(){ rlStopTimer(); rlTimer = setInterval(rlTick, 250); rlTick(); }
+function rlStopTimer(){ if(rlTimer){ clearInterval(rlTimer); rlTimer = null; } document.removeEventListener('keydown', rlOnKey); }
+function rlTick(){
+  const s = rlSess; if(!s || s.phase!=='run' || rlReview) return;
+  const now = Date.now();
+  if(!s.pausedAt){ const d = Math.max(0,(now - s.lastTick)/1000); s.tareaSecs[s.cur] = (s.tareaSecs[s.cur]||0) + d; }
+  s.lastTick = now;
+  const el = rlElapsed(s), rem = s.limitSec - el;
+  const tt = $('rlTimerTxt');
+  if(tt && rlScreen==='exam'){
+    tt.textContent = (rem < 0 ? '+' : '') + rlFmt(Math.abs(rem));
+    const ratio = rem / s.limitSec;
+    tt.className = 'rl-timer' + (rem<0 || rem<=60 ? ' danger' : ratio<=0.15 ? ' warn' : '');
+    $('rlTimerFill').style.width = Math.min(100, Math.max(0, el / s.limitSec * 100)) + '%';
+    const ex = rlGetParsed(s.examId).exam, chip = $('rlPaceChip');
+    if(chip && s.scope==='all' && s.idxs.length>1){
+      let target = 0; s.idxs.forEach(i => { if(i <= s.cur) target += rlTareaPaceSecs(ex, ex.tareas[i]) * s.factor; });
+      const left = target - el;
+      chip.textContent = left >= 0 ? `T${ex.tareas[s.cur].n}: meta en ${rlFmt(left)}` : `T${ex.tareas[s.cur].n}: ${rlFmt(-left)} de retraso`;
+      chip.className = 'pg-pill rl-pace' + (left < 0 ? ' late' : '');
+    }
+  }
+  if(rem <= 0 && s.mode==='sim' && !rlSubmitting){ rlSubmit(true); return; }
+  if(now - rlLastPersist > 4000){ rlLastPersist = now; rlSaveSess(); }
+}
+// Called from hideAllScreens(): leaving the reading view mid-run.
+function rlLeaveView(){
+  if(rlSess && rlSess.phase==='run' && !rlReview){
+    rlTick(); if(rlSess.mode==='practice' && !rlSess.pausedAt) rlSess.pausedAt = Date.now();
+    rlSaveSess();
+  }
+  rlStopTimer(); rlScreen = 'library';
+}
+function rlPersist(){ if(rlSess && rlSess.phase==='run' && !rlReview) rlSaveSess(); }
+
+/* ---------- exam screen ---------- */
+function rlCtx(){
+  if(rlReview){ const a = rlReview.attempt, p = rlGetParsed(a.examId);
+    return {review:true, exam:p&&p.exam, idxs:a.idxs, answers:a.answers||{}, flags:{}, cur:rlReview.cur, immediate:false, active:rlReview.active}; }
+  const s = rlSess, p = rlGetParsed(s.examId);
+  return {review:false, exam:p.exam, idxs:s.idxs, answers:s.answers, flags:s.flags, cur:s.cur, immediate:s.immediate, active:s.active};
+}
+function rlFmtText(body, t, ctx){
+  const byLabel = {}; t.items.forEach(it => { if(it.label) byLabel[it.label] = it; });
+  return String(body).split(/\n{2,}/).map(par => {
+    let h = rlEsc(par).replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\*(.+?)\*/g,'<i>$1</i>');
+    h = h.replace(/\[\[(\d+)\]\]/g, (a, n) => { const it = byLabel[n]; if(!it) return a;
+      const v = ctx.answers[it.id]; let shown = '';
+      if(v){ shown = t.type==='FRAGMENTS' ? v : (it.options.find(o=>o.key===v)||{}).text || v; }
+      let cls = 'rl-gap' + (v ? ' filled' : '') + (ctx.active===it.id ? ' active' : '');
+      if(ctx.review || (ctx.immediate && v)) cls += v===it.answer ? ' ok' : ' bad';
+      return `<button type="button" class="${cls}" data-rl="gap" data-item="${it.id}" aria-label="Hueco ${it.num}"><span class="rl-gn">${it.num}</span>${shown ? '<span class="rl-gv">'+rlEsc(shown)+'</span>' : ''}</button>`; });
+    return `<p>${h}</p>`;
+  }).join('');
+}
+function rlItemHtml(t, it, ctx){
+  const v = ctx.answers[it.id] || '', done = ctx.review || (ctx.immediate && v), isAct = ctx.active===it.id;
+  const fl = ctx.flags[it.id];
+  const stateCls = k => { if(!done) return v===k ? ' sel' : ''; if(k===it.answer) return ' ok'; if(k===v) return ' bad'; return ''; };
+  let inner = '';
+  const lock = (ctx.immediate && v) ? ' disabled' : '';
+  if(t.type==='MC'){
+    inner = `<div class="rl-stem">${rlEsc(it.stem)}</div>` + it.options.map(o => `<button type="button" class="rl-opt${stateCls(o.key)}" data-rl="ans" data-item="${it.id}" data-key="${o.key}"${lock}><span class="k">${o.key})</span><span>${rlEsc(o.text)}</span></button>`).join('');
+  } else if(t.type==='MATCH'){
+    inner = `<div class="rl-stem">${rlEsc(it.stem)}</div><div class="rl-pills">` + it.options.map(o => `<button type="button" class="rl-pill${stateCls(o.key)}" data-rl="ans" data-item="${it.id}" data-key="${o.key}"${lock} title="${rlEsc(o.text)}"><b>${o.key}</b><small>${rlEsc(o.text)}</small></button>`).join('') + '</div>';
+  } else if(t.type==='FRAGMENTS'){
+    inner = `<div class="rl-pills">` + it.options.map(o => `<button type="button" class="rl-pill rl-pill-s${stateCls(o.key)}" data-rl="ans" data-item="${it.id}" data-key="${o.key}"${lock}><b>${o.key}</b></button>`).join('') + '</div>';
+  } else {
+    inner = `<div class="rl-pills">` + it.options.map(o => `<button type="button" class="rl-pill rl-pill-w${stateCls(o.key)}" data-rl="ans" data-item="${it.id}" data-key="${o.key}"${lock}><b>${o.key})</b> ${rlEsc(o.text)}</button>`).join('') + '</div>';
+  }
+  let fb = '';
+  if(done){
+    const right = it.options.find(o=>o.key===it.answer);
+    const rightTxt = t.type==='MATCH' ? it.answer+' · '+(right?right.text:'') : t.type==='FRAGMENTS' ? it.answer : it.answer+') '+(right?right.text:'');
+    const verdict = !v ? 'Sin responder' : v===it.answer ? '✓ Correcta' : '✗ Incorrecta';
+    fb = `<div class="pg-tip rl-fb ${!v?'':(v===it.answer?'good':'wrong')}"><b>${verdict}</b>${v===it.answer?'':` · Correcta: <b>${rlEsc(rightTxt)}</b>`}${it.why?`<div>${rlEsc(it.why)}</div>`:''}</div>`;
+  }
+  return `<div class="rl-item${isAct?' active':''}" id="rl-it-${it.id}" data-rl="act" data-item="${it.id}">
+    <div class="rl-item-row"><button type="button" class="rl-qnum${fl?' flag':''}" data-rl="flag" data-item="${it.id}" title="Marcar para revisar (M)">${it.num}${fl?'<i>⚑</i>':''}</button><div class="rl-item-main">${inner}</div></div>${fb}</div>`;
+}
+function rlBodyHtml(ctx){
+  const t = ctx.exam.tareas[ctx.cur], pf = rlPrefs();
+  let left = `<div class="rl-pane-head"><div><div class="pg-eyebrow">Tarea ${t.n} · ${RL_TYPE_LABEL[t.type]}</div><strong>${rlEsc(t.title)}</strong></div>
+    <div class="rl-fs"><button class="pg-btn rl-mini" data-rl="fs" data-d="-1" aria-label="Texto más pequeño">A−</button><button class="pg-btn rl-mini" data-rl="fs" data-d="1" aria-label="Texto más grande">A+</button></div></div>
+    ${t.instructions?`<p class="rl-instr">${rlEsc(t.instructions)}</p>`:''}`;
+  const srcHtml = t.source ? `<div class="rl-source">(${rlEsc(t.source).replace(/(https?:\/\/[^\s<)]+)/g,'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')})</div>` : '';
+  left += t.texts.map(x => `<div class="rl-textblock">${x.label?`<div class="rl-text-label"><b>Texto ${rlEsc(x.label)}</b>${x.name?' · '+rlEsc(x.name):''}</div>`:''}<div class="rl-reading">${rlFmtText(x.body, t, ctx)}</div></div>`).join('') + srcHtml;
+  let right = '';
+  if(t.type==='FRAGMENTS'){
+    const usedBy = {}; t.items.forEach(it => { const v = ctx.answers[it.id]; if(v) usedBy[v] = it.num; });
+    right += `<div class="rl-frags"><div class="rl-pane-sub">Fragmentos</div>` + t.fragments.map(f => `<div class="rl-frag${usedBy[f.key]?' used':''}"><b>${f.key}</b><span>${rlEsc(f.text)}</span>${usedBy[f.key]?`<em>→ ${usedBy[f.key]}</em>`:''}</div>`).join('') + '</div>';
+  }
+  right += `<div class="rl-pane-sub">${ctx.review?'Revisión':'Hoja de respuestas'}</div>` + t.items.map(it => rlItemHtml(t, it, ctx)).join('');
+  return `<div class="rl-split" style="--rl-fs:${pf.fs}px"><div class="rl-pane rl-text-pane" id="rlTextPane">${left}</div><div class="rl-pane rl-q-pane" id="rlQPane">${right}</div></div>`;
+}
+function rlTabsHtml(ctx){
+  if(ctx.idxs.length < 2) return '';
+  return `<div class="rl-ttabs">` + ctx.idxs.map(i => { const t = ctx.exam.tareas[i];
+    const ans = t.items.filter(it => ctx.answers[it.id]).length;
+    let extra = ''; if(ctx.review){ const ok = t.items.filter(it => ctx.answers[it.id]===it.answer).length; extra = `${ok}/${t.items.length}`; } else extra = `${ans}/${t.items.length}`;
+    return `<button type="button" class="rl-ttab${i===ctx.cur?' on':''}${!ctx.review&&ans===t.items.length?' full':''}" data-rl="tarea" data-idx="${i}">T${t.n}<small>${extra}</small></button>`; }).join('') + '</div>';
+}
+function rlRenderExam(){
+  const ctx = rlCtx(), s = rlSess;
+  let bar;
+  if(ctx.review){
+    const a = rlReview.attempt;
+    bar = `<div class="rl-bar"><div class="rl-bar-l"><div class="pg-eyebrow">Revisión</div><strong>${rlEsc(a.examTitle)}</strong></div>${rlTabsHtml(ctx)}
+      <div class="rl-bar-r"><span class="pg-pill">${a.correct}/${a.total} · ${a.pct}%</span><button class="pg-btn" data-rl="sheet">Hoja</button><button class="pg-btn pg-btn-primary" data-rl="back-result">← Resultados</button></div></div>`;
+  } else {
+    bar = `<div class="rl-bar"><div class="rl-bar-l"><div class="rl-timer" id="rlTimerTxt">--:--</div><span class="pg-pill rl-pace" id="rlPaceChip"></span></div>${rlTabsHtml(ctx)}
+      <div class="rl-bar-r">${s.mode==='practice'?`<button class="pg-btn" data-rl="pause">⏸ Pausa</button>`:''}<button class="pg-btn" data-rl="sheet">Hoja</button><button class="pg-btn pg-btn-primary" data-rl="submit">Entregar</button></div>
+      <div class="rl-progress"><div id="rlTimerFill"></div></div></div>`;
+  }
+  const t = ctx.exam.tareas[ctx.cur], pos = ctx.idxs.indexOf(ctx.cur);
+  const nav = ctx.idxs.length > 1 ? `<div class="pg-actions rl-nav"><button class="pg-btn" data-rl="prev"${pos===0?' disabled':''}>← Tarea anterior</button><button class="pg-btn" data-rl="next"${pos===ctx.idxs.length-1?' disabled':''}>Siguiente tarea →</button></div>` : '';
+  $('rlExamScreen').innerHTML = bar + `<div id="rlBody">${rlBodyHtml(ctx)}</div>` + nav + (ctx.review ? '' : '<div class="rl-hint">Atajos: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd>… responden la pregunta activa · <kbd>↑</kbd><kbd>↓</kbd> cambian de pregunta · <kbd>M</kbd> marca · <kbd>[</kbd><kbd>]</kbd> cambian de tarea</div><div class="pg-actions"><button class="pg-btn" data-rl="quit">Abandonar sin guardar</button></div>');
+  rlApplyPaneHeight();
+  if(!ctx.review) rlTick();
+}
+function rlApplyPaneHeight(){
+  const mh = window.innerWidth >= 900 ? Math.max(380, window.innerHeight - 190) + 'px' : '';
+  ['rlTextPane','rlQPane'].forEach(id => { const el = $(id); if(el) el.style.maxHeight = mh; });
+}
+function rlRerenderBody(){
+  const ctx = rlCtx(); const body = $('rlBody'); if(!body) return;
+  const tp = $('rlTextPane'), qp = $('rlQPane'); const st = tp ? tp.scrollTop : 0, sq = qp ? qp.scrollTop : 0, sy = window.scrollY;
+  body.innerHTML = rlBodyHtml(ctx); rlApplyPaneHeight();
+  const tp2 = $('rlTextPane'), qp2 = $('rlQPane'); if(tp2) tp2.scrollTop = st; if(qp2) qp2.scrollTop = sq; window.scrollTo({top:sy});
+  const tabs = $('rlExamScreen').querySelector('.rl-ttabs'); if(tabs) tabs.outerHTML = rlTabsHtml(ctx);
+}
+function rlGoTarea(i){
+  if(rlReview){ rlReview.cur = i; rlReview.active = null; } else { rlSess.cur = i; rlSess.active = null; rlSaveSess(); }
+  rlRenderExam(); window.scrollTo({top:0});
+}
+function rlSetActive(id, scroll){
+  if(rlReview) rlReview.active = id; else { rlSess.active = id; }
+  document.querySelectorAll('#rlExamScreen .rl-item.active, #rlExamScreen .rl-gap.active').forEach(e => e.classList.remove('active'));
+  const row = $('rl-it-'+id); if(row){ row.classList.add('active'); if(scroll) row.scrollIntoView({block:'nearest', behavior:'smooth'}); }
+  const gp = document.querySelector(`#rlExamScreen .rl-gap[data-item="${id}"]`); if(gp) gp.classList.add('active');
+}
+function rlFindItem(id){ const ctx = rlCtx(); for(const i of ctx.idxs){ const t = ctx.exam.tareas[i]; const it = t.items.find(x=>x.id===id); if(it) return {t, it}; } return null; }
+function rlAnswer(id, key, fromKeyboard){
+  if(rlReview || !rlSess || rlSess.phase!=='run') return;
+  const f = rlFindItem(id); if(!f) return; const {t, it} = f; const s = rlSess;
+  if(s.immediate && s.answers[id]) return;
+  if(!it.options.some(o=>o.key===key)) return;
+  if(s.answers[id]===key && !s.immediate) delete s.answers[id];
+  else { s.answers[id] = key;
+    if(t.type==='FRAGMENTS') t.items.forEach(o => { if(o.id!==id && s.answers[o.id]===key) delete s.answers[o.id]; }); }
+  s.active = id; rlSaveSess(); rlRerenderBody();
+  if(fromKeyboard){ const idx = t.items.indexOf(it); const nx = t.items[idx+1]; if(nx) rlSetActive(nx.id, true); else rlSetActive(id, true); }
+  else rlSetActive(id, false);
+}
+function rlOnKey(e){
+  if(rlScreen!=='exam' || rlReview || !rlSess || rlSess.phase!=='run' || rlSess.pausedAt) return;
+  if(e.ctrlKey || e.metaKey || e.altKey) return;
+  if(/INPUT|TEXTAREA|SELECT/.test((e.target.tagName||''))) return;
+  if(!$('rlSheet').classList.contains('hidden')) return;
+  const s = rlSess, ctx = rlCtx(), t = ctx.exam.tareas[s.cur], k = e.key;
+  let ai = t.items.findIndex(i => i.id===s.active);
+  if(k==='ArrowDown' || k==='ArrowUp'){ e.preventDefault(); ai = ai<0 ? 0 : Math.max(0, Math.min(t.items.length-1, ai + (k==='ArrowDown'?1:-1))); rlSetActive(t.items[ai].id, true); return; }
+  if(k==='[' || k===']'){ const pos = s.idxs.indexOf(s.cur) + (k===']'?1:-1); if(pos>=0 && pos<s.idxs.length) rlGoTarea(s.idxs[pos]); return; }
+  if(ai < 0) { if(/^[a-zA-Z]$/.test(k)) { rlSetActive(t.items[0].id, true); ai = 0; } else return; }
+  const it = t.items[ai];
+  if(k==='m' || k==='M'){ if(s.flags[it.id]) delete s.flags[it.id]; else s.flags[it.id] = 1; rlSaveSess(); rlRerenderBody(); rlSetActive(it.id, false); return; }
+  if(/^[a-hA-H]$/.test(k)){
+    const key = (t.type==='MC' || t.type==='CLOZE') ? k.toLowerCase() : k.toUpperCase();
+    if(it.options.some(o=>o.key===key)){ e.preventDefault(); rlAnswer(it.id, key, true); }
+  }
+}
+function rlPause(){
+  const s = rlSess; if(!s) return;
+  rlTick(); s.pausedAt = Date.now(); rlSaveSess();
+  const ov = $('rlPauseOv'); ov.classList.remove('hidden');
+}
+function rlUnpause(){
+  const s = rlSess; if(!s || !s.pausedAt) return;
+  s.pausedTotal += Date.now() - s.pausedAt; s.pausedAt = 0; s.lastTick = Date.now(); rlSaveSess();
+  $('rlPauseOv').classList.add('hidden');
+}
+function rlOpenSheet(){
+  const ctx = rlCtx(); let h = '';
+  ctx.idxs.forEach(i => { const t = ctx.exam.tareas[i];
+    h += `<div class="rl-sheet-t">Tarea ${t.n}</div><div class="rl-sheet-grid">` + t.items.map(it => {
+      const v = ctx.answers[it.id]; let cls = 'rl-cell' + (v?' has':'') + (ctx.flags[it.id]?' flag':'');
+      if(ctx.review) cls += !v ? '' : (v===it.answer ? ' ok' : ' bad');
+      return `<button type="button" class="${cls}" data-rl="jump" data-idx="${i}" data-item="${it.id}"><b>${it.num}</b><span>${v?rlEsc(v.toUpperCase()):'·'}</span>${ctx.flags[it.id]?'<i>⚑</i>':''}</button>`; }).join('') + '</div>'; });
+  $('rlSheetBody').innerHTML = h; $('rlSheet').classList.remove('hidden');
+}
+
+/* ---------- submit / results ---------- */
+function rlSubmit(auto){
+  const s = rlSess; if(!s || s.phase!=='run' || rlSubmitting) return;
+  rlSubmitting = true;            // rlTick() below must not re-enter via the time-up check
+  try { rlSubmitInner(s, auto); } finally { rlSubmitting = false; }
+}
+function rlSubmitInner(s, auto){
+  rlTick();
+  const ex = rlGetParsed(s.examId).exam;
+  if(!auto){
+    const total = s.idxs.reduce((a,i)=>a+ex.tareas[i].items.length,0), ans = Object.keys(s.answers).length, fl = Object.keys(s.flags).length;
+    const msg = (ans<total ? `Te quedan ${total-ans} preguntas sin responder. ` : '') + (fl ? `Tienes ${fl} marcada${fl===1?'':'s'} para revisar. ` : '') + '¿Entregar ahora?';
+    if(!confirm(msg)) return;
+  }
+  const el = rlElapsed(s); const secs = s.mode==='sim' ? Math.min(el, s.limitSec) : el;
+  let correct = 0, total = 0;
+  const per = s.idxs.map(i => { const t = ex.tareas[i]; const c = t.items.filter(it => s.answers[it.id]===it.answer).length;
+    correct += c; total += t.items.length;
+    return {idx:i, n:t.n, type:t.type, title:t.title, correct:c, total:t.items.length, secs:Math.round(s.tareaSecs[i]||0), paceSecs:Math.round(rlTareaPaceSecs(ex,t)*(s.scope==='all'?s.factor:1))}; });
+  const att = {id:rlUid('at'), examId:s.examId, examTitle:ex.title, mode:s.mode, scope:s.scope, scopeN:s.scope==='all'?0:ex.tareas[s.scope].n, idxs:s.idxs,
+    at:Date.now(), correct, total, pct:Math.round(correct/total*100), secs:Math.round(secs), limitSec:s.limitSec, factor:s.factor, auto:!!auto, answers:s.answers, perTarea:per, flagged:Object.keys(s.flags).length};
+  rlAttempts.push(att); rlSaveAttempts();
+  rlStopTimer(); rlClearSess(); $('rlPauseOv').classList.add('hidden'); $('rlSheet').classList.add('hidden');
+  rlShowResult(att);
+}
+function rlShowResult(att){
+  rlResultAttempt = att; rlReview = null;
+  const p = rlGetParsed(att.examId); const ex = p && p.exam;
+  const scaled = (att.correct * 25 / att.total);
+  const verdict = att.pct>=60 ? 'Por encima del 60 %' : 'Por debajo del 60 %';
+  const tareaRows = att.perTarea.map(r => { const pc = Math.round(r.correct/r.total*100); const over = r.secs > r.paceSecs;
+    return `<div class="rl-res-row"><div><b>Tarea ${r.n}</b> · ${RL_TYPE_LABEL[r.type]}<div class="pg-note">${rlEsc(r.title)}</div></div>
+      <div class="rl-res-bar"><div style="width:${pc}%" class="${pc>=60?'ok':'low'}"></div></div>
+      <div class="rl-res-num"><b>${r.correct}/${r.total}</b><span class="pg-note ${over?'pg-status-err':''}">${rlFmt(r.secs)} / meta ${rlFmt(r.paceSecs)}</span></div></div>`; }).join('');
+  const wrong = []; if(ex) att.idxs.forEach(i => ex.tareas[i].items.forEach(it => { if(att.answers[it.id] !== it.answer) wrong.push(it.num); }));
+  $('rlResultScreen').innerHTML = `<div class="rl-result">
+    <div class="pg-eyebrow">${att.mode==='sim'?'Simulacro':'Práctica'}${att.scope==='all'?'':' · Tarea '+att.scopeN} · ${att.auto?'tiempo agotado, entregado automáticamente':'entregado'}</div>
+    <h2 class="pg-h1">${rlEsc(att.examTitle)}</h2>
+    <div class="rl-score-row"><div class="rl-bigscore"><b>${att.correct}</b><span>/ ${att.total}</span></div>
+      <div><div class="rl-pct ${att.pct>=60?'ok':'low'}">${att.pct}%</div><div class="pg-note">${verdict} (referencia de aprobado)${att.scope==='all'?` · equivale a ${scaled.toFixed(1).replace('.',',')} / 25 puntos`:''}</div>
+      <div class="pg-note">Tiempo: <b>${rlFmt(att.secs)}</b> de ${rlFmt(att.limitSec)}${att.factor!==1?` (ritmo ×${att.factor})`:''}${att.flagged?` · ${att.flagged} marcadas`:''}</div></div></div>
+    <div class="rl-res-table">${tareaRows}</div>
+    ${wrong.length ? `<p class="pg-note"><b>Falladas / en blanco (${wrong.length}):</b> ${wrong.join(', ')}</p>` : '<p class="pg-note pg-status-ok">¡Sin ningún fallo!</p>'}
+    <div class="pg-actions"><button class="pg-btn pg-btn-primary" data-rl="review">Revisar respuestas y explicaciones</button>
+      ${ex?`<button class="pg-btn" data-rl="again" data-id="${att.examId}" data-mode="${att.mode}" data-scope="${att.scope}">↻ Repetir</button>`:''}
+      <button class="pg-btn" data-rl="to-library">← Mis simulacros</button></div></div>`;
+  rlShowScreen('result');
+}
+function rlStartReview(att){
+  const p = rlGetParsed(att.examId); if(!p || !p.exam){ alert('El examen ya no está en tu biblioteca.'); return; }
+  rlReview = {attempt:att, cur:att.idxs[0], active:null};
+  rlRenderExam(); rlShowScreen('exam');
+}
+function rlToLibrary(){ rlReview = null; rlStopTimer(); rlRenderLibrary(); rlShowScreen('library'); }
+
+/* ---------- wiring ---------- */
+function rlAddSeed(id, text){
+  if(rlLibrary[id]) return false;
+  const r = rlParseOne(text); const now = Date.now();
+  rlLibrary[id] = {id, title:r.exam.title, level:r.exam.level, source:text, createdAt:now, updatedAt:now};
+  return true;
+}
+function rlRestoreSeed(){ const a = rlAddSeed(RL_SEED2_ID, RL_SEED2_TEXT), b = rlAddSeed(RL_SEED_ID, RL_SEED_TEXT); if(a || b) rlSaveLibrary(); }
+// One-time seed after the data layer has loaded (never reappears once deleted).
+function rlSeedOnce(){
+  rlLibrary = rlLoadLibrary(); rlAttempts = rlLoadAttempts();
+  let changed = false;
+  if(!rlLsGet(RL_SEED2_FLAG)){ rlLsSet(RL_SEED2_FLAG, '1'); changed = rlAddSeed(RL_SEED2_ID, RL_SEED2_TEXT) || changed; }
+  if(!rlLsGet(RL_SEED_FLAG)){ rlLsSet(RL_SEED_FLAG, '1'); changed = rlAddSeed(RL_SEED_ID, RL_SEED_TEXT) || changed; }
+  if(changed) rlSaveLibrary();
+}
+function rlEnterView(){
+  rlLibrary = rlLoadLibrary(); rlAttempts = rlLoadAttempts(); rlSess = rlSess || rlLoadSess();
+  saveBeforeNavigation(); hideAllScreens(); $('readingView').classList.remove('hidden');
+  rlReview = null; rlRenderLibrary(); rlShowScreen('library');
+}
+function rlHandle(e){
+  const el = e.target.closest('[data-rl]'); if(!el || !$('readingView').contains(el)) return;
+  const a = el.getAttribute('data-rl'), id = el.getAttribute('data-id'), item = el.getAttribute('data-item');
+  if(a==='act'){ if(!e.target.closest('button')) rlSetActive(item, false); return; }
+  if(a==='start'){ rlStart(id, el.getAttribute('data-scope'), el.getAttribute('data-mode')); }
+  else if(a==='again'){ rlSess = null; rlStart(id, el.getAttribute('data-scope')==='all'?'all':Number(el.getAttribute('data-scope')), el.getAttribute('data-mode')); }
+  else if(a==='begin') rlBegin();
+  else if(a==='cancel-brief'){ rlClearSess(); rlRenderLibrary(); rlShowScreen('library'); }
+  else if(a==='resume') rlResume();
+  else if(a==='discard'){ if(confirm('¿Descartar la sesión en curso? Se perderá su progreso.')){ rlClearSess(); rlRenderLibrary(); } }
+  else if(a==='edit'){ const en = rlLibrary[id]; if(en){ rlEditingId = id; $('rlSource').value = en.source; rlLivePreview(); rlStatus(`Editando «${rlEsc(en.title)}». Al pulsar Importar se actualizará ese examen.`, 'pg-status-info'); $('rlSource').scrollIntoView({behavior:'smooth', block:'center'}); } }
+  else if(a==='del'){ const en = rlLibrary[id]; if(en && confirm(`¿Eliminar «${en.title}»? (El historial de intentos se conserva.)`)){ delete rlLibrary[id]; rlSaveLibrary(); rlRenderLibrary(); } }
+  else if(a==='open-attempt'){ const at = rlAttempts.find(x=>x.id===id); if(at) rlShowResult(at); }
+  else if(a==='ans') rlAnswer(item, el.getAttribute('data-key'), false);
+  else if(a==='flag'){ e.stopPropagation(); if(rlReview) return; const s = rlSess; if(s.flags[item]) delete s.flags[item]; else s.flags[item] = 1; rlSaveSess(); rlRerenderBody(); rlSetActive(item, false); }
+  else if(a==='gap'){ rlSetActive(item, false); const row = $('rl-it-'+item); if(row) row.scrollIntoView({block:'center', behavior:'smooth'}); }
+  else if(a==='tarea') rlGoTarea(Number(el.getAttribute('data-idx')));
+  else if(a==='prev' || a==='next'){ const ctx = rlCtx(), pos = ctx.idxs.indexOf(ctx.cur) + (a==='next'?1:-1); if(pos>=0 && pos<ctx.idxs.length) rlGoTarea(ctx.idxs[pos]); }
+  else if(a==='sheet') rlOpenSheet();
+  else if(a==='jump'){ $('rlSheet').classList.add('hidden'); const i = Number(el.getAttribute('data-idx')); if(rlCtx().cur !== i) rlGoTarea(i); rlSetActive(item, true); }
+  else if(a==='fs'){ const pf = rlPrefs(); const v = Math.max(13, Math.min(26, pf.fs + Number(el.getAttribute('data-d'))*1.5)); rlSetPref('fs', v); const sp = document.querySelector('#rlBody .rl-split'); if(sp) sp.style.setProperty('--rl-fs', v+'px'); }
+  else if(a==='pause') rlPause();
+  else if(a==='unpause') rlUnpause();
+  else if(a==='submit') rlSubmit(false);
+  else if(a==='quit'){ if(confirm('¿Abandonar este intento sin guardar el resultado?')){ rlStopTimer(); rlClearSess(); rlToLibrary(); } }
+  else if(a==='review') rlStartReview(rlResultAttempt);
+  else if(a==='back-result'){ rlShowResult(rlReview.attempt); }
+  else if(a==='to-library') rlToLibrary();
+  else if(a==='close-sheet') $('rlSheet').classList.add('hidden');
+}
+function initReadingUI(){
+  $('readingToggleBtn').onclick = rlEnterView;
+  $('backFromReadingBtn').onclick = () => { $('readingView').classList.add('hidden'); rlLeaveView(); showLanding(); };
+  $('readingView').addEventListener('click', rlHandle);
+  $('rlImportBtn').onclick = rlImport;
+  $('rlSampleBtn').onclick = () => { $('rlSource').value = RL_SAMPLE_TEXT; rlEditingId = null; rlLivePreview(); rlStatus('Muestra mínima cargada: pulsa Importar para probar el formato.', 'pg-status-info'); };
+  $('rlClearBtn').onclick = () => { $('rlSource').value = ''; rlEditingId = null; rlLivePreview(); rlStatus('', ''); };
+  $('rlCopyGenBtn').onclick = () => rlCopyPrompt('generate');
+  $('rlCopyConvBtn').onclick = () => rlCopyPrompt('convert');
+  $('rlRestoreSeedBtn').onclick = () => { rlRestoreSeed(); rlRenderLibrary(); };
+  $('rlClearHistBtn').onclick = () => { if(confirm('¿Borrar todo el historial de intentos?')){ rlAttempts = []; rlSaveAttempts(); rlRenderLibrary(); } };
+  let t = null; $('rlSource').addEventListener('input', () => { clearTimeout(t); t = setTimeout(rlLivePreview, 300); });
+  $('rlPace').onchange = e => rlSetPref('pace', Number(e.target.value));
+  $('rlImmediate').onchange = e => rlSetPref('immediate', e.target.checked);
+  window.addEventListener('resize', rlApplyPaneHeight);
+}
+
+
 function initPhotoGameUI(){
   $('photoGameToggleBtn').onclick = () => {
     // Same async-load-race refresh as Vocab Match above — read the
@@ -10852,6 +11919,7 @@ function saveBeforeNavigation(){
   // looks lost there even though it's safe here. See flushSyncQueueKeepalive
   // for why this is a separate, best-effort path rather than just calling
   // fullSync() here.
+  if(typeof rlPersist === 'function') rlPersist();
   if(typeof flushSyncQueueKeepalive === 'function') flushSyncQueueKeepalive();
 }
 
@@ -10868,7 +11936,8 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', saveBeforeNavigation);
 
 function hideAllScreens(){
-  ['landing','folderView','setup','quiz','caseGame','sentenceGame','brainBreak','results','statsView','settingsView','petView','communityView','profSearchView','vocabMatchView','photoGameView','dleTrackerView'].forEach(id => {
+  { const rv = document.getElementById('readingView'); if(rv && !rv.classList.contains('hidden') && typeof rlLeaveView === 'function') rlLeaveView(); }
+  ['landing','folderView','setup','quiz','caseGame','sentenceGame','brainBreak','results','statsView','settingsView','petView','communityView','profSearchView','vocabMatchView','photoGameView','dleTrackerView','readingView'].forEach(id => {
     const el = $(id);
     if(el) el.classList.add('hidden');
   });
@@ -15521,6 +16590,7 @@ initAppDataStorage().then(() => {
   vmVocab = vmLoadLibrary();
   vmSavedSets = vmLoadSavedSets();
   pgLibrary = pgLoadLibrary();
+  rlSeedOnce();
   showLanding();
 });
 initAccountSettingsUI();
@@ -15528,6 +16598,7 @@ initCommunityUI();
 initProfSearchUI();
 initVocabMatchUI();
 initPhotoGameUI();
+initReadingUI();
 initDleTrackerUI();
 initCloudSync();
 
@@ -18924,7 +19995,8 @@ document.addEventListener('DOMContentLoaded',function(){
    const onVocabMatch = !document.getElementById('vocabMatchView').classList.contains('hidden');
    const onPhotoGame = !document.getElementById('photoGameView').classList.contains('hidden');
    const onDleTracker = !document.getElementById('dleTrackerView').classList.contains('hidden');
-   document.getElementById('homeBtn')?.classList.toggle('active', !onStats && !onSettings && !onPet && !onCommunity && !onProfSearch && !onVocabMatch && !onPhotoGame && !onDleTracker);
+   const onReading = !document.getElementById('readingView').classList.contains('hidden');
+   document.getElementById('homeBtn')?.classList.toggle('active', !onStats && !onSettings && !onPet && !onCommunity && !onProfSearch && !onVocabMatch && !onPhotoGame && !onDleTracker && !onReading);
    document.getElementById('statsToggleBtn')?.classList.toggle('active', onStats);
    document.getElementById('settingsToggleBtn')?.classList.toggle('active', onSettings);
    document.getElementById('petToggleBtn')?.classList.toggle('active', onPet);
@@ -18933,6 +20005,7 @@ document.addEventListener('DOMContentLoaded',function(){
    document.getElementById('vocabMatchToggleBtn')?.classList.toggle('active', onVocabMatch);
    document.getElementById('photoGameToggleBtn')?.classList.toggle('active', onPhotoGame);
    document.getElementById('dleTrackerToggleBtn')?.classList.toggle('active', onDleTracker);
+   document.getElementById('readingToggleBtn')?.classList.toggle('active', onReading);
  }
  ['homeBtn','statsToggleBtn','settingsToggleBtn','petToggleBtn','communityToggleBtn','profSearchToggleBtn','vocabMatchToggleBtn','photoGameToggleBtn','dleTrackerToggleBtn','backFromCommunityBtn','backFromProfSearchBtn','backFromVocabMatchBtn','backFromPhotoGameBtn','backFromDleTrackerBtn'].forEach(id => {
    document.getElementById(id)?.addEventListener('click', () => setTimeout(updateNavActiveState, 0));
