@@ -6983,7 +6983,7 @@ NEXT: OPEN
    baked into the page, so if Settings shows an OLD value, that's proof the
    browser is serving a stale cached copy rather than the real thing — use
    the "Force refresh" button in Settings to break out of it. */
-const APP_VERSION = '2026-10-20 Lectura simulator v2 + Comunidad';
+const APP_VERSION = '2026-10-20 Lectura + Vocab Comunidad';
 
 /* ===== JS-01b GLOBAL ERROR LOGGING =====
    Nothing anywhere in this file previously caught truly unexpected errors
@@ -8415,7 +8415,7 @@ async function renderCommunityMine(forceRefresh){
     div.innerHTML = `
       <div class="community-set-main">
         <div class="community-set-title">${escapeHtml(row.title || 'Untitled set')}</div>
-        <div class="community-set-meta">${row.kind === 'reading' ? Number(row.card_count||0)+' preguntas · 📖 Lectura' : row.kind === 'photo' ? 'Práctica de habla · 📷 Foto' : Number(row.card_count||0)+' cards'}${row.subject ? `<span class="community-set-tag">${escapeHtml(row.subject)}</span>` : ''}${row.le ? `<span class="community-set-tag">Nivel ${escapeHtml(row.le)}</span>` : ''}${row.topic ? `<span class="community-set-tag">Tema ${escapeHtml(row.topic)}</span>` : ''}${row.professor ? `<span class="community-set-tag">👤 ${escapeHtml(row.professor)}</span>` : ''}${uploadedLabel ? `<span>Uploaded ${uploadedLabel}</span>` : ''}${editedLabel ? `<span>Edited ${editedLabel}</span>` : ''}${!linked ? `<span class="community-set-tag" title="No local set is linked to this upload — link one below, or delete it.">Not linked</span>` : ''}</div>
+        <div class="community-set-meta">${row.kind === 'reading' ? Number(row.card_count||0)+' preguntas · 📖 Lectura' : row.kind === 'vocab' ? Number(row.card_count||0)+' palabras · 🃏 Vocab' : row.kind === 'photo' ? 'Práctica de habla · 📷 Foto' : Number(row.card_count||0)+' cards'}${row.subject ? `<span class="community-set-tag">${escapeHtml(row.subject)}</span>` : ''}${row.le ? `<span class="community-set-tag">Nivel ${escapeHtml(row.le)}</span>` : ''}${row.topic ? `<span class="community-set-tag">Tema ${escapeHtml(row.topic)}</span>` : ''}${row.professor ? `<span class="community-set-tag">👤 ${escapeHtml(row.professor)}</span>` : ''}${uploadedLabel ? `<span>Uploaded ${uploadedLabel}</span>` : ''}${editedLabel ? `<span>Edited ${editedLabel}</span>` : ''}${!linked ? `<span class="community-set-tag" title="No local set is linked to this upload — link one below, or delete it.">Not linked</span>` : ''}</div>
         ${row.description ? `<div class="community-set-desc">${escapeHtml(row.description)}</div>` : ''}
         ${!linked ? `<div style="display:flex; align-items:center; gap:6px; margin-top:8px; flex-wrap:wrap;">
           <select class="sort-select" data-relink-select="${row.id}">
@@ -8924,7 +8924,7 @@ function p2EnhanceCard(r){
     const b=(label,fn)=>{const x=document.createElement('button');x.className='community-icon-btn';x.textContent=label;x.onclick=fn;return x;};
     // Remix duplicates a deck into the main flashcard Sets collection —
     // meaningless for a Foto case (no card table to edit), so skip it there.
-    const remixBtn = (r.kind === 'photo' || r.kind === 'reading') ? [] : [b('♻ Remix',()=>p2Remix(r.id))];
+    const remixBtn = (r.kind === 'photo' || r.kind === 'reading' || r.kind === 'vocab') ? [] : [b('♻ Remix',()=>p2Remix(r.id))];
     actions.prepend(b('History',()=>p2Versions(r.id)),b('＋ Collection',()=>p2AddCollection(r.id)),...remixBtn);
   }
   const author=div.querySelector('.community-set-author');if(author){author.style.cursor='pointer';author.onclick=()=>p2OpenProfile(r.owner_id);}
@@ -8986,7 +8986,7 @@ function renderCommunityCard(r){
   const cardTypeLabel = r.card_type === 'samplex' ? 'Samplex' : (r.card_type === 'topic' ? 'Topic Cards' : r.card_type);
   const subjColor = r.subject ? subjectColor(r.subject) : null;
   const subjectTag = r.subject ? `<span class="community-set-tag subject-tag" style="background:${subjColor}">${escapeHtml(r.subject)}</span>` : '';
-  const tags = subjectTag + [r.le ? `Nivel ${r.le}` : null, cardTypeLabel, r.topic, r.professor ? `👤 ${r.professor}` : null, r.kind === 'algorithm' ? 'Algorithm' : null, r.kind === 'photo' ? '📷 Foto DELE B2' : null, r.kind === 'reading' ? '📖 Lectura DELE B2' : null].filter(Boolean).slice(0,4).map(t => `<span class="community-set-tag">${escapeHtml(t)}</span>`).join('');
+  const tags = subjectTag + [r.le ? `Nivel ${r.le}` : null, cardTypeLabel, r.topic, r.professor ? `👤 ${r.professor}` : null, r.kind === 'algorithm' ? 'Algorithm' : null, r.kind === 'photo' ? '📷 Foto DELE B2' : null, r.kind === 'reading' ? '📖 Lectura DELE B2' : null, r.kind === 'vocab' ? '🃏 Vocabulario' : null].filter(Boolean).slice(0,4).map(t => `<span class="community-set-tag">${escapeHtml(t)}</span>`).join('');
   const uploadedLabel = r.created_at ? new Date(r.created_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : null;
   // "Edited" only shows once the gap between created_at and updated_at is
   // large enough to be a real, later edit rather than noise from whatever
@@ -9001,7 +9001,7 @@ function renderCommunityCard(r){
     <div class="community-set-main">
       <div class="community-set-title">${escapeHtml(r.title || 'Untitled set')}</div>
       <div class="community-set-author">👤 @${escapeHtml(r.username || 'unknown')}${uploadedLabel ? ` · Uploaded ${uploadedLabel}` : ''}${editedLabel ? ` · <span title="Last edited ${editedLabel}">Edited ${editedLabel}</span>` : ''}</div>
-      <div class="community-set-meta"><span>${r.kind === 'photo' ? 'Práctica de habla' : r.kind === 'reading' ? `${Number(r.card_count||0)} preguntas` : `${Number(r.card_count||0)} cards`}</span>${tags}</div>
+      <div class="community-set-meta"><span>${r.kind === 'photo' ? 'Práctica de habla' : r.kind === 'reading' ? `${Number(r.card_count||0)} preguntas` : r.kind === 'vocab' ? `${Number(r.card_count||0)} palabras` : `${Number(r.card_count||0)} cards`}</span>${tags}</div>
       ${r.description ? `<div class="community-set-desc">${escapeHtml(r.description)}</div>` : ''}
       <div class="community-set-stats">
         <span class="community-set-stat">↓ ${Number(r.import_count||0)} imports</span>
@@ -9136,7 +9136,7 @@ async function openCommunityPreview(id){
   const uploadedLabel = row.created_at ? new Date(row.created_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : null;
   const wasEdited = row.created_at && row.updated_at && (new Date(row.updated_at).getTime() - new Date(row.created_at).getTime() > 60000);
   const editedLabel = wasEdited ? new Date(row.updated_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : null;
-  $('communityPreviewMeta').textContent = `by @${row.username || 'unknown'} · ${row.kind === 'photo' ? 'Práctica de habla (DELE B2)' : row.kind === 'reading' ? 'Simulacro de lectura (DELE B2) · '+Number(row.card_count||0)+' preguntas' : Number(row.card_count||0)+' cards'}${row.subject ? ' · '+row.subject : ''}${uploadedLabel ? ' · Uploaded '+uploadedLabel : ''}${editedLabel ? ' · Edited '+editedLabel : ''}`;
+  $('communityPreviewMeta').textContent = `by @${row.username || 'unknown'} · ${row.kind === 'photo' ? 'Práctica de habla (DELE B2)' : row.kind === 'reading' ? 'Simulacro de lectura (DELE B2) · '+Number(row.card_count||0)+' preguntas' : row.kind === 'vocab' ? 'Biblioteca de vocabulario · '+Number(row.card_count||0)+' palabras' : Number(row.card_count||0)+' cards'}${row.subject ? ' · '+row.subject : ''}${uploadedLabel ? ' · Uploaded '+uploadedLabel : ''}${editedLabel ? ' · Edited '+editedLabel : ''}`;
   $('communityPreviewStats').innerHTML = `<span class="community-set-stat">↓ ${Number(row.import_count||0)} imports</span><span class="community-set-stat">❤️ ${Number(row.like_count||0)} likes</span><span class="community-set-stat">🔖 ${Number(row.save_count||0)} saves</span>`;
   $('communityPreviewDesc').innerHTML = row.description ? escapeHtml(row.description) : '';
   $('communityPreviewTagSummary').classList.add('hidden');
@@ -9150,6 +9150,16 @@ async function openCommunityPreview(id){
   // is meaningless for them, so skip it and show a plain explainer instead.
   if(row.kind === 'reading'){
     $('communityPreviewSamples').innerHTML = `<div class="community-empty" style="margin-top:14px;">📖 Simulacro cronometrado de Comprensión de lectura del DELE B2 — al importarlo se añade a tu biblioteca de Lectura, listo para hacerlo como simulacro o en modo práctica.</div>`;
+    return;
+  }
+  if(row.kind === 'vocab'){
+    const box = $('communityPreviewSamples');
+    box.innerHTML = `<div class="community-empty" style="margin-top:14px;">🃏 Biblioteca de vocabulario — al importarla se añade a tu 🃏 Vocab como una biblioteca nueva, lista para el juego de emparejar. Cargando muestra…</div>`;
+    fetchCommunityFullDeck(id, 'vocab-preview').then(({data}) => {
+      if(communityPreviewId !== id || !data || !Array.isArray(data.cards)) return;
+      const list = data.cards.slice(0,6).map(c => `<li><strong>${escapeHtml(c.word||'')}</strong> — ${escapeHtml(c.definition_es||'')}</li>`).join('');
+      box.innerHTML = `<div class="community-empty" style="margin-top:14px;text-align:left;">🃏 Al importarla se añade a tu 🃏 Vocab como biblioteca nueva.<ul style="margin:8px 0 0 18px;">${list}</ul>${data.cards.length>6?`<div style="margin-top:6px;opacity:.7">… y ${data.cards.length-6} más</div>`:''}</div>`;
+    }).catch(()=>{});
     return;
   }
   if(row.kind === 'photo'){
@@ -9358,6 +9368,7 @@ async function importCommunitySet(communitySetId){
   // flashcard Sets collection — importing one as a regular "set" would
   // create an inert entry nothing in the app knows how to play.
   if(data.kind === 'reading'){ await rlImportFromCommunity(data, communitySetId, sb); return; }
+  if(data.kind === 'vocab'){ await vmImportFromCommunity(data, communitySetId, sb); return; }
   if(data.kind === 'photo'){
     if(!confirm(`Add "${data.title}" to your Foto cases?`)) return;
     const id = 'pg-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
@@ -9775,7 +9786,7 @@ function vmRenderGameIntro(){
 function vmRenderLibraryNav(){
   const wrap=$('vmSetCards'); if(!wrap)return; wrap.innerHTML=''; const sets=['__all__',...(vmVocab.some(x=>!String(x.set||x.category||'').trim())?['__unsorted__']:[]),...new Set([...Object.keys(vmSavedSets),...vmVocab.map(x=>String(x.set||x.category||'').trim()).filter(Boolean)])];
   sets.forEach(value=>{const items=vmSetItems(value), ready=items.filter(x=>String(x.word||x.english||'').trim()&&String(x.definition_es||x.spanish||'').trim()).length, card=document.createElement('div');card.className='vm-set-card'+(String($('vmSetSelect')?.value||'__all__')===value?' active':'');
-    const title=document.createElement('strong');title.textContent=value==='__all__'?'Todas las bibliotecas':value==='__unsorted__'?'Sin biblioteca':value;const meta=document.createElement('small');meta.textContent=`${items.length} palabra${items.length===1?'':'s'} · ${ready} lista${ready===1?'':'s'} para estudiar`;const choose=document.createElement('button');choose.className='vm-btn';choose.type='button';choose.textContent='Ver biblioteca';choose.onclick=()=>vmChooseSet(value);const study=document.createElement('button');study.className='vm-btn vm-btn-primary';study.type='button';study.textContent='Estudiar';study.onclick=()=>vmStudySet(value);card.append(title,meta,choose,study);card.onclick=e=>{if(e.target.tagName!=='BUTTON')vmChooseSet(value)};wrap.appendChild(card);
+    const title=document.createElement('strong');title.textContent=value==='__all__'?'Todas las bibliotecas':value==='__unsorted__'?'Sin biblioteca':value;const meta=document.createElement('small');meta.textContent=`${items.length} palabra${items.length===1?'':'s'} · ${ready} lista${ready===1?'':'s'} para estudiar`;const choose=document.createElement('button');choose.className='vm-btn';choose.type='button';choose.textContent='Ver biblioteca';choose.onclick=()=>vmChooseSet(value);const study=document.createElement('button');study.className='vm-btn vm-btn-primary';study.type='button';study.textContent='Estudiar';study.onclick=()=>vmStudySet(value);const pubBtn=(value==='__all__'||value==='__unsorted__'||ready<2)?null:(()=>{const b=document.createElement('button');b.className='vm-btn';b.type='button';b.textContent='🌐 Publicar';b.title='Compartir esta biblioteca en Comunidad';b.onclick=ev=>{ev.stopPropagation();vmPublishLibrary(value);};return b;})();card.append(title,meta,choose,study,...(pubBtn?[pubBtn]:[]));card.onclick=e=>{if(e.target.tagName!=='BUTTON')vmChooseSet(value)};wrap.appendChild(card);
   });
   if(!sets.length)wrap.innerHTML='<div class="vm-muted">Importa o añade vocabulario para crear tu primera biblioteca.</div>';
 }
@@ -9825,6 +9836,59 @@ function vmRenderLibrary(){
     body.appendChild(tr);
   });
   vmRenderMobileCards(visible);
+}
+/* ---------- Comunidad: publicar / importar bibliotecas de vocabulario ----------
+   Reutiliza community_sets (sin SQL nuevo): kind:'vocab', cards = las palabras de UNA biblioteca,
+   title = nombre de la biblioteca. No hay vínculo local: al republicar se busca por (autor, título, kind). */
+function vmPlayable(x){ return !!(String(x.word||x.english||'').trim() && String(x.definition_es||x.spanish||'').trim()); }
+async function vmPublishLibrary(value){
+  const items = vmSetItems(value).map(vmNormalize).filter(vmPlayable);
+  if(items.length < 2){ alert('Esta biblioteca necesita al menos 2 palabras completas (palabra + definición) para publicarse.'); return; }
+  const sb = getSupabase();
+  if(!sb || !currentUser){ alert('Inicia sesión primero — Ajustes → Cuenta y sincronización.'); return; }
+  if(!communityUsername) await loadCommunityProfile();
+  if(!communityUsername){
+    const chosen = prompt('Elige un nombre de usuario para publicar (lo verán otros usuarios):');
+    if(!chosen) return;
+    const res = await saveCommunityUsername(chosen);
+    if(res.error){ alert(res.error); return; }
+  }
+  let droppedImgs = 0;
+  const cards = items.map(x => {
+    let img = String(x.image||'').trim();
+    if(img.startsWith('data:')){ img = ''; droppedImgs++; }   // las imágenes incrustadas inflarían la fila: solo enlaces
+    return {id:x.id, word:x.word, definition_es:x.definition_es, sentence_es:x.sentence_es||'', sentence_en:x.sentence_en||'', image:img, level:x.level||''};
+  });
+  const title = String(value).trim();
+  const row = {owner_id: currentUser.id, username: communityUsername, title, kind:'vocab', cards, card_count: cards.length};
+  let linkedId = null;
+  const { data: existing } = await sb.from('community_sets').select('id').eq('owner_id', currentUser.id).eq('title', title).eq('kind', 'vocab').maybeSingle();
+  if(existing && existing.id){
+    if(!confirm(`Ya tienes «${title}» publicada en Comunidad — ¿actualizarla con tus ${cards.length} palabras actuales?`)) return;
+    linkedId = existing.id;
+  } else if(!confirm(`¿Publicar «${title}» (${cards.length} palabras) en Comunidad? La verán otros usuarios.`)) return;
+  let result;
+  if(linkedId) result = await sb.from('community_sets').update(row).eq('id', linkedId).eq('owner_id', currentUser.id).select('id').maybeSingle();
+  else result = await sb.from('community_sets').insert(row).select('id').maybeSingle();
+  if(result.error){ alert('No se pudo publicar: ' + result.error.message); return; }
+  invalidateCommunityMineCache(); invalidateCommunityFeedCaches();
+  alert((linkedId ? 'Actualizada en Comunidad.' : '¡Publicada en Comunidad!') + (droppedImgs ? `\n\n${droppedImgs} imagen(es) incrustada(s) no se subieron (solo se comparten enlaces de imagen).` : ''));
+}
+async function vmImportFromCommunity(data, communitySetId, sb){
+  const cards = Array.isArray(data.cards) ? data.cards : [];
+  if(!cards.length){ alert('Esta biblioteca no tiene palabras.'); return; }
+  const prefix = 'cv' + String(communitySetId).replace(/-/g,'').slice(0,8);
+  const have = new Set(vmVocab.map(x => String(x.id)));
+  const fresh = cards.filter(c => !have.has(prefix + '-' + c.id));
+  if(!fresh.length){ alert(`«${data.title}» ya está completa en tu vocabulario.`); return; }
+  if(!confirm(`¿Añadir «${data.title}» (${fresh.length} palabra${fresh.length===1?'':'s'}${fresh.length<cards.length?' nuevas':''}) a tu 🃏 Vocab como una biblioteca?`)) return;
+  vmAddImported(cards.map(c => ({...c, id: prefix + '-' + c.id, set: data.title})));
+  try{ await sb.rpc('increment_community_import', { p_set_id: communitySetId }); }catch(e){}
+  const row = communityBrowseCache.find(x => x.id === communitySetId);
+  if(row) row.import_count = Number(row.import_count||0) + 1;
+  closeCommunityPreview();
+  applyCommunitySearchFilter();
+  alert(`Añadido «${data.title}» — lo encuentras en 🃏 Vocab, biblioteca «${data.title}».`);
 }
 function vmParseRows(rows){
   return rows.map((r, i) => {
