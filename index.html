@@ -6983,7 +6983,7 @@ NEXT: OPEN
    baked into the page, so if Settings shows an OLD value, that's proof the
    browser is serving a stale cached copy rather than the real thing — use
    the "Force refresh" button in Settings to break out of it. */
-const APP_VERSION = '2026-10-15 Lectura simulator v2';
+const APP_VERSION = '2026-10-20 Lectura simulator v2 + Comunidad';
 
 /* ===== JS-01b GLOBAL ERROR LOGGING =====
    Nothing anywhere in this file previously caught truly unexpected errors
@@ -8415,7 +8415,7 @@ async function renderCommunityMine(forceRefresh){
     div.innerHTML = `
       <div class="community-set-main">
         <div class="community-set-title">${escapeHtml(row.title || 'Untitled set')}</div>
-        <div class="community-set-meta">${Number(row.card_count||0)} cards${row.subject ? `<span class="community-set-tag">${escapeHtml(row.subject)}</span>` : ''}${row.le ? `<span class="community-set-tag">Nivel ${escapeHtml(row.le)}</span>` : ''}${row.topic ? `<span class="community-set-tag">Tema ${escapeHtml(row.topic)}</span>` : ''}${row.professor ? `<span class="community-set-tag">👤 ${escapeHtml(row.professor)}</span>` : ''}${uploadedLabel ? `<span>Uploaded ${uploadedLabel}</span>` : ''}${editedLabel ? `<span>Edited ${editedLabel}</span>` : ''}${!linked ? `<span class="community-set-tag" title="No local set is linked to this upload — link one below, or delete it.">Not linked</span>` : ''}</div>
+        <div class="community-set-meta">${row.kind === 'reading' ? Number(row.card_count||0)+' preguntas · 📖 Lectura' : row.kind === 'photo' ? 'Práctica de habla · 📷 Foto' : Number(row.card_count||0)+' cards'}${row.subject ? `<span class="community-set-tag">${escapeHtml(row.subject)}</span>` : ''}${row.le ? `<span class="community-set-tag">Nivel ${escapeHtml(row.le)}</span>` : ''}${row.topic ? `<span class="community-set-tag">Tema ${escapeHtml(row.topic)}</span>` : ''}${row.professor ? `<span class="community-set-tag">👤 ${escapeHtml(row.professor)}</span>` : ''}${uploadedLabel ? `<span>Uploaded ${uploadedLabel}</span>` : ''}${editedLabel ? `<span>Edited ${editedLabel}</span>` : ''}${!linked ? `<span class="community-set-tag" title="No local set is linked to this upload — link one below, or delete it.">Not linked</span>` : ''}</div>
         ${row.description ? `<div class="community-set-desc">${escapeHtml(row.description)}</div>` : ''}
         ${!linked ? `<div style="display:flex; align-items:center; gap:6px; margin-top:8px; flex-wrap:wrap;">
           <select class="sort-select" data-relink-select="${row.id}">
@@ -8924,7 +8924,7 @@ function p2EnhanceCard(r){
     const b=(label,fn)=>{const x=document.createElement('button');x.className='community-icon-btn';x.textContent=label;x.onclick=fn;return x;};
     // Remix duplicates a deck into the main flashcard Sets collection —
     // meaningless for a Foto case (no card table to edit), so skip it there.
-    const remixBtn = r.kind === 'photo' ? [] : [b('♻ Remix',()=>p2Remix(r.id))];
+    const remixBtn = (r.kind === 'photo' || r.kind === 'reading') ? [] : [b('♻ Remix',()=>p2Remix(r.id))];
     actions.prepend(b('History',()=>p2Versions(r.id)),b('＋ Collection',()=>p2AddCollection(r.id)),...remixBtn);
   }
   const author=div.querySelector('.community-set-author');if(author){author.style.cursor='pointer';author.onclick=()=>p2OpenProfile(r.owner_id);}
@@ -8986,7 +8986,7 @@ function renderCommunityCard(r){
   const cardTypeLabel = r.card_type === 'samplex' ? 'Samplex' : (r.card_type === 'topic' ? 'Topic Cards' : r.card_type);
   const subjColor = r.subject ? subjectColor(r.subject) : null;
   const subjectTag = r.subject ? `<span class="community-set-tag subject-tag" style="background:${subjColor}">${escapeHtml(r.subject)}</span>` : '';
-  const tags = subjectTag + [r.le ? `Nivel ${r.le}` : null, cardTypeLabel, r.topic, r.professor ? `👤 ${r.professor}` : null, r.kind === 'algorithm' ? 'Algorithm' : null, r.kind === 'photo' ? '📷 Foto DELE B2' : null].filter(Boolean).slice(0,4).map(t => `<span class="community-set-tag">${escapeHtml(t)}</span>`).join('');
+  const tags = subjectTag + [r.le ? `Nivel ${r.le}` : null, cardTypeLabel, r.topic, r.professor ? `👤 ${r.professor}` : null, r.kind === 'algorithm' ? 'Algorithm' : null, r.kind === 'photo' ? '📷 Foto DELE B2' : null, r.kind === 'reading' ? '📖 Lectura DELE B2' : null].filter(Boolean).slice(0,4).map(t => `<span class="community-set-tag">${escapeHtml(t)}</span>`).join('');
   const uploadedLabel = r.created_at ? new Date(r.created_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : null;
   // "Edited" only shows once the gap between created_at and updated_at is
   // large enough to be a real, later edit rather than noise from whatever
@@ -9001,7 +9001,7 @@ function renderCommunityCard(r){
     <div class="community-set-main">
       <div class="community-set-title">${escapeHtml(r.title || 'Untitled set')}</div>
       <div class="community-set-author">👤 @${escapeHtml(r.username || 'unknown')}${uploadedLabel ? ` · Uploaded ${uploadedLabel}` : ''}${editedLabel ? ` · <span title="Last edited ${editedLabel}">Edited ${editedLabel}</span>` : ''}</div>
-      <div class="community-set-meta"><span>${r.kind === 'photo' ? 'Práctica de habla' : `${Number(r.card_count||0)} cards`}</span>${tags}</div>
+      <div class="community-set-meta"><span>${r.kind === 'photo' ? 'Práctica de habla' : r.kind === 'reading' ? `${Number(r.card_count||0)} preguntas` : `${Number(r.card_count||0)} cards`}</span>${tags}</div>
       ${r.description ? `<div class="community-set-desc">${escapeHtml(r.description)}</div>` : ''}
       <div class="community-set-stats">
         <span class="community-set-stat">↓ ${Number(r.import_count||0)} imports</span>
@@ -9136,7 +9136,7 @@ async function openCommunityPreview(id){
   const uploadedLabel = row.created_at ? new Date(row.created_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : null;
   const wasEdited = row.created_at && row.updated_at && (new Date(row.updated_at).getTime() - new Date(row.created_at).getTime() > 60000);
   const editedLabel = wasEdited ? new Date(row.updated_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : null;
-  $('communityPreviewMeta').textContent = `by @${row.username || 'unknown'} · ${row.kind === 'photo' ? 'Práctica de habla (DELE B2)' : Number(row.card_count||0)+' cards'}${row.subject ? ' · '+row.subject : ''}${uploadedLabel ? ' · Uploaded '+uploadedLabel : ''}${editedLabel ? ' · Edited '+editedLabel : ''}`;
+  $('communityPreviewMeta').textContent = `by @${row.username || 'unknown'} · ${row.kind === 'photo' ? 'Práctica de habla (DELE B2)' : row.kind === 'reading' ? 'Simulacro de lectura (DELE B2) · '+Number(row.card_count||0)+' preguntas' : Number(row.card_count||0)+' cards'}${row.subject ? ' · '+row.subject : ''}${uploadedLabel ? ' · Uploaded '+uploadedLabel : ''}${editedLabel ? ' · Edited '+editedLabel : ''}`;
   $('communityPreviewStats').innerHTML = `<span class="community-set-stat">↓ ${Number(row.import_count||0)} imports</span><span class="community-set-stat">❤️ ${Number(row.like_count||0)} likes</span><span class="community-set-stat">🔖 ${Number(row.save_count||0)} saves</span>`;
   $('communityPreviewDesc').innerHTML = row.description ? escapeHtml(row.description) : '';
   $('communityPreviewTagSummary').classList.add('hidden');
@@ -9148,6 +9148,10 @@ async function openCommunityPreview(id){
   // Foto cases don't have a `cards` array at all (their content is a
   // CASE_FORMAT script in algo_source) — the card-sample projection below
   // is meaningless for them, so skip it and show a plain explainer instead.
+  if(row.kind === 'reading'){
+    $('communityPreviewSamples').innerHTML = `<div class="community-empty" style="margin-top:14px;">📖 Simulacro cronometrado de Comprensión de lectura del DELE B2 — al importarlo se añade a tu biblioteca de Lectura, listo para hacerlo como simulacro o en modo práctica.</div>`;
+    return;
+  }
   if(row.kind === 'photo'){
     $('communityPreviewSamples').innerHTML = `<div class="community-empty" style="margin-top:14px;">📷 Caso de práctica de habla para la Tarea 2 del DELE B2 — al importarlo se añade a tu biblioteca de Foto, listo para jugar.</div>`;
     return;
@@ -9353,6 +9357,7 @@ async function importCommunitySet(communitySetId){
   // Foto cases live in their own library (PHOTO_CASES_KEY), not the main
   // flashcard Sets collection — importing one as a regular "set" would
   // create an inert entry nothing in the app knows how to play.
+  if(data.kind === 'reading'){ await rlImportFromCommunity(data, communitySetId, sb); return; }
   if(data.kind === 'photo'){
     if(!confirm(`Add "${data.title}" to your Foto cases?`)) return;
     const id = 'pg-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
@@ -11316,7 +11321,7 @@ function rlImport(){
     r.warnings.slice(0,3).forEach(w => msgs.push('⚠ '+label+rlEsc(w)));
     const now = Date.now();
     if(rlEditingId && chunks.length===1 && rlEntry(rlEditingId)){
-      const old = rlLibrary[rlEditingId]; rlLibrary[rlEditingId] = {id:old.id, title:r.exam.title, level:r.exam.level, source:c, createdAt:old.createdAt||now, updatedAt:now}; updated++; items += r.exam.total; return; }
+      const old = rlLibrary[rlEditingId]; rlLibrary[rlEditingId] = Object.assign({id:old.id, title:r.exam.title, level:r.exam.level, source:c, createdAt:old.createdAt||now, updatedAt:now}, old.communityId ? {communityId:old.communityId, communityPublishedAt:old.communityPublishedAt} : {}); updated++; items += r.exam.total; return; }
     if(rlLive().some(x => x.source === c)){ dup++; return; }
     const id = rlUid('rl'); rlLibrary[id] = {id, title:r.exam.title, level:r.exam.level, source:c, createdAt:now, updatedAt:now}; added++; items += r.exam.total;
   });
@@ -11399,6 +11404,7 @@ function rlRenderLibrary(){
         <button class="pg-btn pg-btn-primary" data-rl="start" data-mode="sim" data-id="${id}" data-scope="all">▶ Simulacro</button>
         <button class="pg-btn" data-rl="start" data-mode="practice" data-id="${id}" data-scope="all">✍️ Práctica</button>
         <button class="pg-btn" data-rl="edit" data-id="${id}" title="Editar texto fuente">✏️</button>
+        ${rlPubBtnHtml(id, e)}
         <button class="pg-btn" data-rl="del" data-id="${id}" title="Eliminar">🗑</button>
       </div>${drills}${rlCardExtras(id, p, e)}</div>`;
   }).join('');
@@ -11864,6 +11870,77 @@ function rlCopy(text, okMsg){
 }
 
 /* ---------- library card extras: lint badge + cross-check ---------- */
+/* ---------- Comunidad: publicar / importar simulacros de lectura ----------
+   Reutiliza la tabla community_sets que ya existe (sin SQL nuevo), igual que Foto:
+   kind:'reading' + algo_source = el texto fuente completo del examen (formato EXAM_TITLE/TAREA…),
+   cards = [] y card_count = nº de preguntas. No toca SETS_KEY: los exámenes siguen en su biblioteca. */
+function rlPubBtnHtml(id, e){
+  if(RL_SEED_MAP[id]) return '';   // modelos oficiales del Cervantes: no se republican
+  return `<button class="pg-btn" data-rl="publish" data-id="${id}" title="${e && e.communityId ? 'Ya está en Comunidad — pulsa para actualizarlo' : 'Compartir este simulacro en Comunidad'}">${e && e.communityId ? '☁️ Publicado' : '🌐 Publicar'}</button>`;
+}
+async function rlPublishToCommunity(id){
+  const entry = rlEntry(id); if(!entry) return;
+  if(RL_SEED_MAP[id]){ alert('Los modelos oficiales del Instituto Cervantes no se publican en Comunidad.'); return; }
+  const parsed = rlParseOne(entry.source || '');
+  if(parsed.errors.length){ alert('Este examen tiene errores de formato; corrígelo antes de publicarlo:\n\n' + parsed.errors.slice(0,4).join('\n')); return; }
+  const sb = getSupabase();
+  if(!sb || !currentUser){ alert('Inicia sesión primero — Ajustes → Cuenta y sincronización.'); return; }
+  if(!communityUsername) await loadCommunityProfile();
+  if(!communityUsername){
+    const chosen = prompt('Elige un nombre de usuario para publicar (lo verán otros usuarios):');
+    if(!chosen) return;
+    const res = await saveCommunityUsername(chosen);
+    if(res.error){ alert(res.error); return; }
+  }
+  const title = entry.title || parsed.exam.title || 'Simulacro de lectura';
+  // Sin description/subject/topic aquí: así una republicación no pisa lo que el usuario editó en «Tu Comunidad».
+  const row = {
+    owner_id: currentUser.id, username: communityUsername, title,
+    kind: 'reading', cards: [], card_count: parsed.exam.total || 0, algo_source: entry.source
+  };
+  let linkedId = entry.communityId || null;
+  if(!linkedId){
+    const { data: existing } = await sb.from('community_sets').select('id').eq('owner_id', currentUser.id).eq('title', title).eq('kind', 'reading').maybeSingle();
+    if(existing && existing.id && confirm(`Ya tienes un simulacro de lectura publicado como "${title}" — ¿actualizarlo en vez de publicar una copia nueva?`)) linkedId = existing.id;
+  }
+  let result = null, updated = false;
+  if(linkedId){
+    result = await sb.from('community_sets').update(row).eq('id', linkedId).eq('owner_id', currentUser.id).select('id').maybeSingle();
+    updated = !result.error && !!(result.data && result.data.id);
+    // Vínculo local obsoleto (la fila ya no existe en la nube): publicar como nuevo en vez de fallar en silencio.
+    if(!result.error && !updated) linkedId = null;
+  }
+  if(!linkedId){
+    result = await sb.from('community_sets').insert(row).select('id').maybeSingle();
+  }
+  if(result.error){ alert('No se pudo publicar: ' + result.error.message); return; }
+  const newId = result.data && result.data.id;
+  const cur = rlEntry(id) || entry;
+  if(newId) cur.communityId = newId;
+  cur.communityPublishedAt = new Date().toISOString();
+  cur.updatedAt = Date.now();
+  rlLibrary[id] = cur;
+  rlSaveLibrary(); rlRenderLibrary();
+  invalidateCommunityMineCache(); invalidateCommunityFeedCaches();
+  alert(updated ? 'Actualizado en Comunidad.' : '¡Publicado en Comunidad!');
+}
+async function rlImportFromCommunity(data, communitySetId, sb){
+  const src = data.algo_source || '';
+  const r = rlParseOne(src);
+  if(!src.trim() || r.errors.length){ alert('Este simulacro tiene un formato que no se puede leer' + (r.errors[0] ? ': ' + r.errors[0] : '.')); return; }
+  if(rlLive().some(x => x.source === src)){ alert(`«${data.title}» ya está en tu biblioteca de Lectura.`); return; }
+  if(!confirm(`¿Añadir «${data.title}» (${r.exam.total} preguntas) a tu biblioteca de Lectura?`)) return;
+  const now = Date.now(), id = rlUid('rl');
+  rlLibrary[id] = {id, title: data.title || r.exam.title, level: r.exam.level, source: src, createdAt: now, updatedAt: now};
+  rlSaveLibrary();
+  try{ await sb.rpc('increment_community_import', { p_set_id: communitySetId }); }catch(e){}
+  const row = communityBrowseCache.find(x => x.id === communitySetId);
+  if(row) row.import_count = Number(row.import_count||0) + 1;
+  closeCommunityPreview();
+  applyCommunitySearchFilter();
+  alert(`Añadido «${data.title}» — lo encuentras en 📖 Lectura.`);
+}
+
 function rlCardExtras(id, p, e){
   const shufOn = rlShouldShuffle(id, p.exam);
   const issues = rlLint(p.exam);
@@ -11975,6 +12052,7 @@ function rlHandle(e){
   else if(a==='resume') rlResume();
   else if(a==='discard'){ if(confirm('¿Descartar la sesión en curso? Se perderá su progreso.')){ rlClearSess(); rlRenderLibrary(); } }
   else if(a==='edit'){ const en = rlEntry(id); if(en){ rlEditingId = id; $('rlSource').value = en.source; rlLivePreview(); rlStatus(`Editando «${rlEsc(en.title)}». Al pulsar Importar se actualizará ese examen.`, 'pg-status-info'); $('rlSource').scrollIntoView({behavior:'smooth', block:'center'}); } }
+  else if(a==='publish') rlPublishToCommunity(id);
   else if(a==='del'){ const en = rlEntry(id); if(en && confirm(`¿Eliminar «${en.title}»? (El historial de intentos se conserva.)`)){ rlLibrary[id] = {id, deleted:true, title:en.title, createdAt:en.createdAt, updatedAt:Date.now()}; rlSaveLibrary(); rlRenderLibrary(); } }
   else if(a==='open-attempt'){ const at = rlLiveAttempts().find(x=>x.id===id); if(at) rlShowResult(at); }
   else if(a==='ans') rlAnswer(item, el.getAttribute('data-key'), false);
